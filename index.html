@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav style="margin:50px">
+            <div style="text-align: center">
+                <h1 style="font-size: 32pt">Jesse van Vliet</h1>
+                <h3 style="margin-bottom:50px">Gameplay Programmer</h3>
+                <ul class="menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="intro-section">
+        <p>
+            Welcome! I'm a dedicated Game Programmer with a strong passion for C++ programming, particularly in gameplay and networking. <br>Currently, I am immersed in two exciting projects that showcase my expertise and creativity.
+            <br><br>Firstly, I'm working on Ember Sword, a web-based MMORPG developed using the Radiance engine. <br>Radiance is a custom C++ game engine built on an ECS framework, designed for optimal performance in both browser and client environments.
+            <br><br>Secondly, I am developing my personal project, Farmion. <br>This is a time-management co-op farming game set in a magical wizarding world where players can explore, gather, craft, and build their own farms. Farmion is being brought to life using Unreal Engine 5.
+        </p>
+    </section>
+
+    <main>
+        <div class="container">
+            <section class="filter-section">
+                <label>Language:</label>
+                <div class="filter-wrapper">
+                    <select id="languageFilter" class="filter">
+                        <option value="all">All</option>
+                        <option value="C++">C++</option>
+                        <option value="C#">C#</option>
+                    </select>
+                    <div class="reset-filter" data-target="languageFilter">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <label>Engine:</label>
+                <div class="filter-wrapper">
+                    <select id="engineFilter" class="filter">
+                        <option value="all">All</option>
+                        <option value="Unreal">Unreal</option>
+                        <option value="Unity">Unity</option>
+                        <option value="Radiance">Radiance</option>
+                    </select>
+                    <div class="reset-filter" data-target="engineFilter">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <label>Role:</label>
+                <div class="filter-wrapper">
+                    <select id="roleFilter" class="filter">
+                        <option value="all">All</option>
+                        <option value="Gameplay Programmer">Gameplay Programmer</option>
+                        <option value="Game Programmer">Game Programmer</option>
+                        <option value="Tools Programmer">Tools Programmer</option>
+                    </select>
+                    <div class="reset-filter" data-target="roleFilter">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <label>Source:</label>
+                <div class="filter-wrapper">
+                    <select id="typeFilter" class="filter">
+                        <option value="all">All</option>
+                        <option value="BSS">Bright Star Studios</option>
+                        <option value="BH">Baer &amp; Hoggo</option>
+                        <option value="HKU">University of the Arts Utrecht</option>
+                        <option value="Hobby">Hobby Projects</option>
+                    </select>
+                    <div class="reset-filter" data-target="typeFilter">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <div id="typeDescription"></div>
+            </section>
+
+            <section class="portfolio">
+
+            </section>
+        </div>
+    </main>
+
+    <section class="social-section">
+        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a href="mailto:jessevanvliet@hotmail.com">Mail</a>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

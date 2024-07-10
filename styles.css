@@ -1,0 +1,291 @@
+/* Reset some default browser styles */
+body,
+h1,
+h2,
+h3,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Include Google Font */
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+@font-face {
+    font-family: 'EmberSword';
+    src: url('res/fonts/Embersword.ttf') format('truetype');
+}
+
+/* Full-screen header */
+header {
+    background: linear-gradient(90deg, #f2f2f2, #d9d9d9); /* Gradient background */
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+/* Style the navigation menu */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    background-color: #fff;
+    color: #124e68;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #ddd;
+}
+
+/* Main content */
+main {
+    background-color: #124e68;
+    color: #fff;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+/* Container for main content */
+.container {
+    width: 70%;
+    display: flex;
+    flex-direction: row; /* Ensures filter section and portfolio section are side by side */
+    gap: 20px; /* Adds some space between the sections */
+}
+
+/* Filter section */
+.filter-section {
+    flex: 1;
+    margin-right: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Portfolio section */
+.portfolio {
+    flex: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.project-card {
+    color: #124e68;
+    flex: 1 1 calc(33.333% - 1em);
+    min-width: 250px;
+    max-width: calc(33.333% - 1em);
+    min-height: 300px;
+    margin: 0.5em;
+    background-color: #fff;
+    box-sizing: border-box;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card .project-card-header {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.project-card .project-card-content {
+    padding: 0.5em;
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card .project-card-socials {
+    margin-top: auto;
+}
+
+.project-details {
+    width: 50%;
+}
+
+.carousel-item img {
+    width: auto;
+    height: auto;
+    margin: auto; /* Center the image horizontally */
+}
+
+.banner-image {
+    width: 100%; /* Make sure the image covers the entire container width */
+    height: auto; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure the image covers the area */
+    object-position: bottom; /* Position the image to show the bottom part */
+    position: absolute;
+    bottom: 0;
+}
+
+.project-header-container a {
+    background-color: #124e68;
+    box-sizing: border-box;
+    border-radius: 12px;
+    display: flex;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.project-card a {
+    color: #124e68;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.project-card:hover {
+    color: #124e68;
+    background: linear-gradient(90deg, #f2f2f2, #d9d9d9); /* Gradient background */
+    cursor: pointer;
+}
+
+.project-card:hover a {
+    color: #124e68;
+}
+
+#typeDescription {
+    color: #f2f2f2;
+    font-style: italic;
+    padding: 0.5em;
+}
+
+.filter-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.fas {
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 1.0em;
+    margin-right: 25px;
+}
+
+.filter option {
+    font-size: 1.0em;
+}
+
+.filter {
+    flex-grow: 1;
+    font-size: 1.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.reset-filter {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Banner image styling */
+#banner-container {
+    width: 100%; /* Adjust this as needed */
+    height: 200px; /* Set the height to 100px */
+    overflow: hidden; /* Hide the overflow to only show the bottom part */
+    position: relative;
+}
+
+.banner-image {
+    width: 100%; /* Make sure the image covers the entire container width */
+    height: auto; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure the image covers the area */
+    object-position: bottom; /* Position the image to show the bottom part */
+    position: absolute;
+    bottom: 0;
+}
+
+/* Intro section */
+.intro-section {
+    width: 100%; /* Full browser width */
+    min-height: 250px;
+    text-align: center; /* Centered text */
+    background: linear-gradient(90deg, #124e68, #007aa3); /* Gradient background */
+    color: #fff; /* White text */
+    display: flex;  /* Add Flexbox */
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;  /* Center content vertically */
+}
+
+/* Intro section */
+.project-header {
+    width: 100%; /* Full browser width */
+    min-height: 250px;
+    text-align: left; /* Centered text */
+    background: linear-gradient(90deg, #124e68, #007aa3); /* Gradient background */
+    color: #fff; /* White text */
+    display: flex;  /* Add Flexbox */
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;  /* Center content vertically */
+}
+
+.project-header div {
+    width: 33%;
+
+}
+
+.social-section {
+    width: 100%; /* Full browser width */
+    min-height: 150px;
+    text-align: center; /* Centered text */
+    background: linear-gradient(-90deg, #f2f2f2, #d9d9d9); /* Gradient background */
+    color: #124e68; 
+    display: flex;  /* Add Flexbox */
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;  /* Center content vertically */
+}
+
+.social-section a {
+    color: #124e68;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.intro-section p {
+    width: 70%;  /* Change width to 70% if you want */
+    margin: 0 auto;  /* Auto margins to center it */
+    text-align: center; /* Centered text */
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .container {
+        width: 100%;
+        flex-direction: column; /* Stack filter and portfolio sections vertically on smaller screens */
+    }
+
+    .portfolio {
+        justify-content: center;
+    }
+
+    .project-card {
+        flex: 1 1 calc(100% - 1em);
+    }
+}

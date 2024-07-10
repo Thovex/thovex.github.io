@@ -1,0 +1,234 @@
+[
+    {
+        "id": "ember-sword",
+        "title": "Ember Sword",
+        "language": "C++",
+        "engine": "Radiance",
+        "role": "Gameplay Programmer",
+        "duration": "3y+ (active)",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/banner_embersword.png",
+        "type": "BSS",
+        "description": "An open world sandbox MMORPG by Bright Star Studios. ",
+        "longdescription": "Ember Sword is a cross-platform player-centric Free-to-Play fantasy MMORPG. Players can own, control, and evolve their land, and can trade their assets with other players. The game is built on the Radiance Engine, a custom-built engine by Bright Star Studios.",
+        "work": [
+            {
+                "title": "Exploration",
+                "description": "Worked on creating the vast open-world of Ember Sword featuring PvP zones, Player owned plots, questing and creature spawners, patrolling creatures. Including work on the instanced gameplay mechanics in the Ultra Deep dungeon."
+            },
+            {
+                "title": "Combat",
+                "description": "Assisted in setting up the Ability system and iterating on this design. Ember Sword uses a custom built timeline system where we can assign triggers to times and have various things happen simultaneously on the client and server."
+            },
+            {
+                "title": "Gameplay Data",
+                "description": "Created a ValueBag which is an internal term for a data container we can use to store any kind of data we can use for our abilities, behaviors, keep track of instanced data, etc."
+            },
+            {
+                "title": "Creature Behaviors",
+                "description": "Created a custom Behavior Tree solution with editor visualizer to see real-time data of all creatures and their decisionmaking in action. Both logic is used for all creatures and bosses: for example boars are able to encircle a player, bandit javelin throwsers will try to keep their distance and throw javelins, and the boss in the Ultra Deep dungeon has a unique set of abilities and phases.."
+            },
+            {
+                "title": "Gathering",
+                "description": "Created the first iteration of the gathering system, this got later overhauled, but the initial system was brought back and enhanced greatly. You would end up being in a timeline doing animations, sound effects similar to casting abilities."
+            },
+            {
+                "title": "Crafting",
+                "description": "Created the serverside mechanics for Crafting in Embersword. You can collect resources, find interactive crafting tables in the world of of Ember Sword and use thee to make various items"
+            },
+            {
+                "title": "Quests",
+                "description": "Created a questing system which we designed together with my Gameplay lead who worked on World of Warcraft, it's designed to be performant and easy to add new quest objectives. "
+            },
+            {
+                "title": "Player Interaction",
+                "description": "Created PvP as game mechanic, worked on chatting, supported on parties and created the emote system"
+            },
+            {
+                "title": "Boss Battles",
+                "description": "Each boss in Ember Sword has custom boss mechanics. For example Canavar is a boss which uses close-range abilities based on the combatants positions and uses a charge ability to close the gap. Shauk is a special boss which returns to the center of an arena to do specific abilities which are all designed for a circular arena. This boss has 2 phases where each attack is greatly enhanced."
+            },
+            {
+                "title": "and more...",
+                "description": "Experience many other exciting activities and features."
+            }
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "socials": [
+            {
+                "info": "embersword.com",
+                "url": "https://embersword.com",
+                "icon": "res/ico_embersword.png"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/vid_embersword_1.webm",
+                "alt": "Ember Sword Gameplay 1"
+            },
+            {
+                "src": "res/projects/vid_embersword_2.webm",
+                "alt": "Ember Sword Gameplay 2"
+            },
+            {
+                "src": "res/projects/vid_embersword_3.webm",
+                "alt": "Ember Sword Gameplay 3"
+            },
+            {
+                "src": "res/projects/vid_embersword_4.webm",
+                "alt": "Ember Sword Gameplay 4"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/ss_embersword_1.png",
+                "alt": "Ember Sword Screenshot 1"
+            },
+            {
+                "src": "res/projects/ss_embersword_2.png",
+                "alt": "Ember Sword Screenshot 2"
+            },
+            {
+                "src": "res/projects/ss_embersword_3.png",
+                "alt": "Ember Sword Screenshot 3"
+            }
+        ]
+    },
+    {
+        "id": "farmion",
+        "title": "Farmion",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "6m (semi-active)",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "BH",
+        "description": "A time-management wizard-themed farming sim, including cooperative play!",
+        "longdescription": "Farmion is a time-management wizard-themed farming sim, including cooperative play! ",
+        "work": [
+            "A solo dev production"
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "socials": [
+            {
+                "info": "link.tree",
+                "url": "https://linktr.ee/baerandhoggo",
+                "icon": "res/ico_farmion.png"
+            },
+            {
+                "info": "discord",
+                "url": "https://discord.gg/7X7gYf93ph",
+                "icon": "res/ico_discord.png"
+            }
+        ]
+    },
+    {
+        "id": "radiance",
+        "title": "Radiance Engine",
+        "language": "C++",
+        "engine": "Radiance",
+        "role": "Gameplay Programmer",
+        "duration": "2y+ (active)",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "BSS",
+        "description": "The creation of a MMORPG web-based game engine.",
+        "longdescription": "Radiance is a custom-built engine by Bright Star Studios, built for the MMORPG Ember Sword. It is a web-based engine, allowing for cross-platform play.",
+        "work": [
+            "Various tools created for fellow Gameplay Programmers, as well as external tooling for other departments amongst engine bugfixing mostly."
+        ],
+        "tags": [
+            "tools",
+            "engine"
+        ],
+        "socials": []
+    },
+    {
+        "id": "bitfarers",
+        "title": "BitFarers",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "Hobby",
+        "description": "A co-op dungeon running game with a theme traversal twist.",
+        "longdescription": "A theme-traversal co-op FPS game with roguelike elements, players travel through different themed dungeons, each with their own unique mechanics and enemies and upgrade their characters as they progress.",
+        "work": "A solo dev production",
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "socials": []
+    },
+    {
+        "id": "idle-cards",
+        "title": "IdleCards",
+        "language": "C#",
+        "engine": "Unity",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "Hobby",
+        "description": "An idle game with card-based combat for Phones",
+        "longdescription": "An idle game at the core of the game, with the added features of an active card battling system. Players can collect cards, upgrade them, and use them in battles to progress through the game.",
+        "work": [
+            "A solo dev production"
+        ],
+        "tags": [
+            "android",
+            "gameplay"
+        ],
+        "socials": []
+    },
+    {
+        "id": "andromeda-resonance",
+        "title": "Andromeda Resonance",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "HKU",
+        "description": "3D WaveFunctionCollapse algorithm for Unreal Engine with a mini-game to showcase it.",
+        "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. The project is a 3D WaveFunctionCollapse algorithm for Unreal Engine with a mini-game to showcase it.",
+        "work": [
+            "Everything Coding & Art related with the exception for the character models"
+        ],
+        "tags": [
+            "generation",
+            "gameplay"
+        ],
+        "socials": []
+    },
+    {
+        "id": "wizid",
+        "title": "Wizid",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "1m (semi-active)",
+        "minisrc": "res/bg_mini_embersword.png",
+        "banner": "res/bg_mini_embersword.png",
+        "type": "Hobby",
+        "description": "A wizardry Idle Game",
+        "longdescription": "An idle game inspired by Runescape and Wizardry, players can level up their character, gather resources, and craft items to progress through the game.",
+        "work": [
+            "A solo dev production"
+        ],
+        "tags": [
+            "gameplay"
+        ],
+        "socials": []
+    }
+]
