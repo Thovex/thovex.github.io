@@ -16,6 +16,7 @@
             display: block;
         }
     </style>
+    <script src="https://telegram.org/js/games.js"></script>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
@@ -58,6 +59,16 @@
                 clickY >= box.y && clickY <= box.y + box.size) {
                 score++;
                 spawnBox();
+
+                if (score === 10) {
+                    sendScoreToTelegram();
+                }
+            }
+        }
+
+        function sendScoreToTelegram() {
+            if (window.TelegramGameProxy) {
+                TelegramGameProxy.shareScore();
             }
         }
 
@@ -66,13 +77,6 @@
 
         resizeCanvas();
         spawnBox();
-
-        // Telegram-specific code
-        window.TelegramGameProxy = {
-            shareScore: function() {
-                TelegramGameProxy.shareScore(score);
-            }
-        };
     </script>
 </body>
 </html>
