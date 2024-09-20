@@ -59,16 +59,20 @@
                 clickY >= box.y && clickY <= box.y + box.size) {
                 score++;
                 spawnBox();
-
-                if (score === 10) {
-                    sendScoreToTelegram();
-                }
+                sendScoreToTelegram();
             }
         }
 
         function sendScoreToTelegram() {
             if (window.TelegramGameProxy) {
-                TelegramGameProxy.shareScore();
+                TelegramGameProxy.postEvent("score", score);
+                console.log("Score sent to Telegram:", score);
+                if (score === 10) {
+                    TelegramGameProxy.shareScore();
+                    console.log("High score shared with Telegram");
+                }
+            } else {
+                console.log("TelegramGameProxy not available");
             }
         }
 
