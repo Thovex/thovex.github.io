@@ -11,20 +11,36 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         canvas {
             display: block;
         }
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: green;
+            font-size: 18px;
+        }
+        button {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            font-size: 16px;
+        }
     </style>
-    <button onclick="TelegramGameProxy.shareScore()">Share score</button>
-
     <script src="https://telegram.org/js/games.js"></script>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    <div id="status">Checking Telegram connection...</div>
+    <button id="shareButton" style="display: none;" onclick="shareScore()">Share score</button>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const statusElement = document.getElementById('status');
+        const shareButton = document.getElementById('shareButton');
         let score = 0;
         let box = {};
 
@@ -71,7 +87,39 @@
         resizeCanvas();
         spawnBox();
 
-    
+        // Function to check the Telegram connection and update status text
+        function checkTelegramConnection() {
+            if (window.TelegramGameProxy) {
+                statusElement.textContent = "Connected to Telegram!";
+                statusElement.style.color = "green";
+                shareButton.style.display = "block"; // Show the share button
+            } else {
+                statusElement.textContent = "Not connected to Telegram!";
+                statusElement.style.color = "red";
+            }
+        }
+
+        // Function to share the score using Telegram API
+        function shareScore() {
+            if (window.TelegramGameProxy) {
+                TelegramGameProxy.shareScore(); // Share the score
+            } else {
+                console.error("Telegram Game API not available.");
+            }
+        }
+
+        // Function to send the score using the Telegram API
+        function updateTelegramScore(score) {
+            if (window.TelegramGameProxy) {
+                // Update the score or do something based on the game logic
+                console.log("Score updated: " + score);
+            } else {
+                console.error("Telegram Game API not available.");
+            }
+        }
+
+        // Check connection status when the game starts
+        checkTelegramConnection();
     </script>
 </body>
 </html>
