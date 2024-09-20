@@ -81,7 +81,7 @@
 
         // Function to check the Telegram connection and update status text
         function checkTelegramConnection() {
-            if (window.TelegramGameProxy) {
+            if (window.Telegram && window.Telegram.WebApp) {
                 statusElement.textContent = "Connected to Telegram!";
                 statusElement.style.color = "green";
             } else {
@@ -92,8 +92,8 @@
 
         // Function to send the score using the Telegram API
         function updateTelegramScore(score) {
-            if (window.TelegramGameProxy) {
-                TelegramGameProxy.setScore(score, function(success, response) {
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.setScore(score, function(success, response) {
                     if (success) {
                         console.log("Score successfully sent to Telegram!");
                     } else {
