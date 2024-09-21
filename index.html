@@ -23,26 +23,65 @@
             color: green;
             font-size: 18px;
         }
-        button {
+        #connectButton {
             position: absolute;
             top: 50px;
             left: 10px;
             font-size: 16px;
         }
+        #disconnectButton {
+            position: absolute;
+            top: 90px;
+            left: 10px;
+            font-size: 16px;
+            display: none;
+        }
     </style>
-    <script src="https://telegram.org/js/games.js"></script>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    <div id="status">Checking Telegram connection...</div>
-    <button id="shareButton" style="display: none;" onclick="shareScore()">Share score</button>
+    <div id="status">Not connected</div>
+    <button id="connectButton">Connect Wallet</button>
+    <button id="disconnectButton">Disconnect Wallet</button>
+
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect.umd.js"></script>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const statusElement = document.getElementById('status');
-        const shareButton = document.getElementById('shareButton');
         let score = 0;
         let box = {};
+        let walletAddress = null;
+
+        const statusElement = document.getElementById('status');
+        const connectButton = document.getElementById('connectButton');
+        const disconnectButton = document.getElementById('disconnectButton');
+
+        const tonConnect = new TonConnect.TonConnect();
+
+        async function connectWallet() {
+            try {
+                await tonConnect.connect();
+                const account = await tonConnect.getAccounts()[0];
+                walletAddress = account.address;
+                statusElement.textContent = `Connected: ${walletAddress}`;
+                connectButton.style.display = 'none';
+                disconnectButton.style.display = 'block';
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+            }
+        }
+
+        async function disconnectWallet() {
+            tonConnect.disconnect();
+            walletAddress = null;
+            statusElement.textContent = 'Not connected';
+            connectButton.style.display = 'block';
+            disconnectButton.style.display = 'none';
+        }
+
+        connectButton.addEventListener('click', connectWallet);
+        disconnectButton.addEventListener('click', disconnectWallet);
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -57,6 +96,9 @@
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
             ctx.fillText(`Score: ${score}`, 10, 30);
+            if (walletAddress) {
+                ctx.fillText(`Wallet: ${walletAddress}`, 10, 60);
+            }
         }
 
         function spawnBox() {
@@ -76,7 +118,6 @@
             if (clickX >= box.x && clickX <= box.x + box.size &&
                 clickY >= box.y && clickY <= box.y + box.size) {
                 score++;
-                updateTelegramScore(score); // Send the score to Telegram
                 spawnBox();
             }
         }
@@ -87,39 +128,7 @@
         resizeCanvas();
         spawnBox();
 
-        // Function to check the Telegram connection and update status text
-        function checkTelegramConnection() {
-            if (window.TelegramGameProxy) {
-                statusElement.textContent = "Connected to Telegram!";
-                statusElement.style.color = "green";
-                shareButton.style.display = "block"; // Show the share button
-            } else {
-                statusElement.textContent = "Not connected to Telegram!";
-                statusElement.style.color = "red";
-            }
-        }
-
-        // Function to share the score using Telegram API
-        function shareScore() {
-            if (window.TelegramGameProxy) {
-                TelegramGameProxy.shareScore(); // Share the score
-            } else {
-                console.error("Telegram Game API not available.");
-            }
-        }
-
-        // Function to send the score using the Telegram API
-        function updateTelegramScore(score) {
-            if (window.TelegramGameProxy) {
-                // Update the score or do something based on the game logic
-                console.log("Score updated: " + score);
-            } else {
-                console.error("Telegram Game API not available.");
-            }
-        }
-
-        // Check connection status when the game starts
-        checkTelegramConnection();
     </script>
+
 </body>
 </html>
