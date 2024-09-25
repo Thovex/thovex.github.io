@@ -38,22 +38,20 @@
 
     <script type="text/javascript">
         (function () {
-            const tele = window.Telegram.WebApp;
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
 
-            tele.ready();
-            tele.expand();
+            window.Telegram.WebApp.SettingsButton.show();
 
-            tele.SettingsButton.show();
+            window.Telegram.WebApp.setHeaderColor("#fcf6e2");
+            window.Telegram.WebApp.setBackgroundColor("#fcf6e2");
 
-            tele.setHeaderColor("#fcf6e2");
-            tele.setBackgroundColor("#fcf6e2");
-
-            tele.enableClosingConfirmation();
-            tele.disableVerticalSwipes();
+            window.Telegram.WebApp.enableClosingConfirmation();
+            window.Telegram.WebApp.disableVerticalSwipes();
 
             // Get the user's first name and show it in an alert
-            const userFirstName = tele.initDataUnsafe.user.first_name; 
-            const userUid = tele.initDataUnsafe.user.id;
+            const userFirstName = window.Telegram.WebApp.initDataUnsafe.user.first_name; 
+            const userUid = window.Telegram.WebApp.initDataUnsafe.user.id;
            
             // tele.showAlert(`Hello, ${userFirstName} - ${userUid}!`); // Show the alert
             
@@ -161,10 +159,10 @@
                 };
 
                 const userData = {
-                    id: tele.initDataUnsafe.user.id,
-                    first_name: tele.initDataUnsafe.user.first_name || '',
-                    last_name: tele.initDataUnsafe.user.last_name || '',
-                    username: tele.initDataUnsafe.user.username || ''
+                    id: window.Telegram.WebApp.initDataUnsafe.user.id,
+                    first_name: window.Telegram.WebApp.initDataUnsafe.user.first_name || '',
+                    last_name: window.Telegram.WebApp.initDataUnsafe.user.last_name || '',
+                    username: window.Telegram.WebApp.initDataUnsafe.user.username || ''
                 };
 
                 unityInstance.SendMessage('UserDataReceiver', 'ReceiveUserData', JSON.stringify(userData));
