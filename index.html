@@ -125,11 +125,12 @@
             const telegramNameElement = document.getElementById('telegram-name');
             
             if (window.TelegramGameProxy) {
+				console.log(window.TelegramGameProxy.initParams);
                 const firstName = window.TelegramGameProxy.initParams.first_name;
                 if (firstName) {
                     telegramNameElement.textContent = firstName;
                 } else {
-                    telegramNameElement.textContent = 'User';
+                    telegramNameElement.textContent = 'Bro';
                 }
             } else {
                 telegramNameElement.textContent = 'Telegram API not available';
