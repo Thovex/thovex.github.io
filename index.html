@@ -165,7 +165,7 @@
                     username: window.Telegram.WebApp.initDataUnsafe.user.username || ''
                 };
 
-                unityInstance.SendMessage('UserDataReceiver', 'ReceiveUserData', JSON.stringify(userData));
+                unityInstance.SendMessage('GameManager', 'ReceiveUserData', JSON.stringify(userData));
 
             }).catch((message) => {
                 alert(message);
