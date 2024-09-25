@@ -2,106 +2,34 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<meta name="format-detection" content="telephone=no" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="MobileOptimized" content="176" />
-	<meta name="HandheldFriendly" content="True" />
-	<meta name="robots" content="noindex,nofollow" />
-	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	<script>
-		function setThemeClass() {
-			document.documentElement.className = Telegram.WebApp.colorScheme;
-		}
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ton Sample TWA</title>
 
-		Telegram.WebApp.onEvent('themeChanged', setThemeClass);
-		setThemeClass();
-
-	</script>
-	<title></title>
-	<style>
-		body {
-			--bg-color: var(--tg-theme-bg-color, #fff);
-			font-family: sans-serif;
-			background-color: var(--bg-color);
-			color: var(--tg-theme-text-color, #222);
-			font-size: 14px;
-			margin: 0;
-			padding: 0;
-			color-scheme: var(--tg-color-scheme);
-		}
-	</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<div id="webview_data_status" class="status_need">Waiting for initData</div>
-</body>
-
-<script type="application/javascript">
-
-	/*
-	 * This is a demo code for Telegram WebApp for Bots
-	 * It contains basic examples of how to use the API
-	 * Note: all requests to backend are disabled in this demo, you should use your own backend
-	 */
-
-	const DemoApp = {
-		initData: Telegram.WebApp.initData || '',
-		initDataUnsafe: Telegram.WebApp.initDataUnsafe || {},
-		MainButton: Telegram.WebApp.MainButton,
-		BackButton: Telegram.WebApp.BackButton,
-		SettingsButton: Telegram.WebApp.SettingsButton,
-
-		init(options) {
-			document.body.style.visibility = ''
-			Telegram.WebApp.ready()
-			Telegram.WebApp.MainButton.setParams({
-				text: 'Start Game',
-				is_visible: true
-			}).onClick(DemoApp.close)
-			Telegram.WebApp.BackButton.onClick(function () {
-				DemoApp.showAlert('Back button pressed')
-			})
-			Telegram.WebApp.SettingsButton.onClick(function () {
-				DemoApp.showAlert('Settings opened!')
-			})
-		},
-		checkInitData() {
-			const webViewStatus = document.querySelector('#webview_data_status');
-			if (DemoApp.initDataUnsafe.query_id &&
-				DemoApp.initData &&
-				webViewStatus.classList.contains('status_need')
-			) {
-				webViewStatus.classList.remove('status_need');
-				DemoApp.apiRequest('checkInitData', {}, function (result) {
-					if (result.ok) {
-						webViewStatus.textContent = 'Hash is correct (async)';
-						webViewStatus.className = 'ok';
-					} else {
-						webViewStatus.textContent = result.error + ' (async)';
-						webViewStatus.className = 'err';
-					}
-				});
-			}
-		},
-        showAlert(message) {
-            Telegram.WebApp.showAlert(message);
-        },
-        showConfirm(message) {
-            Telegram.WebApp.showConfirm(message);
-        },
-	}
-
-	DemoApp.checkInitData();
-	DemoApp.init();
-	DemoApp.showAlert('Hello, World!');
-
-
-</script>
-
-
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script>eruda.init();</script>
+  <script type="text/javascript">
+    (function () {
+      const tele = window.Telegram.WebApp;
+      tele.ready()
+      tele.expand();
+      tele.BackButton.show();
+      tele.SettingsButton.show();
+      tele.setHeaderColor("#fcf6e2")
+      tele.setBackgroundColor("#fcf6e2")
+      tele.enableClosingConfirmation()
+      tele.disableVerticalSwipes()
+    })()
+  </script>
 </body>
 
 </html>
