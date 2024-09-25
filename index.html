@@ -33,6 +33,7 @@
             height: 100%;
         }
     </style>
+    <script src="https://telegram.org/js/games.js"></script>
 </head>
 
 <body>
@@ -55,33 +56,6 @@
             <div id="unity-build-title">Crypto Capitalist</div>
         </div>
     </div>
-
-    <!-- Include the Telegram Game SDK -->
-    <script src="https://telegram.org/js/games.js"></script>
-
-    <script>
-        // Wait for the SDK to load and initialize
-        TelegramGameProxy.init({
-            onReady: function () {
-                console.log('Game is ready!');
-
-                // Access user data
-                const user = TelegramGameProxy.initParams.user;
-
-                // Display the user's name in the telegram-info section
-                const telegramNameElement = document.getElementById('telegram-name');
-                telegramNameElement.textContent = user.first_name || user.username || 'User';
-
-                // Example: Access individual user details
-                console.log("User ID:", user.id);
-                console.log("First Name:", user.first_name);
-                console.log("Username:", user.username);
-            },
-            onError: function (error) {
-                console.error('Error:', error);
-            }
-        });
-    </script>
 
     <script>
         var container = document.querySelector("#unity-container");
@@ -145,6 +119,22 @@
         };
 
         document.body.appendChild(script);
+
+        // New code to get Telegram First Name
+        document.addEventListener('DOMContentLoaded', function() {
+            const telegramNameElement = document.getElementById('telegram-name');
+            
+            if (window.TelegramGameProxy) {
+                const firstName = window.TelegramGameProxy.initParams.first_name;
+                if (firstName) {
+                    telegramNameElement.textContent = firstName;
+                } else {
+                    telegramNameElement.textContent = 'User';
+                }
+            } else {
+                telegramNameElement.textContent = 'Telegram API not available';
+            }
+        });
     </script>
 </body>
 
