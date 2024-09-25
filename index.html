@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body>
-    <h1>Welcome to My Telegram Web App!</h1> 
-    <script>
-        // Initialize the Telegram Web App
-        const tg = window.Telegram.WebApp;
 
-        // Show an alert with the user's username
-        if (tg.initDataUnsafe) {
-            const username = tg.initDataUnsafe.user?.username || 'unknown';
-            alert(`Hello, ${username}!`);
-        } else {
-            alert('User information not available.');
-        }
-    </script>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Telegram Web App</title>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+
+<body>
+	<h1>Welcome to My Telegram Web App!</h1>
+	<script>
+		// Initialize the Telegram Web App
+		const tg = window.Telegram.WebApp;
+
+		// Show an alert with the user's username
+		if (tg.initDataUnsafe) {
+			const username = tg.initDataUnsafe.user?.username || 'unknown';
+			alert(`Hello, ${username}!`);
+		} else {
+			alert('User information not available.');
+		}
+	</script>
 </body>
+
 </html>
