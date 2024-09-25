@@ -19,15 +19,19 @@
 	<script type="text/javascript">
 		(function () {
 			const tele = window.Telegram.WebApp;
+			
 			tele.ready()
 			tele.expand();
-			tele.BackButton.show();
+
 			tele.SettingsButton.show();
+
 			tele.setHeaderColor("#fcf6e2")
 			tele.setBackgroundColor("#fcf6e2")
+
 			tele.enableClosingConfirmation()
 			tele.disableVerticalSwipes()
-			tele.alert(tele.initDataUnsafe.receiver.first_name);
+			
+			tele.showAlert(tele.initDataUnsafe.receiver.first_name);
 		})()
 	</script>
 </body>
