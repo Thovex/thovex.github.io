@@ -2,38 +2,40 @@
 <html lang="en">
 
 <head>
-	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Ton Sample TWA</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ton Sample TWA</title>
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<div id="root">
-		<p></p>
-	</div>
-	<script type="text/javascript">
-		(function () {
-			const tele = window.Telegram.WebApp;
-			
-			tele.ready()
-			tele.expand();
+    <div id="root">
+        <p></p>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            const tele = window.Telegram.WebApp;
+            
+            tele.ready();
+            tele.expand();
 
-			tele.SettingsButton.show();
+            tele.SettingsButton.show();
 
-			tele.setHeaderColor("#fcf6e2")
-			tele.setBackgroundColor("#fcf6e2")
+            tele.setHeaderColor("#fcf6e2");
+            tele.setBackgroundColor("#fcf6e2");
 
-			tele.enableClosingConfirmation()
-			tele.disableVerticalSwipes()
-			
-			tele.showAlert("Test..")
-		})()
-	</script>
+            tele.enableClosingConfirmation();
+            tele.disableVerticalSwipes();
+            
+            // Get the user's first name and show it in an alert
+            const userFirstName = tele.initDataUnsafe.user.first_name; // Get the user's first name
+            tele.showAlert(`Hello, ${userFirstName}!`); // Show the alert
+        })();
+    </script>
 </body>
 
 </html>
