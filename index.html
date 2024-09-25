@@ -47,8 +47,9 @@
             tele.disableVerticalSwipes();
 
             // Get the user's first name and show it in an alert
-            const userFirstName = tele.initDataUnsafe.user.first_name; // Get the user's first name
-            tele.showAlert(`Hello, ${userFirstName}!`); // Show the alert
+            const userFirstName = tele.initDataUnsafe.user.first_name; 
+            const userUid = tele.initDataUnsafe.user.id;
+            tele.showAlert(`Hello, ${userFirstName} - ${userUid}!`); // Show the alert
         })();
     </script>
 
