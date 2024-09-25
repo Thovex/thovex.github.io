@@ -31,6 +31,11 @@
         </div>
     </div>
 
+    <div id="account-details">
+        <div id="telegram_uid"></div>
+        <div id="telegram_first_name"></div>
+    </div>
+
     <script type="text/javascript">
         (function () {
             const tele = window.Telegram.WebApp;
@@ -49,7 +54,12 @@
             // Get the user's first name and show it in an alert
             const userFirstName = tele.initDataUnsafe.user.first_name; 
             const userUid = tele.initDataUnsafe.user.id;
-            tele.showAlert(`Hello, ${userFirstName} - ${userUid}!`); // Show the alert
+           
+            // tele.showAlert(`Hello, ${userFirstName} - ${userUid}!`); // Show the alert
+            
+            // make content of telegram_uid the user's id
+            document.getElementById('telegram_uid').innerText = `${userUid}`;
+            document.getElementById('telegram_first_name').innerText = `${userFirstName}`;
         })();
     </script>
 
@@ -149,6 +159,17 @@
                 fullscreenButton.onclick = () => {
                     unityInstance.SetFullscreen(1);
                 };
+
+                const userData = {
+                    id: tele.initDataUnsafe.user.id,
+                    first_name: tele.initDataUnsafe.user.first_name || '',
+                    last_name: tele.initDataUnsafe.user.last_name || '',
+                    username: tele.initDataUnsafe.user.username || ''
+                };
+
+                const jsonData = JSON.stringify(userData);
+                unityInstance.SendMessage('GameManager', 'SetTelegramUserData', jsonData);
+                
             }).catch((message) => {
                 alert(message);
             });
