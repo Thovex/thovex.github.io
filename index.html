@@ -6,6 +6,35 @@
     <title>Unity WebGL Player | Crypto Capitalist</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
+      <!-- Include the Telegram Game SDK -->
+      <script src="https://telegram.org/js/games.js"></script>
+
+      <script>
+          // Wait for the SDK to load and initialize
+          TelegramGameProxy.init({
+              onReady: function() {
+                  // The game is ready to start
+                  console.log('Game is ready!');
+  
+                  // Access user data
+                  const user = TelegramGameProxy.initParams.user;
+  
+                  // Display the user data in the HTML
+                  const userDataElement = document.getElementById('userData');
+                  userDataElement.textContent = JSON.stringify(user, null, 2);
+  
+                  // Example: Access individual user details
+                  console.log("User ID:", user.id);
+                  console.log("First Name:", user.first_name);
+                  console.log("Username:", user.username);
+              },
+              onError: function(error) {
+                  // Handle errors (if any)
+                  console.error('Error:', error);
+              }
+          });
+      </script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
