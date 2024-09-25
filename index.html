@@ -67,8 +67,6 @@
 			Telegram.WebApp.SettingsButton.onClick(function () {
 				DemoApp.showAlert('Settings opened!')
 			})
-
-			DemoApp.showAlert(initDataUnsafe)
 		},
 		checkInitData() {
 			const webViewStatus = document.querySelector('#webview_data_status');
@@ -87,11 +85,18 @@
 					}
 				});
 			}
-		}
+		},
+        showAlert(message) {
+            Telegram.WebApp.showAlert(message);
+        },
+        showConfirm(message) {
+            Telegram.WebApp.showConfirm(message);
+        },
 	}
 
 	DemoApp.checkInitData();
 	DemoApp.init();
+	DemoApp.showAlert('Hello, World!');
 
 
 </script>
