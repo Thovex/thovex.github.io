@@ -167,9 +167,8 @@
                     username: tele.initDataUnsafe.user.username || ''
                 };
 
-                const jsonData = JSON.stringify(userData);
-                unityInstance.SendMessage('GameManager', 'SetTelegramUserData', jsonData);
-                
+                unityInstance.SendMessage('UserDataReceiver', 'ReceiveUserData', JSON.stringify(userData));
+
             }).catch((message) => {
                 alert(message);
             });
