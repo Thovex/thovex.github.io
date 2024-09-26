@@ -358,8 +358,8 @@
         "engine": "Unreal",
         "role": "Game Programmer",
         "duration": "4m",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
+        "minisrc": "res/bg_mini_bitfarers.png",
+        "banner": "res/banner_bitfarers.png",
         "type": "Hobby",
         "description": "A co-op dungeon running game with a theme traversal twist.",
         "longdescription": "A theme-traversal co-op FPS game with roguelike elements, players travel through different themed dungeons, each with their own unique mechanics and enemies and upgrade their characters as they progress.",
@@ -385,7 +385,35 @@
             "networking",
             "gameplay"
         ],
-        "socials": []
+        "socials": [],
+        "screenshots": [
+            {
+                "src": "res/projects/bitfarers/ss_bitfarers_01.png",
+                "alt": "S1"
+            },
+            {
+                "src": "res/projects/bitfarers/ss_bitfarers_02.png",
+                "alt": "S2"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/bitfarers/vid_bitfarers_01.mp4",
+                "alt": "V1"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_bitfarers_02.mp4",
+                "alt": "V1"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_bitfarers_03.mp4",
+                "alt": "V1"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_bitfarers_04.mp4",
+                "alt": "V1"
+            }
+        ]
     },
     {
         "id": "idle-cards",
@@ -394,19 +422,55 @@
         "engine": "Unity",
         "role": "Game Programmer",
         "duration": "4m",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
+        "minisrc": "res/bg_mini_idlecards.png",
+        "banner": "res/banner_idlecards.png",
         "type": "Hobby",
         "description": "An idle game with card-based combat for Phones",
         "longdescription": "An idle game at the core of the game, with the added features of an active card battling system. Players can collect cards, upgrade them, and use them in battles to progress through the game.",
         "work": [
-            "A solo dev production"
+            {
+                "title": "Card Battling vs AI",
+                "description": "Created a Turn-based card battling system where you can battle against AI opponents. The AI has an algorithm to determine the best move based on the current state of the game."
+            },
+            {
+                "title": "Offline Idle Progression",
+                "description": "Created a System where it simulates the game while you're offline, so you can come back to a lot of progress. Get that dopamine hit on big numbers appearing."
+            },
+            {
+                "title": "Unity UI Implementations",
+                "description": "Worked on 'Fake 3D' Card Elements which you can play on boards; Worked on 2D user interfaces to buy buildings, upgrade them, etc."
+            }
+            
         ],
         "tags": [
             "android",
             "gameplay"
         ],
-        "socials": []
+        "socials": [],
+        "screenshots": [
+            {
+                "src": "res/projects/idlecards/ss_idlecards_02.png",
+                "alt": "S2"
+            },
+            {
+                "src": "res/projects/idlecards/ss_idlecards_03.png",
+                "alt": "S3"
+            },
+            {
+                "src": "res/projects/idlecards/ss_idlecards_01.png",
+                "alt": "S1"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/idlecards/vid_idlecards_01.mp4",
+                "alt": "V1"
+            },
+            {
+                "src": "res/projects/idlecards/vid_idlecards_02.mp4",
+                "alt": "V1"
+            }
+        ]
     },
     {
         "id": "andromeda-resonance",
