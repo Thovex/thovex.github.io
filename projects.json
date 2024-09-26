@@ -239,8 +239,8 @@
         "engine": "Radiance",
         "role": "Gameplay Programmer",
         "duration": "2y+ (active)",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
+        "minisrc": "res/bg_mini_radiance.png",
+        "banner": "res/banner_radiance.png",
         "type": "BSS",
         "description": "The creation of a MMORPG web-based game engine.",
         "longdescription": "Radiance is a custom-built engine by Bright Star Studios, built for the MMORPG Ember Sword. It is a web-based engine, allowing for cross-platform play.",
@@ -270,7 +270,29 @@
             "tools",
             "engine"
         ],
-        "socials": []
+        "socials": [],
+        "screenshots": [
+            {
+                "src": "res/projects/radiance/ss_radiance_05.png",
+                "alt": "S5"
+            },
+            {
+                "src": "res/projects/radiance/ss_radiance_01.png",
+                "alt": "S1"
+            },
+            {
+                "src": "res/projects/radiance/ss_radiance_02.png",
+                "alt": "S2"
+            },
+            {
+                "src": "res/projects/radiance/ss_radiance_03.png",
+                "alt": "S3"
+            },
+            {
+                "src": "res/projects/radiance/ss_radiance_04.png",
+                "alt": "S4"
+            }
+        ]
     },
     {
         "id": "cat",
@@ -305,7 +327,29 @@
         "tags": [
             "joy"
         ],
-        "socials": []
+        "socials": [],
+        "screenshots": [
+            {
+                "src": "res/projects/cat/ss_cat_01.png",
+                "alt": "S1"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_03.png",
+                "alt": "S3"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_04.png",
+                "alt": "S4"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_05.png",
+                "alt": "S5"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_02.png",
+                "alt": "S2"
+            }
+        ]
     },
     {
         "id": "bitfarers",
@@ -319,7 +363,24 @@
         "type": "Hobby",
         "description": "A co-op dungeon running game with a theme traversal twist.",
         "longdescription": "A theme-traversal co-op FPS game with roguelike elements, players travel through different themed dungeons, each with their own unique mechanics and enemies and upgrade their characters as they progress.",
-        "work": "A solo dev production",
+        "work": [
+            {
+                "title": "Seamless co-op",
+                "description": "Created a system where in Multiplayer scenarios, you can seamlessly travel through various dungeon levels and you'll end up at the lobby together."
+            },
+            {
+                "title": "First Person Gunplay",
+                "description": "Worked on the weapon mechanics including: shooting, reloading, weapon switching, aiming down sights and more. I wanted muzzles, projectiles and everything to be accurate for all players and feel right. For this it was important to have a proper replication system in place to ensure all players see proper third-person muzzle flashes from other players, etc."
+            },
+            {
+                "title": "Loot, loot and (destructable) more loot",
+                "description": "Implemented a system where you can define loot tables for breakables, enemies and chests."
+            },
+            {
+                "title": "User Interface",
+                "description": "Created unique UI for the game: Buffs, Debuffs, Health, Ammo, Weapon, what ammo you have etc."
+            }
+        ],
         "tags": [
             "networking",
             "gameplay"
