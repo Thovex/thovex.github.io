@@ -45,14 +45,20 @@ document.addEventListener("DOMContentLoaded", function() {
             const workHeader = document.createElement('p');
             workHeader.style = "font-weight: bold; margin-top: 10px; padding: 0px;";
             workHeader.textContent = 'My work >...';
-
+            
             const work = document.createElement('p');
-            work.textContent = project.work;
-            work.style = 'padding:0px; margin-left:25px';
+            if (Array.isArray(project.work)) {
+                work.textContent = project.work.map(item => item.title).join(', ');
+            } else {
+                work.textContent = project.work;
+            }
 
+            work.style = 'padding:0px; margin-left:25px';
+            
             const workHeaderEnder = document.createElement('p');
             workHeaderEnder.style = "font-weight: bold; margin-top: 0px; padding: 0px;";
             workHeaderEnder.textContent = '... };';
+            
 
             const socials = document.createElement('div');
             socials.className = 'project-card-socials';

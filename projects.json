@@ -17,20 +17,24 @@
                 "description": "Worked on creating the vast open-world of Ember Sword featuring PvP zones, Player owned plots, questing and creature spawners, patrolling creatures. Including work on the instanced gameplay mechanics in the Ultra Deep dungeon."
             },
             {
+                "title": "Trade Packs",
+                "description": "Created the Trade Pack system which allows players to gather resources, craft them into trade packs and deliver them to other locations for a profit. This system is designed to be a player-driven economy system. These trade packs can be stolen by other players, creating a risk vs reward system."
+            },
+            {
                 "title": "Combat",
                 "description": "Assisted in setting up the Ability system and iterating on this design. Ember Sword uses a custom built timeline system where we can assign triggers to times and have various things happen simultaneously on the client and server."
             },
             {
                 "title": "Gameplay Data",
-                "description": "Created a ValueBag which is an internal term for a data container we can use to store any kind of data we can use for our abilities, behaviors, keep track of instanced data, etc."
+                "description": "Created the ValueBag which is an internal term for a data container we can use to store any kind of data we can use for our abilities, behaviors, keep track of instanced data, etc."
             },
             {
                 "title": "Creature Behaviors",
-                "description": "Created a custom Behavior Tree solution with editor visualizer to see real-time data of all creatures and their decisionmaking in action. Both logic is used for all creatures and bosses: for example boars are able to encircle a player, bandit javelin throwsers will try to keep their distance and throw javelins, and the boss in the Ultra Deep dungeon has a unique set of abilities and phases.."
+                "description": "Created a custom Behavior Tree solution with Engine visualizer to see real-time data of all creatures and their decisionmaking in action. Both logic is used for all creatures and bosses: for example boars are able to encircle a player, bandit javelin throwsers will try to keep their distance and throw javelins, and the boss in the Ultra Deep dungeon has a unique set of abilities and phases.."
             },
             {
                 "title": "Gathering",
-                "description": "Created the first iteration of the gathering system, this got later overhauled, but the initial system was brought back and enhanced greatly. You would end up being in a timeline doing animations, sound effects similar to casting abilities."
+                "description": "Created the first iteration of the gathering system, this got later overhauled, but the initial system was brought back and enhanced greatly."
             },
             {
                 "title": "Crafting",
@@ -38,11 +42,11 @@
             },
             {
                 "title": "Quests",
-                "description": "Created a questing system which we designed together with my Gameplay lead who worked on World of Warcraft, it's designed to be performant and easy to add new quest objectives. "
+                "description": "Created a questing system which we designed together with my gameplay lead (from World of Warcraft), it's designed to be performant and easy to add new quest objectives. "
             },
             {
                 "title": "Player Interaction",
-                "description": "Created PvP as game mechanic, worked on chatting, supported on parties and created the emote system"
+                "description": "Created PvP as game mechanic, worked on chatting, supported on parties and created the Emote system"
             },
             {
                 "title": "Boss Battles",
@@ -66,33 +70,37 @@
         ],
         "videos": [
             {
-                "src": "res/projects/vid_embersword_1.webm",
+                "src": "res/projects/embersword/vid_embersword_1.webm",
                 "alt": "Ember Sword Gameplay 1"
             },
             {
-                "src": "res/projects/vid_embersword_2.webm",
+                "src": "res/projects/embersword/vid_embersword_2.webm",
                 "alt": "Ember Sword Gameplay 2"
             },
             {
-                "src": "res/projects/vid_embersword_3.webm",
+                "src": "res/projects/embersword/vid_embersword_3.webm",
                 "alt": "Ember Sword Gameplay 3"
             },
             {
-                "src": "res/projects/vid_embersword_4.webm",
+                "src": "res/projects/embersword/vid_embersword_4.webm",
                 "alt": "Ember Sword Gameplay 4"
             }
         ],
         "screenshots": [
             {
-                "src": "res/projects/ss_embersword_1.png",
+                "src": "res/projects/embersword/ss_embersword_4.png",
+                "alt": "Ember Sword Screenshot 4"
+            },
+            {
+                "src": "res/projects/embersword/ss_embersword_1.png",
                 "alt": "Ember Sword Screenshot 1"
             },
             {
-                "src": "res/projects/ss_embersword_2.png",
+                "src": "res/projects/embersword/ss_embersword_2.png",
                 "alt": "Ember Sword Screenshot 2"
             },
             {
-                "src": "res/projects/ss_embersword_3.png",
+                "src": "res/projects/embersword/ss_embersword_3.png",
                 "alt": "Ember Sword Screenshot 3"
             }
         ]
@@ -104,13 +112,52 @@
         "engine": "Unreal",
         "role": "Game Programmer",
         "duration": "6m (semi-active)",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
+        "minisrc": "res/bg_mini_farmion.png",
+        "banner": "res/banner_farmion.png",
         "type": "BH",
         "description": "A time-management wizard-themed farming sim, including cooperative play!",
-        "longdescription": "Farmion is a time-management wizard-themed farming sim, including cooperative play! ",
+        "longdescription": "This game is a solo dev production, various art is from the Unreal Marketplace, some made myself. Farmion is a time-management wizard-themed farming sim, including cooperative play!",
         "work": [
-            "A solo dev production"
+            {
+                "title": "A cycle a day",
+                "description": "Farmion is designed to be a farming game where time management is of the essence. You have limited day time and every day is a 'Tick' in gameplay Elements. You have to manage your time wisely to get the most out of your day. Forget to water crops? They will die. Left your cows outside? They will .. vanish! Etc - Also, you will die too if you're outside during the Cycle transition."
+            },
+            {
+                "title": "Physics Fun",
+                "description": "Introduced a system where you can hold all objects, throw them around in a reliable manner so real physics is not in play, only the illusion of it. This system is used for the player to interact with the world and other players in a fun and engaging way."
+            },
+            {
+                "title": "Stage-Based Farming",
+                "description": "Created a system where you plant crops, they last for X days, require Y water, can be affected by Bees to grow faster and attacked by hostile Bugs"
+            },
+            {
+                "title": "Upgrades, Upgrades everywhere!",
+                "description": "Made a System where you can purchase various upgrades in game such as a Pantry to store goods, an Animal Barn to properly 'store' your Animals, a greenhouse and lots more!"
+            },
+            {
+                "title": "Multiplayer",
+                "description": "Games are a joy to be played together, so Farmion is carefully created keeping 1-6 players in mind."
+            },
+            {
+                "title": "House & Character Customization",
+                "description": "Created a system where you can re-design your Magical mansion as you are awaiting the night pass."
+            },
+            {
+                "title": "Cheese System",
+                "description": "Create cheese using your anima's milk, curd them, age them in particular environments and sell them for a great profit..! Or ruin your cheese!"
+            },
+            {
+                "title": "Buffs System",
+                "description": "Any item you can hold, you can throw in the Giant all-eating Statue! Acquire unique buffs for a limited time based on what you throw out. Recycling has never been so productive!"
+            },
+            {
+                "title": "Transportation and Carts",
+                "description": "As you can only hold a single item, you can use Carts to hold your items and drag around a cart instead."
+            },
+            {
+                "title": "and more...",
+                "description": "Experience many other exciting activities and features."
+            }
         ],
         "tags": [
             "networking",
@@ -127,6 +174,62 @@
                 "url": "https://discord.gg/7X7gYf93ph",
                 "icon": "res/ico_discord.png"
             }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/farmion/ss_farmion_11.png",
+                "alt": "S11"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_12.png",
+                "alt": "S12 - Steam"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_01.png",
+                "alt": "S1"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_02.png",
+                "alt": "S2"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_03.png",
+                "alt": "S3"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_04.png",
+                "alt": "S4"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_05.png",
+                "alt": "S5"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_06.png",
+                "alt": "S6"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_07.png",
+                "alt": "S7"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_08.png",
+                "alt": "S8"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_09.png",
+                "alt": "S9"
+            },
+            {
+                "src": "res/projects/farmion/ss_farmion_10.png",
+                "alt": "S10"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/farmion/vid_farmion_01.mp4",
+                "alt": "V1"
+            }
         ]
     },
     {
@@ -142,11 +245,65 @@
         "description": "The creation of a MMORPG web-based game engine.",
         "longdescription": "Radiance is a custom-built engine by Bright Star Studios, built for the MMORPG Ember Sword. It is a web-based engine, allowing for cross-platform play.",
         "work": [
-            "Various tools created for fellow Gameplay Programmers, as well as external tooling for other departments amongst engine bugfixing mostly."
+            {
+                "title": "Unity <-> Radiance Sync",
+                "description": "Created a system where Unity can sync with Radiance, allowing for a transition from Unity to Radiance during our development period between using the two engines. This ensured that Level Design and World Design could continue on Unity until it could be done in similar capabilities in Radiance."
+            },
+            {
+                "title": "Animation State Machine Editor",
+                "description": "Created an Animation State Machine Editor in Radiance, allowing designers to view animation states and their transitions."
+            },
+            {
+                "title": "Behavior Tree Editor",
+                "description": "To support the creation of AI behaviors, I created a Behavior Tree Editor in the Radiance Engine. This editor allows designers to create and modify AI behaviors in a visual way."
+            },
+            {
+                "title": "Item Editor",
+                "description": "Created an Item Editor in Radiance, allowing designers to create and modify items in the game."
+            },
+            {
+                "title": "Crafting Recipe Editor",
+                "description": "Created a Crafting Recipe Editor in Radiance, allowing designers to create and modify crafting recipes in the game. Both this and the Item Editor derived from a Base Editor Tool I created."
+            }
         ],
         "tags": [
             "tools",
             "engine"
+        ],
+        "socials": []
+    },
+    {
+        "id": "cat",
+        "title": "Cat Parent",
+        "language": "Meow",
+        "engine": "Real Life",
+        "role": "Assistant",
+        "duration": "2y+ (active)",
+        "minisrc": "res/bg_mini_cat.png",
+        "banner": "res/bg_mini_cat.png",
+        "type": "Hobby",
+        "description": "The Cats: Finn & Dusty need a lot of attention!",
+        "longdescription": "Two Ragdoll Cats; one white, one grey - they are excellent office staff.",
+        "work": [
+            {
+                "title": "Feeding the Cats",
+                "description": ""
+            },
+            {
+                "title": "Petting the Cats",
+                "description": ""
+            },
+            {
+                "title": "Playing with the Cats",
+                "description": ""
+            },
+            {
+                "title": "Cleaning the Litterbox",
+                "description": ""
+            }
+        ],
+        "tags": [
+            "joy"
         ],
         "socials": []
     },

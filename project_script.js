@@ -42,12 +42,22 @@ document.addEventListener("DOMContentLoaded", function () {
             headerContainer.appendChild(employment);
         } else if (project.type === "BH") {
             const freelance = document.createElement('p');
-            freelance.textContent = `${project.work} (with release intent)`;
+            if (Array.isArray(project.work)) {
+                freelance.textContent = project.work.map(item => item.title).join(', ');
+            } else {
+                freelance.textContent = project.work;
+            }
+            
             freelance.style = 'text-align: left; margin-bottom: 1em;';
             headerContainer.appendChild(freelance);
         } else if (project.type === "Hobby") {
             const hobby = document.createElement('p');
-            hobby.textContent = `${project.work} (for fun)`;
+            if (Array.isArray(project.work)) {
+                hobby.textContent = project.work.map(item => item.title).join(', ');
+            } else {
+                hobby.textContent = project.work;
+            }
+            
             hobby.style = 'text-align: left; margin-bottom: 1em;';
             headerContainer.appendChild(hobby);
         }
@@ -128,45 +138,50 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         projectWork.appendChild(workList);
         
-
-        const screenshotContainer = document.getElementById('screenshot-container');
-        if (project.screenshots.length > 0) {
-            project.screenshots.forEach((screenshot, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.className = 'carousel-item' + (index === 0 ? ' active' : '');
-
+        if (!project.screenshots && !project.videos) {
+            const mediaContainer = document.getElementById('media-container');
+            mediaContainer.style = 'display: none;';
+        }
+        
+        const mediaGrid = document.getElementById('media-grid');
+        
+        // Handle screenshots
+        if (project.screenshots && project.screenshots.length > 0) {
+            project.screenshots.forEach((screenshot) => {
                 const img = document.createElement('img');
                 img.src = screenshot.src;
                 img.alt = screenshot.alt;
-                img.className = 'd-block w-100';
-
-                carouselItem.appendChild(img);
-                screenshotContainer.appendChild(carouselItem);
+                img.style = 'width: 100%; height: auto; object-fit: cover;';
+                img.className = 'media-item'; // Optional class for styling
+        
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+                gridItem.appendChild(img);
+        
+                mediaGrid.appendChild(gridItem);
             });
         }
-
-        const videoContainer = document.getElementById('video-container');
-        if (project.videos.length > 0) {
-            project.videos.forEach((video, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.className = 'carousel-item' + (index === 0 ? ' active' : '');
-
+        
+        // Handle videos
+        if (project.videos && project.videos.length > 0) {
+            project.videos.forEach((video) => {
                 const vid = document.createElement('video');
                 vid.src = video.src;
                 vid.alt = video.alt;
-                vid.className = 'd-block w-100';
-                vid.controls = true;  // Optional: Adds play/pause and other controls to the video
-
-                // Setting properties directly
+                vid.style = 'width: 100%; height: auto; object-fit: cover;';
+                vid.controls = true;  // Optional: Adds play/pause and other controls
                 vid.playsInline = true;
                 vid.autoplay = true;
                 vid.muted = true;
                 vid.loop = true;
-
-                carouselItem.appendChild(vid);
-                videoContainer.appendChild(carouselItem);
+                vid.className = 'media-item'; // Optional class for styling
+        
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+                gridItem.appendChild(vid);
+        
+                mediaGrid.appendChild(gridItem);
             });
         }
-
     }
 });
