@@ -5,26 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Testnet Transaction Example</title>
     <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script> <!-- TonWeb library -->
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
-    <script type="module">
-        // Initialize TonConnect
-        const tonConnect = new TonConnect({
-            manifestUrl: 'https://yourdomain.com/tonconnect-manifest.json' // Manifest URL where your dApp's information is hosted
-        });
-    </script>
 </head>
 <body>
     <button id="connectWalletButton">Connect Wallet</button>
     <button id="sendTonButton" disabled>Send TON on Testnet</button> <!-- Disabled by default until wallet is connected -->
-    
+
+    <!-- Using the ES Module syntax -->
     <script type="module">
+        import { TonConnect } from "https://cdn.jsdelivr.net/npm/@tonconnect/sdk@latest/dist/tonconnect-sdk.es.js";
+
+        // Initialize TonConnect
+        const tonConnect = new TonConnect({
+            manifestUrl: 'https://jessevanvliet.xyz/tonconnect-manifest.json' // Replace with the actual URL of your tonconnect-manifest.json file
+        });
+
         // Function to connect Tonkeeper wallet using TonConnect
         async function connectWallet() {
             try {
                 // Initiate wallet connection
                 await tonConnect.connect({ wallets: ['tonkeeper'] });
                 console.log("Wallet connected successfully!");
-                
+
                 // Enable the "Send TON" button once wallet is connected
                 document.getElementById("sendTonButton").disabled = false;
 
@@ -52,7 +53,7 @@
                     messages: [{
                         address: recipientAddress,
                         amount: amountInNanoTon,
-                        payload: new TextEncoder().encode(comment).toString() // Convert comment to a payload string
+                        payload: new TextEncoder().encode(comment).toString() // Convert comment to payload string
                     }]
                 };
 
