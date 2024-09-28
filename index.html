@@ -4,32 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Testnet Transaction Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script> <!-- TonWeb library -->
+    <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script>
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script> <!-- Correct SDK Import -->
 </head>
 <body>
     <button id="connectWalletButton">Connect Wallet</button>
-    <button id="sendTonButton" disabled>Send TON on Testnet</button> <!-- Disabled by default until wallet is connected -->
+    <button id="sendTonButton" disabled>Send TON on Testnet</button> <!-- Disabled until wallet connects -->
 
-    <!-- Using the ES Module syntax -->
-    <script type="module">
-        import { TonConnect } from "https://cdn.jsdelivr.net/npm/@tonconnect/sdk@latest/dist/tonconnect-sdk.es.js";
-
-        // Initialize TonConnect
-        const tonConnect = new TonConnect({
-            manifestUrl: 'https://jessevanvliet.xyz/tonconnect-manifest.json' // Replace with the actual URL of your tonconnect-manifest.json file
+    <script>
+        // Initialize TonConnect using the global TonConnectSDK variable
+        const tonConnect = new TonConnectSDK.TonConnect({
+            manifestUrl: 'https://jessevanvliet.xyz/tonconnect-manifest.json' // Use the provided manifest URL
         });
 
         // Function to connect Tonkeeper wallet using TonConnect
         async function connectWallet() {
             try {
-                // Initiate wallet connection
                 await tonConnect.connect({ wallets: ['tonkeeper'] });
                 console.log("Wallet connected successfully!");
 
-                // Enable the "Send TON" button once wallet is connected
                 document.getElementById("sendTonButton").disabled = false;
 
-                // Get connected wallet information
                 const walletInfo = tonConnect.getConnectedWallet();
                 console.log("Connected Wallet Info:", walletInfo);
 
@@ -47,19 +42,16 @@
                 const amountInNanoTon = TonWeb.utils.toNano(1).toString(); // 1 TON in nanoton (1 TON = 1e9 nanoton)
                 const comment = "Payment for Testnet Transaction";
 
-                // Create transaction object
                 const transaction = {
-                    validUntil: Date.now() + 1000 * 60 * 5, // Transaction valid for 5 minutes
+                    validUntil: Math.floor(Date.now() / 1000) + 60 * 5,
                     messages: [{
                         address: recipientAddress,
                         amount: amountInNanoTon,
-                        payload: new TextEncoder().encode(comment).toString() // Convert comment to payload string
+                        payload: new TextEncoder().encode(comment)
                     }]
                 };
 
-                // Send transaction using TonConnect
                 const response = await tonConnect.sendTransaction(transaction);
-
                 console.log("Transaction response:", response);
                 alert("Transaction sent successfully!");
             } catch (error) {
