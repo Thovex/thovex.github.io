@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Transaction Example</title>
+    <title>TON Testnet Transaction Example</title>
     <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script> <!-- TonWeb library -->
 </head>
 <body>
-    <button id="sendTonButton">Send TON</button>
+    <button id="sendTonButton">Send TON on Testnet</button>
     <script type="text/javascript">
-        // Initialize TonWeb
-        const tonweb = new TonWeb();
+        // Initialize TonWeb with Testnet endpoint
+        const tonweb = new TonWeb(new TonWeb.HttpProvider('https://testnet.toncenter.com/api/v2/jsonRPC')); // Testnet URL
 
-        // Function to create a Tonkeeper deeplink for a transaction
+        // Replace with your testnet recipient address
+        const recipientAddress = "UQADqWNLNKlkbYaxuTU5pBeRGCsGR04E6XWMx1STzYn0pL_T"; // Example testnet address
+
+        // Function to create a Tonkeeper deeplink for a testnet transaction
         function sendTonTransaction() {
-            const recipientAddress = "UQADqWNLNKlkbYaxuTU5pBeRGCsGR04E6XWMx1STzYn0pL_T"; // Replace with your recipient address
             const amountInNanoTon = TonWeb.utils.toNano(1); // 1 TON in nanoton (1 TON = 1e9 nanoton)
-            const comment = "Payment for Testing";
+            const comment = "Payment for Testnet Transaction";
 
             // Create a Tonkeeper deeplink URL
-            const deeplinkUrl = `ton://transfer/${recipientAddress}?amount=${amountInNanoTon}&text=${encodeURIComponent(comment)}`;
+            const deeplinkUrl = `ton://transfer/${recipientAddress}?amount=${amountInNanoTon}&text=${encodeURIComponent(comment)}&testnet=true`; // Add testnet=true parameter for Tonkeeper
 
-            // Open the deeplink (this will open the Tonkeeper wallet app)
+            // Open the deeplink (this will open the Tonkeeper wallet app on testnet)
             window.location.href = deeplinkUrl;
 
             // Optionally, handle callback here (if using TonConnect or backend verification)
-            console.log("Redirecting to Tonkeeper for transaction...");
+            console.log("Redirecting to Tonkeeper for testnet transaction...");
         }
 
         // Attach the function to the button
