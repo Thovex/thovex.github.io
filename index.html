@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Testnet Transaction Example</title>
     <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script> <!-- TonWeb library -->
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
     <script type="module">
-        // Import TonConnect SDK
-        import { TonConnect } from "https://cdn.jsdelivr.net/npm/@tonconnect/sdk@0.2.0/dist/tonconnect-sdk.js";
-
         // Initialize TonConnect
         const tonConnect = new TonConnect({
             manifestUrl: 'https://yourdomain.com/tonconnect-manifest.json' // Manifest URL where your dApp's information is hosted
