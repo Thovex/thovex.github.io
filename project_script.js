@@ -148,6 +148,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Handle screenshots
         if (project.screenshots && project.screenshots.length > 0) {
             project.screenshots.forEach((screenshot) => {
+                const a = document.createElement('a');
+                a.href = screenshot.src;
+                a.target = '_blank'; // Optional: Open in new tab
+                
                 const img = document.createElement('img');
                 img.src = screenshot.src;
                 img.alt = screenshot.alt;
@@ -156,7 +160,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
                 const gridItem = document.createElement('div');
                 gridItem.className = 'grid-item';
-                gridItem.appendChild(img);
+                a.appendChild(img);
+                gridItem.appendChild(a);
         
                 mediaGrid.appendChild(gridItem);
             });
@@ -165,23 +170,54 @@ document.addEventListener("DOMContentLoaded", function () {
         // Handle videos
         if (project.videos && project.videos.length > 0) {
             project.videos.forEach((video) => {
-                const vid = document.createElement('video');
-                vid.src = video.src;
-                vid.alt = video.alt;
-                vid.style = 'width: 100%; height: auto; object-fit: cover;';
-                vid.controls = true;  // Optional: Adds play/pause and other controls
-                vid.playsInline = true;
-                vid.autoplay = true;
-                vid.muted = true;
-                vid.loop = true;
-                vid.className = 'media-item'; // Optional class for styling
         
-                const gridItem = document.createElement('div');
-                gridItem.className = 'grid-item';
-                gridItem.appendChild(vid);
+                // Check if the video source is a YouTube link
+                if (video.src.includes('youtube.com') || video.src.includes('youtu.be')) {
+                    // Extract the YouTube Video ID
+                    let videoId = '';
+                    const youtubeUrl = new URL(video.src);
+                    if (youtubeUrl.hostname === 'www.youtube.com') {
+                        videoId = youtubeUrl.searchParams.get('v'); // Extract from query param 'v'
+                    } else if (youtubeUrl.hostname === 'youtu.be') {
+                        videoId = youtubeUrl.pathname.slice(1); // Extract from pathname
+                    }
         
-                mediaGrid.appendChild(gridItem);
+                    // Create the correct YouTube embed URL
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        
+                    // Create an iframe for YouTube video
+                    const iframe = document.createElement('iframe');
+                    iframe.src = embedUrl; // Use embed URL
+                    iframe.style = 'width: 100%; height: auto; object-fit: cover; min-height:740px;';
+                    iframe.setAttribute('allowfullscreen', 'true');  // Allow full screen
+                    iframe.className = 'media-item'; // Optional class for styling
+        
+                    const gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+                    gridItem.appendChild(iframe);
+        
+                    mediaGrid.appendChild(gridItem);
+                } else {
+                    // Handle regular videos
+                    const vid = document.createElement('video');
+                    vid.src = video.src;
+                    vid.alt = video.alt;
+                    vid.style = 'width: 100%; height: auto; object-fit: cover;';
+                    vid.controls = true;  // Optional: Adds play/pause and other controls
+                    vid.playsInline = true;
+                    vid.autoplay = true;
+                    vid.muted = true;
+                    vid.loop = true;
+                    vid.className = 'media-item'; // Optional class for styling
+        
+                    const gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+                    gridItem.appendChild(vid);
+        
+                    mediaGrid.appendChild(gridItem);
+                }
             });
         }
+       
     }
 });

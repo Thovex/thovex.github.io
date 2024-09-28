@@ -68,7 +68,7 @@ main {
 
 /* Container for main content */
 .container {
-    width: 70%;
+    width: 85%;
     display: flex;
     flex-direction: row; /* Ensures filter section and portfolio section are side by side */
     gap: 20px; /* Adds some space between the sections */
@@ -129,15 +129,6 @@ main {
     width: auto;
     height: auto;
     margin: auto; /* Center the image horizontally */
-}
-
-.banner-image {
-    width: 100%; /* Make sure the image covers the entire container width */
-    height: auto; /* Maintain the aspect ratio */
-    object-fit: cover; /* Ensure the image covers the area */
-    object-position: bottom; /* Position the image to show the bottom part */
-    position: absolute;
-    bottom: 0;
 }
 
 .project-header-container a {
@@ -215,7 +206,7 @@ label {
 
 .banner-image {
     width: 100%; /* Make sure the image covers the entire container width */
-    height: auto; /* Maintain the aspect ratio */
+    height: 100%; /* Maintain the aspect ratio */
     object-fit: cover; /* Ensure the image covers the area */
     object-position: bottom; /* Position the image to show the bottom part */
     position: absolute;
@@ -224,6 +215,17 @@ label {
 
 /* Intro section */
 .intro-section {
+    width: 100%; /* Full browser width */
+    min-height: 250px;
+    text-align: center; /* Centered text */
+    background: linear-gradient(90deg, #124e68, #007aa3); /* Gradient background */
+    color: #fff; /* White text */
+    display: flex;  /* Add Flexbox */
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;  /* Center content vertically */
+}
+
+.other {
     width: 100%; /* Full browser width */
     min-height: 250px;
     text-align: center; /* Centered text */
@@ -246,8 +248,13 @@ label {
     align-items: center;  /* Center content vertically */
 }
 
+ul li {
+    border-top: 1px solid #ffffff0a;
+    padding-top: 15px;
+}
+
 .project-header div {
-    width: 33%;
+    width: 50%;
 
 }
 
@@ -273,6 +280,19 @@ label {
     margin: 0 auto;  /* Auto margins to center it */
     text-align: center; /* Centered text */
 }
+
+.other p {
+    width: 70%;  /* Change width to 70% if you want */
+    margin: 0 auto;  /* Auto margins to center it */
+    text-align: center; /* Centered text */
+}
+
+li a {
+    color: white;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
 
 /* Responsive */
 @media (max-width: 1024px) {

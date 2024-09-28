@@ -10,21 +10,29 @@ document.addEventListener("DOMContentLoaded", function() {
         const portfolioSection = document.querySelector('.portfolio');
 
         projects.forEach(project => {
+            if (!project.card) { 
+                return;
+            } 
+
             const card = document.createElement('div');
             card.className = 'project-card';
             card.setAttribute('data-language', project.language);
+            card.setAttribute('data-datetime', project.datetime);
             card.setAttribute('data-engine', project.engine);
             card.setAttribute('data-role', project.role);
             card.setAttribute('data-type', project.type);
 
-            const title = document.createElement('h2');
+            const title = document.createElement('h1');
             title.textContent = project.title;
 
-            const engine = document.createElement('h3');
-            engine.textContent = `${project.engine}, ${project.language.toUpperCase()}`;
+            const engine = document.createElement('h2');
+            engine.textContent = `${project.engine}, ${project.language}`;
 
-            const role = document.createElement('h3');
+            const role = document.createElement('h2');
             role.textContent = `${project.role}, ${project.duration}`;
+
+            const datetime = document.createElement('h3');
+            datetime.textContent = project.datetime;
 
             const img = document.createElement('img');
             img.src = project.minisrc;
@@ -104,8 +112,9 @@ document.addEventListener("DOMContentLoaded", function() {
             const contentDiv = document.createElement('div');
             contentDiv.className = 'project-card-content';
 
-            contentDiv.appendChild(engine);
             contentDiv.appendChild(role);
+            contentDiv.appendChild(engine);
+            contentDiv.appendChild(datetime);
 
             contentDiv.appendChild(descriptionHeader);
             contentDiv.appendChild(description);
@@ -127,8 +136,29 @@ document.addEventListener("DOMContentLoaded", function() {
             portfolioSection.appendChild(card);
         });
 
+        const otherList = document.getElementById('other-projects');
+
+        projects.forEach(project => {
+            if (project.card) { 
+                return;
+            } 
+
+            const listItem = document.createElement('li');
+            // eNsure list item is leftside
+            listItem.style = 'text-align: left; max-width:50%; padding-bottom:15px;';
+
+            listItem.innerHTML = `<a href="${project.archive}">${project.datetime}</a> - ${project.title} (${project.engine}, ${project.language})`;
+            listItem.innerHTML += '<br>';
+            listItem.innerHTML += `${project.description}`;
+
+            otherList.appendChild(listItem);
+
+        });
+
         // Attach event listeners for filters
         attachFilterListeners();
+
+        
     }
 
     function toggleResetButtonVisibility(selectElement, resetButtonElement) {

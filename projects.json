@@ -1,11 +1,13 @@
 [
     {
         "id": "ember-sword",
+        "card": true,
         "title": "Ember Sword",
         "language": "C++",
         "engine": "Radiance",
         "role": "Gameplay Programmer",
-        "duration": "3y+ (active)",
+        "duration": "3y+",
+        "datetime": "2021",
         "minisrc": "res/bg_mini_embersword.png",
         "banner": "res/banner_embersword.png",
         "type": "BSS",
@@ -107,11 +109,13 @@
     },
     {
         "id": "farmion",
+        "card": true,
         "title": "Farmion",
         "language": "C++",
         "engine": "Unreal",
         "role": "Game Programmer",
-        "duration": "6m (semi-active)",
+        "duration": "6m",
+        "datetime": "2022",
         "minisrc": "res/bg_mini_farmion.png",
         "banner": "res/banner_farmion.png",
         "type": "BH",
@@ -234,11 +238,13 @@
     },
     {
         "id": "radiance",
+        "card": true,
         "title": "Radiance Engine",
         "language": "C++",
         "engine": "Radiance",
         "role": "Gameplay Programmer",
-        "duration": "2y+ (active)",
+        "duration": "2y+",
+        "datetime": "2021",
         "minisrc": "res/bg_mini_radiance.png",
         "banner": "res/banner_radiance.png",
         "type": "BSS",
@@ -296,11 +302,13 @@
     },
     {
         "id": "cat",
+        "card": true,
         "title": "Cat Parent",
-        "language": "Meow",
+        "language": "meow-speak",
         "engine": "Real Life",
         "role": "Assistant",
-        "duration": "2y+ (active)",
+        "duration": "2y+",
+        "datetime": "2022",
         "minisrc": "res/bg_mini_cat.png",
         "banner": "res/bg_mini_cat.png",
         "type": "Hobby",
@@ -353,11 +361,13 @@
     },
     {
         "id": "bitfarers",
+        "card": true,
         "title": "BitFarers",
         "language": "C++",
         "engine": "Unreal",
         "role": "Game Programmer",
         "duration": "4m",
+        "datetime": "2021",
         "minisrc": "res/bg_mini_bitfarers.png",
         "banner": "res/banner_bitfarers.png",
         "type": "Hobby",
@@ -417,11 +427,13 @@
     },
     {
         "id": "idle-cards",
+        "card": true,
         "title": "IdleCards",
         "language": "C#",
         "engine": "Unity",
         "role": "Game Programmer",
         "duration": "4m",
+        "datetime": "2020",
         "minisrc": "res/bg_mini_idlecards.png",
         "banner": "res/banner_idlecards.png",
         "type": "Hobby",
@@ -440,7 +452,6 @@
                 "title": "Unity UI Implementations",
                 "description": "Worked on 'Fake 3D' Card Elements which you can play on boards; Worked on 2D user interfaces to buy buildings, upgrade them, etc."
             }
-            
         ],
         "tags": [
             "android",
@@ -474,43 +485,82 @@
     },
     {
         "id": "andromeda-resonance",
+        "card": true,
         "title": "Andromeda Resonance",
         "language": "C++",
         "engine": "Unreal",
         "role": "Game Programmer",
         "duration": "4m",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
+        "datetime": "2019",
+        "minisrc": "res/bg_mini_andromedaresonance.png",
+        "banner": "res/bg_banner_andromedaresonance.png",
         "type": "HKU",
         "description": "3D WaveFunctionCollapse algorithm for Unreal Engine with a mini-game to showcase it.",
         "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. The project is a 3D WaveFunctionCollapse algorithm for Unreal Engine with a mini-game to showcase it.",
         "work": [
-            "Everything Coding & Art related with the exception for the character models"
+            {
+                "title": "Wave Function Collapse",
+                "description": "Implemented the Wave Function Collapse algorithm in Unreal Engine in 3D space. This world generation algorithm allows for a very high amount of variety based on local similarity."
+            },
+            {
+                "title": "Drone-Flying",
+                "description": "Fly around the generated levels with a drone, showcasing the generated levels."
+            },
+            {
+                "title": "Graduation Papers & Tools",
+                "description": "For this project I wrote a paper on the Wave Function Collapse algorithm, and created a tool to generate 3D levels in Unreal Engine. On the side I have created a YouTube tutorial how to create data assets for the Wave Function Collapse algorithm."
+            }
         ],
         "tags": [
             "generation",
             "gameplay"
         ],
-        "socials": []
+        "socials": [],
+        "videos": [
+            {
+                "src": "https://youtu.be/7anvESagd90",
+                "alt": "V1"
+            },
+            {
+                "src": "https://youtu.be/rkmlyX7Vv3I",
+                "alt": "V2"
+            }
+        ]
     },
     {
-        "id": "wizid",
-        "title": "Wizid",
-        "language": "C++",
+        "card": false,
+        "title": "Kio",
+        "datetime": "2018",
         "engine": "Unreal",
-        "role": "Game Programmer",
-        "duration": "1m (semi-active)",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/bg_mini_embersword.png",
-        "type": "Hobby",
-        "description": "A wizardry Idle Game",
-        "longdescription": "An idle game inspired by Runescape and Wizardry, players can level up their character, gather resources, and craft items to progress through the game.",
-        "work": [
-            "A solo dev production"
-        ],
-        "tags": [
-            "gameplay"
-        ],
-        "socials": []
+        "language": "C++",
+        "description": "Kio is a glassblowing puzzle & adventure game. The goal of the player is to light all glass objects using a variety of glass objects, which you have to glassblow yourself, to deform light into specific directions.",
+        "archive": "https://web.archive.org/web/20220528013025/https://jessevanvliet.com/portfolio-kio.php"
+    },
+    {
+        "card": false,
+        "title": "StratEgel GameWork",
+        "datetime": "2017",
+        "engine": "Unreal",
+        "language": "C++",
+        "description": "GameWork is a framework made by StratEgel B.V in cooporation with Strategis to create socializing gameplay. You have to create an ideal world with various different parties who have their own unique set of goals to achieve.",
+        "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/portfolio-gamework.php"
+    },
+    {
+        "card": false,
+        "title": "Hack Stevie",
+        "datetime": "2017",
+        "engine": "Unity",
+        "language": "C#",
+        "description": "A game designed for Dutch primary school children in the groups of 7 and 8 to raise awareness for a problem becoming larger and larger. Cybersecurity. During my internship at Flavour we have built this game for 'De week van de Mediawijsheid'. This game is the prequel of 'Hack Shield'.",
+        "archive": "https://web.archive.org/web/20190415160215/https://jessevanvliet.com/portfolio-hackstevie.php"
+    },
+    {
+        "card": false,
+        "title": "And more...",
+        "datetime": "2011-2017",
+        "engine": "Unity, Unreal and Custom",
+        "language": "Mostly C# and some C++ during this period",
+        "description": "Various games for University, hobby Projects and whatnot. Feel free to check out the archived Portfolio page for more information.",
+        "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/index.php"
     }
 ]
