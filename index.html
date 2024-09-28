@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TON Testnet Transaction Example</title>
     <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.js"></script>
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script> <!-- Correct SDK Import -->
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script> <!-- TonConnect SDK -->
 </head>
+
 <body>
     <button id="connectWalletButton">Connect Wallet</button>
     <button id="sendTonButton" disabled>Send TON on Testnet</button> <!-- Disabled until wallet connects -->
 
     <script>
-        // Initialize TonConnect using the global TonConnectSDK variable
         const tonConnect = new TonConnectSDK.TonConnect({
-            manifestUrl: 'https://jessevanvliet.xyz/tonconnect-manifest.json' // Use the provided manifest URL
+            manifestUrl: 'https://jessevanvliet.xyz/tonconnect-manifest.json'
         });
 
         // Function to connect Tonkeeper wallet using TonConnect
         async function connectWallet() {
             try {
-                await tonConnect.connect({ wallets: ['tonkeeper'] });
-                console.log("Wallet connected successfully!");
+                await tonConnect.connect({
+                    universalLink: 'https://app.tonkeeper.com/ton-connect',
+                    bridgeUrl: 'https://bridge.tonapi.io/bridge'
+                });
+                console.log("Wallet connection initiated.");
 
-                document.getElementById("sendTonButton").disabled = false;
-
-                const walletInfo = tonConnect.getConnectedWallet();
-                console.log("Connected Wallet Info:", walletInfo);
-
-                alert("Wallet connected! Address: " + walletInfo.account.address);
+                // Listen for status changes to capture wallet information
+                tonConnect.onStatusChange((walletInfo) => {
+                    if (walletInfo) {
+                        console.log("Wallet connected successfully!", walletInfo);
+                        document.getElementById("sendTonButton").disabled = false;
+                        alert("Wallet connected! Address: " + walletInfo.account.address);
+                    } else {
+                        console.error("Failed to get wallet information.");
+                    }
+                });
             } catch (error) {
                 console.error("Failed to connect wallet:", error);
                 alert("Failed to connect wallet: " + error.message);
             }
         }
+
 
         // Function to send a TON transaction using TonConnect
         async function sendTonTransaction() {
@@ -65,4 +74,5 @@
         document.getElementById("sendTonButton").addEventListener("click", sendTonTransaction);
     </script>
 </body>
+
 </html>
