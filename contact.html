@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contact | Jesse van Vliet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Include EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            // Initialize EmailJS with your user ID
+            emailjs.init("jfKYvjN2eUmaqjzZg");
+        })();
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav style="margin:50px">
+            <div style="text-align: center">
+                <p style="font-size: 32pt">Jesse van Vliet</p>
+                <p style="margin-bottom:50px">Gameplay Programmer</p>
+                <ul class="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="intro-section">
+        <div class="contact-container">
+            <h1>Contact Me</h1>
+            <br/>
+
+            <p>Feel free to reach out through the form below or connect with me on LinkedIn!</p>
+
+            <br/>
+            <br/>
+
+            <!-- Contact Form -->
+            <form id="contact-form" style="max-width: 600px; margin: 0 auto;">
+                <div style="margin-bottom: 15px;">
+                    <label for="name" style="display: block; margin-bottom: 5px;">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" style="width: 100%; padding: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" style="width: 100%; padding: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label for="message" style="display: block; margin-bottom: 5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message</label>
+                    <textarea id="message" name="message" placeholder="Your Message" style="width: 100%; padding: 10px; height: 150px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required></textarea>
+                </div>
+
+                <button type="submit" style="background-color: #124e68; color: #fff; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="social-section">
+        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a href="mailto:jessevanvliet@hotmail.com">Mail</a>
+    </footer>
+
+    <!-- EmailJS Send Email Script -->
+    <script>
+        // Add event listener to the form submit event
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Define the parameters for EmailJS
+            const templateParams = {
+                name: name,
+                email: email,
+                message: message
+            };
+
+            // Send email using EmailJS
+            emailjs.send('service_ay4qrq4', 'template_2yun3vn', templateParams)
+                .then(function(response) {
+                    alert('Message sent successfully!'); // Show success message
+                    document.getElementById('contact-form').reset(); // Reset form fields
+                }, function(error) {
+                    alert('Failed to send message. Please try again.'); // Show error message
+                    console.error('EmailJS Error:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>
