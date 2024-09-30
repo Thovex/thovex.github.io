@@ -94,7 +94,7 @@ main {
 .project-card {
     color: #124e68;
     flex: 1 1 calc(33.333% - 1em);
-    min-width: 450px;
+    min-width: 375px;
     max-width: calc(33.333% - 1em);
     min-height: 300px;
     margin: 0.5em;
@@ -386,5 +386,19 @@ li a {
     a {
         font-size: 1.5em;
     }
-    
+
+        
+     /* Ensure the container takes up full width and columns are single */
+     .container {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    /* Make each project card take up 100% width */
+    .project-card {
+        flex: 1 1 100%; /* Take up full width */
+        max-width: 100%; /* Ensure no overflow */
+        margin: 10px 0; /* Add some spacing between cards */
+    }
 }
+
