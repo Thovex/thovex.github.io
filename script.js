@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const listItem = document.createElement('li');
             // eNsure list item is leftside
-            listItem.style = 'text-align: left; max-width:50%; padding-bottom:15px;';
+            listItem.style = 'text-align: left; padding-bottom:15px;';
 
             listItem.innerHTML = `<a href="${project.archive}">${project.datetime}</a> - ${project.title} (${project.engine}, ${project.language})`;
             listItem.innerHTML += '<br>';

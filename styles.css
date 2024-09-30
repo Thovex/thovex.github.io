@@ -329,7 +329,7 @@ li a {
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
     .container {
         width: 100%;
         flex-direction: column;
@@ -341,5 +341,13 @@ li a {
 
     .project-card {
         flex: 1 1 calc(100% - 1em);
+    }
+
+    .project-header div {
+        width: 90%;
+    }
+
+    .project-details {
+        width: 90%;
     }
 }
