@@ -94,7 +94,7 @@ main {
 .project-card {
     color: #124e68;
     flex: 1 1 calc(33.333% - 1em);
-    min-width: 350px;
+    min-width: 450px;
     max-width: calc(33.333% - 1em);
     min-height: 300px;
     margin: 0.5em;
@@ -250,11 +250,22 @@ label {
     text-align: left;
 }
 
-/* Additional Styles for About Page */
+/* Ensure the PDF container and canvas are centered */
 .about-container {
-    min-width: 70%;
-    min-height: 1500px;
-    padding: 50px;
+    display: flex; /* Use flexbox to center items */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 20px; /* Add padding to separate from the edges */
+    width: 100%; /* Ensure full width */
+    overflow: hidden; /* Prevent overflow issues */
+}
+
+#pdf-render {
+    display: block; /* Ensure the canvas is treated as a block element */
+    margin: 0 auto; /* Center the canvas */
+    max-width: 100%; /* Make sure it doesn't overflow the container */
+    height: auto; /* Maintain aspect ratio */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
 }
 
 .about-section-wrapper {
@@ -344,4 +355,36 @@ li a {
     .project-details {
         width: 90%;
     }
+}
+
+@media (max-width: 1024px) {
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+    
+    p {
+        font-size: 1.5em;
+    }
+
+    li strong {
+        font-size: 2em;
+    }
+
+    li {
+        font-size: 1.5em;
+    }
+
+    a {
+        font-size: 1.5em;
+    }
+    
 }

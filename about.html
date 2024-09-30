@@ -38,35 +38,67 @@
 
     <script>
         const url = 'jessevanvliet-cv.pdf';
-
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
-
+    
+        let pdfDoc = null;
+        let renderTask = null;
+    
         async function renderPDF(url) {
-            const loadingTask = pdfjsLib.getDocument(url);
-            const pdf = await loadingTask.promise;
-
-            const page = await pdf.getPage(1);
+            if (renderTask) {
+                renderTask.cancel();
+            }
+    
+            if (!pdfDoc) {
+                const loadingTask = pdfjsLib.getDocument(url);
+                pdfDoc = await loadingTask.promise;
+            }
+    
+            const page = await pdfDoc.getPage(1);
             const canvas = document.getElementById('pdf-render');
             const ctx = canvas.getContext('2d');
-
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale });
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
+    
+            // Get container width and calculate scale
+            const container = canvas.parentElement;
+            const containerWidth = container.clientWidth;
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = containerWidth / viewport.width;
+    
+            // Apply calculated scale
+            const scaledViewport = page.getViewport({ scale });
+    
+            // Reset transformations and set canvas dimensions
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            canvas.width = scaledViewport.width;
+            canvas.height = scaledViewport.height;
+    
+            // Render the PDF page to the canvas
             const renderContext = {
                 canvasContext: ctx,
-                viewport: viewport,
-                // Disable the text layer rendering
-                textLayerMode: 0  // `0` prevents text layer creation in PDF.js
+                viewport: scaledViewport,
+                textLayerMode: 0
             };
-
-            await page.render(renderContext).promise;
+    
+            renderTask = page.render(renderContext);
+            try {
+                await renderTask.promise;
+            } catch (error) {
+                if (error.name === 'RenderingCancelledException') {
+                    console.log('Rendering was cancelled, restarting rendering...');
+                    return;
+                } else {
+                    console.error('Error rendering PDF:', error);
+                }
+            }
         }
-
+    
+        // Call the render function on load
         renderPDF(url);
+    
+        // Add event listener to handle window resize for dynamic scaling
+        window.addEventListener('resize', () => renderPDF(url));
     </script>
+    
 </body>
 
 </html>
