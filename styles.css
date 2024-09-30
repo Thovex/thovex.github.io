@@ -216,10 +216,7 @@ label {
 
 /* Intro section */
 .intro-section {
-    width: 100%;
-    min-height: 250px;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    padding: 50px;
     text-align: center;
     background: linear-gradient(90deg, #124e68, #007aa3);
     color: #fff;
@@ -229,10 +226,7 @@ label {
 }
 
 .other {
-    width: 100%;
-    min-height: 250px;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    padding: 50px;
     text-align: center;
     background: linear-gradient(90deg, #124e68, #007aa3);
     color: #fff;
