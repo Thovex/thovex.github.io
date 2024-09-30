@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jesse van Vliet | Gameplay Programmer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav style="margin:50px">
+            <div style="text-align: center">
+                <p style="font-size: 32pt">Jesse van Vliet</p>
+                <p style="margin-bottom:50px">Gameplay Programmer</p>
+                <ul class="menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="intro-section">
+        <div class="about-container">
+            <canvas id="pdf-render" style="border: 1px solid #ccc; margin: 0 auto; display: block;"></canvas>
+        </div>
+    </section>
+
+    <footer class="social-section">
+        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a
+            href="mailto:jessevanvliet@hotmail.com">Mail</a>
+    </footer>
+
+    <script>
+        const url = 'jessevanvliet-cv.pdf';
+
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
+
+        async function renderPDF(url) {
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+
+            const page = await pdf.getPage(1);
+            const canvas = document.getElementById('pdf-render');
+            const ctx = canvas.getContext('2d');
+
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport,
+                // Disable the text layer rendering
+                textLayerMode: 0  // `0` prevents text layer creation in PDF.js
+            };
+
+            await page.render(renderContext).promise;
+        }
+
+        renderPDF(url);
+    </script>
+</body>
+
+</html>

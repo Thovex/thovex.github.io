@@ -300,65 +300,7 @@
             }
         ]
     },
-    {
-        "id": "cat",
-        "card": true,
-        "title": "Cat Parent",
-        "language": "meow-speak",
-        "engine": "Real Life",
-        "role": "Assistant",
-        "duration": "2y+",
-        "datetime": "2022",
-        "minisrc": "res/bg_mini_cat.png",
-        "banner": "res/bg_mini_cat.png",
-        "type": "Hobby",
-        "description": "The Cats: Finn & Dusty need a lot of attention!",
-        "longdescription": "Two Ragdoll Cats; one white, one grey - they are excellent office staff.",
-        "work": [
-            {
-                "title": "Feeding the Cats",
-                "description": ""
-            },
-            {
-                "title": "Petting the Cats",
-                "description": ""
-            },
-            {
-                "title": "Playing with the Cats",
-                "description": ""
-            },
-            {
-                "title": "Cleaning the Litterbox",
-                "description": ""
-            }
-        ],
-        "tags": [
-            "joy"
-        ],
-        "socials": [],
-        "screenshots": [
-            {
-                "src": "res/projects/cat/ss_cat_01.png",
-                "alt": "S1"
-            },
-            {
-                "src": "res/projects/cat/ss_cat_03.png",
-                "alt": "S3"
-            },
-            {
-                "src": "res/projects/cat/ss_cat_04.png",
-                "alt": "S4"
-            },
-            {
-                "src": "res/projects/cat/ss_cat_05.png",
-                "alt": "S5"
-            },
-            {
-                "src": "res/projects/cat/ss_cat_02.png",
-                "alt": "S2"
-            }
-        ]
-    },
+    
     {
         "id": "bitfarers",
         "card": true,
@@ -524,6 +466,65 @@
             {
                 "src": "https://youtu.be/rkmlyX7Vv3I",
                 "alt": "V2"
+            }
+        ]
+    },
+    {
+        "id": "cat",
+        "card": true,
+        "title": "Cat Parent",
+        "language": "meow-speak",
+        "engine": "Real Life",
+        "role": "Assistant",
+        "duration": "2y+",
+        "datetime": "2022",
+        "minisrc": "res/bg_mini_cat.png",
+        "banner": "res/bg_mini_cat.png",
+        "type": "Hobby",
+        "description": "The Cats: Finn & Dusty need a lot of attention!",
+        "longdescription": "Two Ragdoll Cats; one white, one grey - they are excellent office staff.",
+        "work": [
+            {
+                "title": "Feeding the Cats",
+                "description": ""
+            },
+            {
+                "title": "Petting the Cats",
+                "description": ""
+            },
+            {
+                "title": "Playing with the Cats",
+                "description": ""
+            },
+            {
+                "title": "Cleaning the Litterbox",
+                "description": ""
+            }
+        ],
+        "tags": [
+            "joy"
+        ],
+        "socials": [],
+        "screenshots": [
+            {
+                "src": "res/projects/cat/ss_cat_01.png",
+                "alt": "S1"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_03.png",
+                "alt": "S3"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_04.png",
+                "alt": "S4"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_05.png",
+                "alt": "S5"
+            },
+            {
+                "src": "res/projects/cat/ss_cat_02.png",
+                "alt": "S2"
             }
         ]
     },
