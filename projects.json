@@ -1,5 +1,51 @@
 [
     {
+        "id": "motherlode-tycoon",
+        "card": true,
+        "title": "Motherlode Tycoon",
+        "language": "Verse",
+        "engine": "Unreal for Fortnite",
+        "role": "Verse Programmer",
+        "duration": "2m",
+        "datetime": "2025",
+        "minisrc": "res/bg_mini_motherlode_tycoon.png",
+        "banner": "res/banner_motherlode_tycoon.png",
+        "type": "Zloppy Games",
+        "description": "A take on the classic tycoon genre in Fortnite Creative; we try to aim for a more fun and engaging experience that's just not catered to ensuring children get hooked on the game.",
+        "longdescription": "",
+        "work": [
+            {
+                "title": "Core Design",
+                "description": "Together with my friend, we designed the core gameplay mechanics and systems. E.g. the ability to own plots, build and upgrade structures, display resources, have 3d world UI, etc"
+            }
+        ],
+        "tags": [
+            "gameplay",
+            "design"
+        ],
+        "socials": [
+            {
+                "info": "fortnite.gg",
+                "url": "https://fortnite.gg/island?code=3579-7551-5955",
+                "icon": "res/ico_motherlode.png"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/motherlode/ss_motherlode_1.png",
+                "alt": "Motherlode Tycoon Screenshot 1"
+            },
+            {
+                "src": "res/projects/motherlode/ss_motherlode_2.png",
+                "alt": "Motherlode Tycoon Screenshot 2"
+            },
+            {
+                "src": "res/projects/motherlode/ss_motherlode_3.png",
+                "alt": "Motherlode Tycoon Screenshot 3"
+            }
+        ]
+    },
+    {
         "id": "ember-sword",
         "card": true,
         "title": "Ember Sword",
