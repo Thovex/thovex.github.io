@@ -184,6 +184,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 'BSS':
                     description = 'Work during my employment at Bright Star Studios ApS as a gameplay programmer';
                     break;
+                case 'Zloppy Games':
+                    description = 'A shared hobby game studio with my friend, where we work on game projects together';
+                    break;
                 case 'BH':
                     description = 'My own game studio: Baer & Hoggo as an independent game developer. Either game project prototyping or work on games for release';
                     break;
