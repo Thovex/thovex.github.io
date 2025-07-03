@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
             card.appendChild(socials);
 
             card.addEventListener('click', function() {
-                window.location.href = `project.html?id=${project.id}`;
+                window.location.href = `project?id=${project.id}`;
             });
             
             portfolioSection.appendChild(card);

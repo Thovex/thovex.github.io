@@ -5,7 +5,7 @@
         "title": "Dtail Spaces",
         "language": "C++",
         "engine": "Unreal",
-        "role": "Unreal Software Engineer",
+        "role": "Game Programmer",
         "duration": "5m+",
         "datetime": "2025",
         "minisrc": "res/bg_mini_dtail.png",
@@ -30,7 +30,7 @@
         ],
         "socials": [
             {
-                "info": "Dtail.com",
+                "info": "dtail.com",
                 "url": "https://www.dtail.com/",
                 "icon": "res/ico_site.png"
             }
@@ -56,7 +56,7 @@
         "title": "Motherlode Tycoon",
         "language": "Verse",
         "engine": "UEFN",
-        "role": "Verse Programmer",
+        "role": "Game Programmer",
         "duration": "2m",
         "datetime": "2025",
         "minisrc": "res/bg_mini_motherlode.png",
