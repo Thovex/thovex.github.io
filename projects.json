@@ -8,8 +8,8 @@
         "role": "Unreal Software Engineer",
         "duration": "5m+",
         "datetime": "2025",
-        "minisrc": "res/bg_mini_dtail_spaces.png",
-        "banner": "res/banner_dtail_spaces.png",
+        "minisrc": "res/bg_mini_dtail.png",
+        "banner": "res/banner_dtail.png",
         "type": "PixelPool",
         "description": "Dtail Spaces is a 3D application built with Unreal Engine 5 that allows fashion brands to create virtual store environments with fixtures and products for presentations, enabling users to virtually walk customers through customizable showrooms",
         "longdescription": "Dtail Spaces is an interactive 3D application that enables fashion brands to create hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces. Users can showcase collections with 360-degree product views and detailed zoom capabilities, providing an engaging alternative to traditional 2D presentations for both B2B buyers and internal merchandising teams.",
@@ -59,8 +59,8 @@
         "role": "Verse Programmer",
         "duration": "2m",
         "datetime": "2025",
-        "minisrc": "res/bg_mini_motherlode_tycoon.png",
-        "banner": "res/banner_motherlode_tycoon.png",
+        "minisrc": "res/bg_mini_motherlode.png",
+        "banner": "res/banner_motherlode.png",
         "type": "Zloppy Games",
         "description": "A take on the classic tycoon genre in Fortnite Creative; we try to aim for a more fun and engaging experience that's just not catered to ensuring children get hooked on the game.",
         "longdescription": "",
@@ -110,18 +110,10 @@
                 "icon": "res/ico_site.png"
             }
         ],
-        "screenshots": [
+        "videos": [
             {
-                "src": "res/projects/motherlode/ss_motherlode_1.png",
-                "alt": "Motherlode Tycoon Screenshot 1"
-            },
-            {
-                "src": "res/projects/motherlode/ss_motherlode_2.png",
-                "alt": "Motherlode Tycoon Screenshot 2"
-            },
-            {
-                "src": "res/projects/motherlode/ss_motherlode_3.png",
-                "alt": "Motherlode Tycoon Screenshot 3"
+                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
+                "alt": "V1"
             }
         ]
     },
