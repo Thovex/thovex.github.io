@@ -1,5 +1,56 @@
 [
     {
+        "id": "dtail-spaces",
+        "card": true,
+        "title": "Dtail Spaces",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Unreal Software Engineer",
+        "duration": "5m+",
+        "datetime": "2025",
+        "minisrc": "res/bg_mini_dtail_spaces.png",
+        "banner": "res/banner_dtail_spaces.png",
+        "type": "PixelPool",
+        "description": "Dtail Spaces is a 3D application built with Unreal Engine 5 that allows fashion brands to create virtual store environments with fixtures and products for presentations, enabling users to virtually walk customers through customizable showrooms",
+        "longdescription": "Dtail Spaces is an interactive 3D application that enables fashion brands to create hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces. Users can showcase collections with 360-degree product views and detailed zoom capabilities, providing an engaging alternative to traditional 2D presentations for both B2B buyers and internal merchandising teams.",
+        "work": [
+            {
+                "title": "Refactoring/Optimization",
+                "description": "Currently we're in the process of refactoring various legacy code chunks to be easier to maintain. "
+            },
+            {
+                "title": "Feature Development",
+                "description": "Developing new features for the application (NDA)"
+            }
+        ],
+        "tags": [
+            "gameplay",
+            "refactoring",
+            "optimization"
+        ],
+        "socials": [
+            {
+                "info": "Dtail.com",
+                "url": "https://www.dtail.com/",
+                "icon": "res/ico_site.png"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/dtail/ss_dtail_1.png",
+                "alt": "Dtail Spaces Screenshot 1"
+            },
+            {
+                "src": "res/projects/dtail/ss_dtail_2.jpg",
+                "alt": "Dtail Spaces Screenshot 2"
+            },
+            {
+                "src": "res/projects/dtail/ss_dtail_3.png",
+                "alt": "Dtail Spaces Screenshot 3"
+            }
+        ]
+    },
+    {
         "id": "motherlode-tycoon",
         "card": true,
         "title": "Motherlode Tycoon",
@@ -17,7 +68,36 @@
             {
                 "title": "Core Design",
                 "description": "Together with my friend, we designed the core gameplay mechanics and systems. E.g. the ability to own plots, build and upgrade structures, display resources, have 3d world UI, etc"
+            },
+            {
+                "title": "Gathering",
+                "description": "Created responsive and interesting feedback tothe player when gathering and ensuring this information is displayed in a clear and concise manner. The player can gather resources from the world, which are then used to build and upgrade structures."
+            },
+            {
+                "title": "Cosmetics",
+                "description": "Created a system where players can purchase cosmetics for their characters with persistence, allowing them to customize their character's appearance. This includes clothing, accessories, and other visual elements."
+            },
+            {
+                "title": "Co-op Projects",
+                "description": "Created a system where players can work together on projects, such as building structures or gathering resources. This encourages teamwork and collaboration between players."
+            },
+            {
+                "title": "Teleportation, Barriers and more",
+                "description": "Created a system where players can teleport to different locations in the world, allowing for quick travel and exploration. This system also includes barriers to prevent players from accessing certain areas until they have completed certain objectives or reached a certain level of progress."
+            },
+            {
+                "title": "Gifts",
+                "description": "Created a system where players can receive rewards for completing objectives or reaching certain milestones or simply waiting."
+            },
+            {
+                "title": "Level Design",
+                "description": "Designed the core level of the game, including the layout, the resource spawners, the player plots, and the overall look and feel of the game."
+            },
+            {
+                "title": "and more...",
+                "description": "Experience many other exciting activities and features."
             }
+            
         ],
         "tags": [
             "gameplay",
@@ -27,7 +107,7 @@
             {
                 "info": "fortnite.gg",
                 "url": "https://fortnite.gg/island?code=3579-7551-5955",
-                "icon": "res/ico_motherlode.png"
+                "icon": "res/ico_site.png"
             }
         ],
         "screenshots": [
