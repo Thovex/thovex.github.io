@@ -51,73 +51,6 @@
         ]
     },
     {
-        "id": "motherlode-tycoon",
-        "card": true,
-        "title": "Motherlode Tycoon",
-        "language": "Verse",
-        "engine": "UEFN",
-        "role": "Game Programmer",
-        "duration": "2m",
-        "datetime": "2025",
-        "minisrc": "res/bg_mini_motherlode.png",
-        "banner": "res/banner_motherlode.png",
-        "type": "Zloppy-Games",
-        "description": "A take on the classic tycoon genre in Fortnite Creative; we try to aim for a more fun and engaging experience that's just not catered to ensuring children get hooked on the game.",
-        "longdescription": "",
-        "work": [
-            {
-                "title": "Core Design",
-                "description": "Together with my friend, we designed the core gameplay mechanics and systems. E.g. the ability to own plots, build and upgrade structures, display resources, have 3d world UI, etc"
-            },
-            {
-                "title": "Gathering",
-                "description": "Created responsive and interesting feedback tothe player when gathering and ensuring this information is displayed in a clear and concise manner. The player can gather resources from the world, which are then used to build and upgrade structures."
-            },
-            {
-                "title": "Cosmetics",
-                "description": "Created a system where players can purchase cosmetics for their characters with persistence, allowing them to customize their character's appearance. This includes clothing, accessories, and other visual elements."
-            },
-            {
-                "title": "Co-op Projects",
-                "description": "Created a system where players can work together on projects, such as building structures or gathering resources. This encourages teamwork and collaboration between players."
-            },
-            {
-                "title": "Teleportation, Barriers and more",
-                "description": "Created a system where players can teleport to different locations in the world, allowing for quick travel and exploration. This system also includes barriers to prevent players from accessing certain areas until they have completed certain objectives or reached a certain level of progress."
-            },
-            {
-                "title": "Gifts",
-                "description": "Created a system where players can receive rewards for completing objectives or reaching certain milestones or simply waiting."
-            },
-            {
-                "title": "Level Design",
-                "description": "Designed the core level of the game, including the layout, the resource spawners, the player plots, and the overall look and feel of the game."
-            },
-            {
-                "title": "and more...",
-                "description": "Experience many other exciting activities and features."
-            }
-            
-        ],
-        "tags": [
-            "gameplay",
-            "design"
-        ],
-        "socials": [
-            {
-                "info": "fortnite.gg",
-                "url": "https://fortnite.gg/island?code=3579-7551-5955",
-                "icon": "res/ico_site.png"
-            }
-        ],
-        "videos": [
-            {
-                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
-                "alt": "V1"
-            }
-        ]
-    },
-    {
         "id": "ember-sword",
         "card": true,
         "title": "Ember Sword",
@@ -222,6 +155,73 @@
             {
                 "src": "res/projects/embersword/ss_embersword_3.png",
                 "alt": "Ember Sword Screenshot 3"
+            }
+        ]
+    },
+    {
+        "id": "motherlode-tycoon",
+        "card": true,
+        "title": "Motherlode Tycoon",
+        "language": "Verse",
+        "engine": "UEFN",
+        "role": "Game Programmer",
+        "duration": "2m",
+        "datetime": "2025",
+        "minisrc": "res/bg_mini_motherlode.png",
+        "banner": "res/banner_motherlode.png",
+        "type": "Zloppy-Games",
+        "description": "A take on the classic tycoon genre in Fortnite Creative; we try to aim for a more fun and engaging experience that's just not catered to ensuring children get hooked on the game.",
+        "longdescription": "",
+        "work": [
+            {
+                "title": "Core Design",
+                "description": "Together with my friend, we designed the core gameplay mechanics and systems. E.g. the ability to own plots, build and upgrade structures, display resources, have 3d world UI, etc"
+            },
+            {
+                "title": "Gathering",
+                "description": "Created responsive and interesting feedback tothe player when gathering and ensuring this information is displayed in a clear and concise manner. The player can gather resources from the world, which are then used to build and upgrade structures."
+            },
+            {
+                "title": "Cosmetics",
+                "description": "Created a system where players can purchase cosmetics for their characters with persistence, allowing them to customize their character's appearance. This includes clothing, accessories, and other visual elements."
+            },
+            {
+                "title": "Co-op Projects",
+                "description": "Created a system where players can work together on projects, such as building structures or gathering resources. This encourages teamwork and collaboration between players."
+            },
+            {
+                "title": "Teleportation, Barriers and more",
+                "description": "Created a system where players can teleport to different locations in the world, allowing for quick travel and exploration. This system also includes barriers to prevent players from accessing certain areas until they have completed certain objectives or reached a certain level of progress."
+            },
+            {
+                "title": "Gifts",
+                "description": "Created a system where players can receive rewards for completing objectives or reaching certain milestones or simply waiting."
+            },
+            {
+                "title": "Level Design",
+                "description": "Designed the core level of the game, including the layout, the resource spawners, the player plots, and the overall look and feel of the game."
+            },
+            {
+                "title": "and more...",
+                "description": "Experience many other exciting activities and features."
+            }
+            
+        ],
+        "tags": [
+            "gameplay",
+            "design"
+        ],
+        "socials": [
+            {
+                "info": "fortnite.gg",
+                "url": "https://fortnite.gg/island?code=3579-7551-5955",
+                "icon": "res/ico_site.png"
+            }
+        ],
+        "videos": [
+            {
+                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
+                "alt": "V1"
             }
         ]
     },
