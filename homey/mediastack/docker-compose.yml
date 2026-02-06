@@ -1,0 +1,140 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - OPENVPN_USER=p1691514
+      - OPENVPN_PASSWORD=U5og5Cge2u
+      - SERVER_REGIONS=Netherlands
+      - TZ=Europe/Amsterdam
+      - FIREWALL_OUTBOUND_SUBNETS=192.168.178.0/24
+    ports:
+      - 9697:9696   # prowlarr
+      - 8990:8989   # sonarr
+      - 7879:7878   # radarr
+      - 8686:8686   # lidarr
+      - 8191:8191   # flaresolverr
+      - 8080:8080   # qbittorrent
+    restart: unless-stopped
+    networks:
+      - arrs
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/Prowlarr/Config:/config
+      - C:/Users/Jesse/Documents/Arrs/Prowlarr/Backup:/data/Backup
+      - C:/Users/Jesse/Documents/Arrs/Downloads:/data/downloads
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/Sonarr/Config:/config
+      - C:/Users/Jesse/Documents/Arrs/Sonarr/Backup:/data/Backup
+      - C:/Users/Jesse/Documents/Arrs/Sonarr/tvshows:/data/tvshows
+      - C:/Users/Jesse/Documents/Arrs/Downloads:/data/downloads
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/Radarr/Config:/config
+      - C:/Users/Jesse/Documents/Arrs/Radarr/Movies:/data/movies
+      - C:/Users/Jesse/Documents/Arrs/Downloads:/data/downloads
+      - C:/Users/Jesse/Documents/Arrs/Radarr/Backup:/data/Backup
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/Lidarr/Config:/config
+      - C:/Users/Jesse/Documents/Arrs/Lidarr/Music:/data/musicfolder
+      - C:/Users/Jesse/Documents/Arrs/Downloads:/data/downloads
+      - C:/Users/Jesse/Documents/Arrs/Lidarr/Backup:/data/Backup
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Amsterdam
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - WEBUI_PORT=8080
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/qBittorrent/Config:/config
+      - C:/Users/Jesse/Documents/Arrs/Downloads:/data/downloads
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - C:/Users/Jesse/Documents/Arrs/Overseerr/Config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    networks:
+      - arrs
+      
+networks:
+  arrs:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1
