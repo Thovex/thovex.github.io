@@ -3,100 +3,56 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Jesse van Vliet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <!-- Include EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function () {
-            // Initialize EmailJS with your user ID
-            emailjs.init("jfKYvjN2eUmaqjzZg");
-        })();
-    </script>
+    <meta name="description" content="Contact Jesse van Vliet, Game Programmer.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <header>
-        <nav style="margin:50px">
-            <div style="text-align: center">
-                <p style="font-size: 32pt">Jesse van Vliet</p>
-                <p style="margin-bottom:50px">Gameplay Programmer</p>
-                <ul class="menu">
-                    <li><a href="index">Home</a></li>
-                    <li><a href="about">About</a></li>
-                    <li><a href="contact">Contact</a></li>
-                </ul>
+    <div id="nav-placeholder"></div>
+
+    <!-- Contact -->
+    <section class="contact-hero">
+        <div class="contact-inner">
+            <div class="contact-header" data-reveal>
+                <p class="section-label">// contact</p>
+                <h1>Get in Touch</h1>
+                <p>Reach out directly or connect with me on LinkedIn.</p>
             </div>
-        </nav>
-    </header>
 
-    <section class="intro-section">
-        <div class="contact-container">
-            <h1>Contact Me</h1>
-            <br/>
+            <div class="contact-options" data-reveal>
+                <a href="mailto:jjvanvliet@protonmail.com" class="contact-card">
+                    <div class="contact-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <div class="contact-card-info">
+                        <h3>Email</h3>
+                        <p>jjvanvliet@protonmail.com</p>
+                    </div>
+                    <svg class="contact-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
 
-            <p>Feel free to reach out through the form below or connect with me on LinkedIn!</p>
-
-            <br/>
-            <br/>
-
-            <!-- Contact Form -->
-            <form id="contact-form" style="max-width: 600px; margin: 0 auto;">
-                <div style="margin-bottom: 15px;">
-                    <label for="name" style="display: block; margin-bottom: 5px;">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your Name" style="width: 100%; padding: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required>
-                </div>
-
-                <div style="margin-bottom: 15px;">
-                    <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email" style="width: 100%; padding: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required>
-                </div>
-
-                <div style="margin-bottom: 15px;">
-                    <label for="message" style="display: block; margin-bottom: 5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message</label>
-                    <textarea id="message" name="message" placeholder="Your Message" style="width: 100%; padding: 10px; height: 150px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" required></textarea>
-                </div>
-
-                <button type="submit" style="background-color: #124e68; color: #fff; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">Send Message</button>
-            </form>
+                <a href="https://www.linkedin.com/in/jesse-j-van-vliet/" target="_blank" rel="noopener" class="contact-card">
+                    <div class="contact-card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </div>
+                    <div class="contact-card-info">
+                        <h3>LinkedIn</h3>
+                        <p>jesse-j-van-vliet</p>
+                    </div>
+                    <svg class="contact-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
         </div>
     </section>
 
-    <footer class="social-section">
-        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a href="mailto:jessevanvliet@hotmail.com">Mail</a>
-    </footer>
+    <div id="footer-placeholder"></div>
 
-    <!-- EmailJS Send Email Script -->
-    <script>
-        // Add event listener to the form submit event
-        document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Collect form data
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            // Define the parameters for EmailJS
-            const templateParams = {
-                name: name,
-                email: email,
-                message: message
-            };
-
-            // Send email using EmailJS
-            emailjs.send('service_ay4qrq4', 'template_2yun3vn', templateParams)
-                .then(function(response) {
-                    alert('Message sent successfully!'); // Show success message
-                    document.getElementById('contact-form').reset(); // Reset form fields
-                }, function(error) {
-                    alert('Failed to send message. Please try again.'); // Show error message
-                    console.error('EmailJS Error:', error);
-                });
-        });
-    </script>
+    <script src="components.js"></script>
 </body>
 
 </html>

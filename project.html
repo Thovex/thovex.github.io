@@ -2,62 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Jesse van Vliet | Gameplay Programmer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Jesse van Vliet</title>
+    <meta name="description" content="Project details by Jesse van Vliet, Game Programmer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav style="margin:50px">
-            <div style="text-align: center">
-                <p style="font-size: 32pt">Jesse van Vliet</p>
-                <p style="margin-bottom:50px">Gameplay Programmer</p>
-                <ul class="menu">
-                    <li><a href="index">Home</a></li>
-                    <li><a href="about">About</a></li>
-                    <li><a href="contact">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <div id="nav-placeholder"></div>
 
-    <section>
-        <div class="project-header" id="project-header">
-        </div>
-        <div id="banner-container">
-        </div>
-    </section>
-    
-    <main>
-        <div class="project-details" id="project-details">
-            <h1 style="margin: 25px 0">Work</h1>
-            
-            <div id="project-work">
-
-            </div>
-
-            <div id="media-container">
-                <hr style="margin: 25px 0">
-            
-                <h1 style="margin: 25px 0">Media</h1>
-            
-                <div id="media-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <section class="social-section">
-        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a href="mailto:jessevanvliet@hotmail.com">Mail</a>
+    <!-- Project Hero (populated by JS) -->
+    <section class="project-hero" id="projectHero">
+        <div class="project-hero-bg" id="heroBg"></div>
+        <div class="project-hero-content" id="heroContent"></div>
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Work Section -->
+    <section class="project-work-section" id="workSection" style="display:none;">
+        <div class="project-work-inner">
+            <h2 class="section-title" data-reveal>Contributions</h2>
+            <p class="project-work-note" data-reveal>Only features I am directly involved with are listed.</p>
+            <div class="work-grid" id="workGrid"></div>
+        </div>
+    </section>
 
+    <!-- Media Section -->
+    <section class="project-media-section" id="mediaSection" style="display:none;">
+        <div class="project-media-inner">
+            <h2 class="section-title" data-reveal style="margin-bottom: 2rem;">Media</h2>
+            <div class="media-grid" id="mediaGrid"></div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="components.js"></script>
     <script src="project_script.js"></script>
 </body>
 </html>

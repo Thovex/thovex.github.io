@@ -3,119 +3,86 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Jesse van Vliet | Gameplay Programmer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jesse van Vliet | Game Programmer</title>
+    <meta name="description" content="Game Programmer specializing in C++ gameplay and networking. Unreal Engine, custom engines, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <header>
-        <nav style="margin:50px">
-            <div style="text-align: center">
-                <p style="font-size: 32pt">Jesse van Vliet</p>
-                <p style="margin-bottom:50px">Gameplay Programmer</p>
-                <ul class="menu">
-                    <li><a href="index">Home</a></li>
-                    <li><a href="about">About</a></li>
-                    <li><a href="contact">Contact</a></li>
-                </ul>
+    <div id="nav-placeholder"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Open to Connect
             </div>
-        </nav>
-    </header>
-
-    <section class="intro-section">
-        <p>
-            Welcome! I'm a dedicated Game Programmer with a strong passion for C++ programming, particularly in gameplay and networking. <br>Currently, I am immersed in two exciting projects that showcase my expertise and creativity.
-            <br><br>Firstly, I'm working on Ember Sword, a web-based MMORPG developed using the Radiance engine. <br>Radiance is a custom C++ game engine built on an ECS framework, designed for optimal performance in both browser and client environments.
-            <br><br>Secondly, I am developing my personal project, Farmion. <br>This is a time-management co-op farming game set in a magical wizarding world where players can explore, gather, craft, and build their own farms. Farmion is being brought to life using Unreal Engine 5.
-        </p>
-    </section>
-
-    <main>
-        <div class="container">
-            <section class="filter-section">
-                <label>Language:</label>
-                <div class="filter-wrapper">
-                    <select id="languageFilter" class="filter">
-                        <option value="all">All</option>
-                        <option value="C++">C++</option>
-                        <option value="Verse">Verse</option>
-                        <option value="C#">C#</option>
-                    </select>
-                    <div class="reset-filter" data-target="languageFilter">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
-                <label>Engine:</label>
-                <div class="filter-wrapper">
-                    <select id="engineFilter" class="filter">
-                        <option value="all">All</option>
-                        <option value="Unreal">Unreal</option>
-                        <option Value="UEFN">UEFN</option>
-                        <option value="Unity">Unity</option>
-                        <option value="Radiance">Radiance</option>
-                    </select>
-                    <div class="reset-filter" data-target="engineFilter">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
-                <label>Role:</label>
-                <div class="filter-wrapper">
-                    <select id="roleFilter" class="filter">
-                        <option value="all">All</option>
-                        <option value="Gameplay Programmer">Gameplay Programmer</option>
-                        <option value="Game Programmer">Game Programmer</option>
-                        <option value="Tools Programmer">Tools Programmer</option>
-                    </select>
-                    <div class="reset-filter" data-target="roleFilter">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
-                <label>Source:</label>
-                <div class="filter-wrapper">
-                    <select id="typeFilter" class="filter">
-                        <option value="all">All</option>
-                        <option value="BSS">Bright Star Studios</option>
-                        <option value="Zloppy-Games">Zloppy Games</option>
-                        <option value="BH">Baer &amp; Hoggo</option>
-                        <option value="HKU">University of the Arts Utrecht</option>
-                        <option value="Hobby">Hobby Projects</option>
-                    </select>
-                    <div class="reset-filter" data-target="typeFilter">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-
-                <div id="typeDescription"></div>
-            </section>
-
-            <section class="portfolio">
-
-            </section>
-
-
+            <h1 class="hero-title">
+                Jesse van Vliet<br>
+                <span class="highlight">Game Programmer</span>
+            </h1>
+            <p class="hero-subtitle">
+                C++ gameplay &amp; networking specialist crafting interactive experiences
+                with Unreal Engine and custom engines.
+            </p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                    </svg>
+                    View Projects
+                </a>
+                <a href="contact.html" class="btn btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    Get in Touch
+                </a>
+            </div>
         </div>
-    </main>
+    </section>
 
+    <!-- Projects -->
+    <section class="section" id="projects">
+        <div class="section-inner">
+            <div class="section-header" data-reveal>
+                <p class="section-label">// portfolio</p>
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-desc">A selection of professional and personal projects spanning MMORPGs, farming sims, tycoons, and custom engine tools.</p>
+            </div>
 
-    <section class="other">
-        <div>
-            <h1 style="margin: 25px 0;" >Other Projects</h1>
-            <ul id="other-projects">
-            </ul>
+            <div class="filter-bar" data-reveal id="filterBar"></div>
+
+            <div class="projects-grid" id="projectsGrid"></div>
         </div>
-        
     </section>
 
-    <section class="social-section">
-        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a href="mailto:jessevanvliet@hotmail.com">Mail</a>
+    <!-- Archive -->
+    <section class="section other-projects-section" id="archive">
+        <div class="section-inner">
+            <div class="section-header" data-reveal>
+                <p class="section-label">// archive</p>
+                <h2 class="section-title">Other Projects</h2>
+                <p class="section-desc">Earlier work from university, internships, and hobby explorations.</p>
+            </div>
+            <div class="archive-list" id="archiveList" data-reveal></div>
+        </div>
     </section>
 
+    <div id="footer-placeholder"></div>
+
+    <script src="components.js"></script>
     <script src="script.js"></script>
 </body>
 

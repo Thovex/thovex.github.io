@@ -3,109 +3,106 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Jesse van Vliet | Gameplay Programmer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Jesse van Vliet</title>
+    <meta name="description" content="About Jesse van Vliet, Game Programmer specializing in C++ gameplay and networking.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
 </head>
 
 <body>
-    <header>
-        <nav style="margin:50px">
-            <div style="text-align: center">
-                <p style="font-size: 32pt">Jesse van Vliet</p>
-                <p style="margin-bottom:50px">Gameplay Programmer</p>
-                <ul class="menu">
-                    <li><a href="index">Home</a></li>
-                    <li><a href="about">About</a></li>
-                    <li><a href="contact">Contact</a></li>
-                </ul>
+    <div id="nav-placeholder"></div>
+
+    <!-- About Hero -->
+    <section class="about-hero">
+        <div class="about-inner">
+            <div class="about-header" data-reveal>
+                <p class="section-label">// about</p>
+                <h1>Curriculum Vitae</h1>
+                <p>Download or preview my CV below.</p>
             </div>
-        </nav>
-    </header>
 
-    <section class="intro-section">
-        <div class="about-container">
-            <p><a style="color:#fff" href="jessevanvliet-cv.pdf" class="download-button">Open CV</a></p>
+            <div class="cv-viewer" data-reveal>
+                <div class="cv-actions">
+                    <a href="jessevanvliet-cv.pdf" class="btn btn-primary" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download CV
+                    </a>
+                    <a href="jessevanvliet-cv_onepage.pdf" class="btn btn-secondary" target="_blank">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        One-Page Version
+                    </a>
+                </div>
+                <div class="cv-canvas-container">
+                    <canvas id="pdf-render"></canvas>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="intro-section">
-        <div class="about-container">
-            <canvas id="pdf-render" style="border: 1px solid #ccc; margin: 0 auto; display: block;"></canvas>
-        </div>
-    </section>
+    <div id="footer-placeholder"></div>
 
-    <footer class="social-section">
-        <a href="https://www.linkedin.com/in/jesse-j-van-vliet/">LinkedIn</a><span>,&nbsp;</span><a
-            href="mailto:jessevanvliet@hotmail.com">Mail</a>
-    </footer>
-
+    <script src="components.js"></script>
     <script>
-        const url = 'jessevanvliet-cv.pdf';
+
+        // ─── PDF Render ───
+        const pdfUrl = 'jessevanvliet-cv.pdf';
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
-    
+
         let pdfDoc = null;
         let renderTask = null;
-    
+
         async function renderPDF(url) {
-            if (renderTask) {
-                renderTask.cancel();
-            }
-    
+            if (renderTask) renderTask.cancel();
+
             if (!pdfDoc) {
                 const loadingTask = pdfjsLib.getDocument(url);
                 pdfDoc = await loadingTask.promise;
             }
-    
+
             const page = await pdfDoc.getPage(1);
             const canvas = document.getElementById('pdf-render');
             const ctx = canvas.getContext('2d');
-    
-            // Get container width and calculate scale
-            const container = canvas.parentElement;
-            const containerWidth = container.clientWidth;
-            const viewport = page.getViewport({ scale: 1 });
 
-            const scale = containerWidth / viewport.width * 0.5;
-    
-            // Apply calculated scale
+            const container = canvas.parentElement;
+            const containerWidth = Math.min(container.clientWidth, 800);
+            const viewport = page.getViewport({ scale: 1 });
+            const scale = containerWidth / viewport.width;
             const scaledViewport = page.getViewport({ scale });
-    
-            // Reset transformations and set canvas dimensions
+
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             canvas.width = scaledViewport.width;
             canvas.height = scaledViewport.height;
-    
-            // Render the PDF page to the canvas
-            const renderContext = {
+
+            renderTask = page.render({
                 canvasContext: ctx,
                 viewport: scaledViewport,
                 textLayerMode: 0
-            };
-    
-            renderTask = page.render(renderContext);
+            });
+
             try {
                 await renderTask.promise;
             } catch (error) {
-                if (error.name === 'RenderingCancelledException') {
-                    console.log('Rendering was cancelled, restarting rendering...');
-                    return;
-                } else {
+                if (error.name !== 'RenderingCancelledException') {
                     console.error('Error rendering PDF:', error);
                 }
             }
         }
-    
-        // Call the render function on load
-        renderPDF(url);
-    
-        // Add event listener to handle window resize for dynamic scaling
-        window.addEventListener('resize', () => renderPDF(url));
+
+        renderPDF(pdfUrl);
+        window.addEventListener('resize', () => renderPDF(pdfUrl));
     </script>
-    
 </body>
 
 </html>
