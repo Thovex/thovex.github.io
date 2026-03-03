@@ -158,6 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
         projects.forEach(project => {
             if (!project.card) return;
 
+            const typeLabels = {
+                'BSS': 'Bright Star Studios',
+                'Zloppy-Games': 'Zloppy Games',
+                'BH': 'Baer & Hoggo',
+                'HKU': 'HKU',
+                'Hobby': 'Hobby',
+                'PixelPool': 'PixelPool'
+            };
+
             const card = document.createElement('div');
             card.className = 'project-card';
             card.dataset.language = project.language;
@@ -184,18 +193,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="project-card-body">
                     <h3>${project.title}</h3>
+                    <span class="project-card-date">${project.datetime}</span>
                     <div class="project-card-meta">
-                        <span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            ${project.datetime}
+                        <span class="meta-language">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            ${project.language}
                         </span>
-                        <span>
+                        <span class="meta-engine">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                            ${project.engine} · ${project.language}
+                            ${project.engine}
                         </span>
-                        <span>
+                        <span class="meta-role">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                             ${project.role}
+                        </span>
+                        <span class="meta-source">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>
+                            ${typeLabels[project.type] || project.type}
                         </span>
                     </div>
                     <p class="project-card-desc">${project.description}</p>
