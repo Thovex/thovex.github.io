@@ -123,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const workSection = document.getElementById('workSection');
         const workGrid = document.getElementById('workGrid');
         workSection.style.display = '';
+        workGrid.setAttribute('data-reveal', '');
 
         project.work.forEach(item => {
             const card = document.createElement('div');
             card.className = 'work-card';
-            card.setAttribute('data-reveal', '');
             if (typeof item === 'string') {
                 card.innerHTML = `<h4>${item}</h4>`;
             } else {
