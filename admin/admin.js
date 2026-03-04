@@ -74,15 +74,20 @@ function showToast(message, type = 'info') {
 }
 
 // ─── Confirm Dialog ───
-function showConfirm(title, message) {
+function showConfirm(title, message, { okLabel = 'Confirm', okClass = 'btn-primary' } = {}) {
     return new Promise((resolve) => {
         $('confirmTitle').textContent = title;
         $('confirmMessage').textContent = message;
+
+        const btn = $('btnConfirmOk');
+        btn.textContent = okLabel;
+        btn.className = `btn ${okClass}`;
+
         $('confirmDialog').classList.add('active');
 
         const cleanup = () => $('confirmDialog').classList.remove('active');
 
-        $('btnConfirmOk').onclick = () => { cleanup(); resolve(true); };
+        btn.onclick = () => { cleanup(); resolve(true); };
         $('btnConfirmCancel').onclick = () => { cleanup(); resolve(false); };
     });
 }
@@ -399,7 +404,8 @@ window.cmsDeleteProject = async (id) => {
     const project = projects.find(p => p.id === id);
     const confirmed = await showConfirm(
         'Delete Project',
-        `Are you sure you want to delete "${project?.title || id}"?`
+        `Are you sure you want to delete "${project?.title || id}"?`,
+        { okLabel: 'Delete', okClass: 'btn-danger' }
     );
     if (!confirmed) return;
 
@@ -590,7 +596,8 @@ $('jsonFileInput').addEventListener('change', async (e) => {
 
         const confirmed = await showConfirm(
             'Import Projects',
-            `Import ${data.length} projects from file? This will merge with existing data.`
+            `Import ${data.length} projects from file? This will merge with existing data.`,
+            { okLabel: 'Import' }
         );
         if (!confirmed) return;
 
@@ -614,7 +621,8 @@ $('jsonFileInput').addEventListener('change', async (e) => {
 $('btnSeedFirestore').addEventListener('click', async () => {
     const confirmed = await showConfirm(
         'Seed from projects.json',
-        'Fetch the live projects.json and import all projects to Firestore?'
+        'Fetch the live projects.json and import all projects to Firestore?',
+        { okLabel: 'Seed' }
     );
     if (!confirmed) return;
 
@@ -640,7 +648,8 @@ $('btnSeedFirestore').addEventListener('click', async () => {
 $('btnClearAll').addEventListener('click', async () => {
     const confirmed = await showConfirm(
         'Clear All Projects',
-        'This will permanently delete ALL projects from the CMS. Are you sure?'
+        'This will permanently delete ALL projects from the CMS. Are you sure?',
+        { okLabel: 'Delete All', okClass: 'btn-danger' }
     );
     if (!confirmed) return;
 
@@ -721,7 +730,8 @@ $('btnCommitGithub').addEventListener('click', async () => {
 
     const confirmed = await showConfirm(
         'Commit to GitHub',
-        `Push projects.json to ${owner}/${repo} (${branch})?`
+        `Push projects.json to ${owner}/${repo} (${branch})?`,
+        { okLabel: 'Push', okClass: 'btn-success' }
     );
     if (!confirmed) return;
 
