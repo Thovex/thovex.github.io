@@ -206,9 +206,360 @@ function debounce(fn, ms = 400) {
 function attachPreviewListener(input, previewContainer) {
     const update = debounce(() => renderMediaPreview(previewContainer, input.value.trim()));
     input.addEventListener('input', update);
-    // Initial render
     if (input.value.trim()) update();
 }
+
+// ─── Dynamic Settings (Languages, Types) ───
+let cmsLanguages = ['C++', 'C#', 'C', 'Java', 'JavaScript', 'TypeScript', 'Python', 'GDScript', 'Lua', 'Rust', 'Go', 'Blueprint', 'UEFN', 'meow-speak'];
+let cmsTypes = [
+    { value: 'Hobby', label: 'Hobby' },
+    { value: 'BSS', label: 'Bright Star Studios' },
+    { value: 'BH', label: 'Baer & Hoggo' },
+    { value: 'HKU', label: 'HKU' },
+    { value: 'Zloppy-Games', label: 'Zloppy Games' },
+    { value: 'PixelPool', label: 'PixelPool' }
+];
+
+async function loadCmsSettings() {
+    if (!db) return;
+    try {
+        const langDoc = await getDocs(query(collection(db, 'settings')));
+        langDoc.forEach(d => {
+            if (d.id === 'languages' && d.data().list) cmsLanguages = d.data().list;
+            if (d.id === 'types' && d.data().list) cmsTypes = d.data().list;
+        });
+    } catch (e) { console.warn('Settings load failed:', e.message); }
+    renderSettingsManagers();
+}
+
+async function saveCmsLanguages() {
+    if (!db) return;
+    try {
+        await setDoc(doc(db, 'settings', 'languages'), { list: cmsLanguages });
+        showToast('Languages saved.', 'success');
+    } catch (e) { showToast('Failed to save languages.', 'error'); }
+}
+
+async function saveCmsTypes() {
+    if (!db) return;
+    try {
+        await setDoc(doc(db, 'settings', 'types'), { list: cmsTypes });
+        showToast('Types saved.', 'success');
+    } catch (e) { showToast('Failed to save types.', 'error'); }
+}
+
+function renderSettingsManagers() {
+    // Languages manager
+    const langContainer = $('languagesManager');
+    if (langContainer) {
+        langContainer.querySelectorAll('.tag-pill').forEach(p => p.remove());
+        const input = $('languageManagerInput');
+        cmsLanguages.forEach(lang => {
+            const pill = document.createElement('span');
+            pill.className = 'tag-pill';
+            pill.innerHTML = `${escapeHtml(lang)} <button type="button">&times;</button>`;
+            pill.querySelector('button').addEventListener('click', () => {
+                cmsLanguages = cmsLanguages.filter(l => l !== lang);
+                saveCmsLanguages();
+                renderSettingsManagers();
+            });
+            langContainer.insertBefore(pill, input);
+        });
+    }
+
+    // Types manager
+    const typeContainer = $('typesManager');
+    if (typeContainer) {
+        typeContainer.querySelectorAll('.tag-pill').forEach(p => p.remove());
+        const input = $('typeManagerInput');
+        cmsTypes.forEach(t => {
+            const pill = document.createElement('span');
+            pill.className = 'tag-pill';
+            const display = t.value === t.label ? t.label : `${t.value}: ${t.label}`;
+            pill.innerHTML = `${escapeHtml(display)} <button type="button">&times;</button>`;
+            pill.querySelector('button').addEventListener('click', () => {
+                cmsTypes = cmsTypes.filter(x => x.value !== t.value);
+                saveCmsTypes();
+                renderSettingsManagers();
+            });
+            typeContainer.insertBefore(pill, input);
+        });
+    }
+}
+
+$('languageManagerInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = e.target.value.trim();
+        if (val && !cmsLanguages.includes(val)) {
+            cmsLanguages.push(val);
+            cmsLanguages.sort();
+            saveCmsLanguages();
+            renderSettingsManagers();
+        }
+        e.target.value = '';
+    }
+});
+
+$('typeManagerInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const raw = e.target.value.trim();
+        if (!raw) return;
+        let value, label;
+        if (raw.includes(':')) {
+            [value, ...label] = raw.split(':');
+            value = value.trim();
+            label = label.join(':').trim();
+        } else {
+            value = raw;
+            label = raw;
+        }
+        if (!cmsTypes.find(t => t.value === value)) {
+            cmsTypes.push({ value, label });
+            saveCmsTypes();
+            renderSettingsManagers();
+        }
+        e.target.value = '';
+    }
+});
+
+// ─── Combo Box Widget ───
+function initComboBox(inputEl, dropdownEl, getOptions, onAdd) {
+    let isOpen = false;
+
+    function renderDropdown(filter = '') {
+        const options = getOptions();
+        const lf = filter.toLowerCase();
+        const filtered = lf ? options.filter(o => o.label.toLowerCase().includes(lf) || o.value.toLowerCase().includes(lf)) : options;
+        dropdownEl.innerHTML = '';
+
+        filtered.forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'combo-option';
+            div.textContent = opt.label;
+            div.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                inputEl.value = opt.value;
+                closeDropdown();
+                inputEl.dispatchEvent(new Event('change'));
+            });
+            dropdownEl.appendChild(div);
+        });
+
+        if (lf && !options.find(o => o.value.toLowerCase() === lf || o.label.toLowerCase() === lf)) {
+            const addDiv = document.createElement('div');
+            addDiv.className = 'combo-option combo-option-add';
+            addDiv.textContent = `+ Add "${filter}"`;
+            addDiv.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                if (onAdd) onAdd(filter);
+                inputEl.value = filter;
+                closeDropdown();
+            });
+            dropdownEl.appendChild(addDiv);
+        }
+
+        if (dropdownEl.children.length > 0) {
+            dropdownEl.classList.add('open');
+            isOpen = true;
+        }
+    }
+
+    function closeDropdown() {
+        dropdownEl.classList.remove('open');
+        isOpen = false;
+    }
+
+    inputEl.addEventListener('focus', () => renderDropdown(inputEl.value));
+    inputEl.addEventListener('input', () => renderDropdown(inputEl.value));
+    inputEl.addEventListener('blur', () => setTimeout(closeDropdown, 150));
+}
+
+// ─── Period Year-Range Selector ───
+function initPeriodSelector() {
+    const startSel = $('periodStart');
+    const endSel = $('periodEnd');
+    const presentCb = $('periodPresent');
+    if (!startSel || !endSel) return;
+
+    const currentYear = new Date().getFullYear();
+    const startYear = 2005;
+    const endYear = currentYear + 5;
+
+    startSel.innerHTML = '';
+    endSel.innerHTML = '';
+
+    for (let y = endYear; y >= startYear; y--) {
+        startSel.add(new Option(y, y));
+        endSel.add(new Option(y, y));
+    }
+
+    startSel.value = currentYear;
+    endSel.value = currentYear;
+
+    presentCb.addEventListener('change', () => {
+        endSel.disabled = presentCb.checked;
+    });
+}
+
+function setPeriodFromString(str) {
+    const startSel = $('periodStart');
+    const endSel = $('periodEnd');
+    const presentCb = $('periodPresent');
+    if (!str || !startSel) return;
+
+    if (str.includes('-')) {
+        const [s, e] = str.split('-').map(p => p.trim());
+        startSel.value = parseInt(s) || startSel.value;
+        if (e.toLowerCase() === 'present') {
+            presentCb.checked = true;
+            endSel.disabled = true;
+        } else {
+            endSel.value = parseInt(e) || endSel.value;
+            presentCb.checked = false;
+            endSel.disabled = false;
+        }
+    } else {
+        const y = parseInt(str) || new Date().getFullYear();
+        startSel.value = y;
+        endSel.value = y;
+        presentCb.checked = false;
+        endSel.disabled = false;
+    }
+}
+
+function getPeriodString() {
+    const startSel = $('periodStart');
+    const endSel = $('periodEnd');
+    const presentCb = $('periodPresent');
+    if (!startSel) return '';
+
+    const s = startSel.value;
+    if (presentCb.checked) {
+        return `${s}-Present`;
+    }
+    const e = endSel.value;
+    return s === e ? s : `${s}-${e}`;
+}
+
+initPeriodSelector();
+
+// ─── File Upload via GitHub API ───
+let activeUploadTarget = null;
+
+function getGitHubConfig() {
+    const pat = localStorage.getItem('cms_github_pat');
+    const owner = localStorage.getItem('cms_github_owner') || GITHUB_DEFAULTS.owner;
+    const repo = localStorage.getItem('cms_github_repo') || GITHUB_DEFAULTS.repo;
+    const branch = localStorage.getItem('cms_github_branch') || GITHUB_DEFAULTS.branch;
+    return { pat, owner, repo, branch };
+}
+
+async function uploadFileToGitHub(file, targetPath) {
+    const { pat, owner, repo, branch } = getGitHubConfig();
+    if (!pat) {
+        showToast('Set your GitHub PAT in Settings first.', 'error');
+        return null;
+    }
+
+    if (file.size > 25 * 1024 * 1024) {
+        showToast('File too large (max 25MB). Use YouTube for large videos.', 'error');
+        return null;
+    }
+
+    showToast(`Uploading ${file.name}...`, 'info');
+
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        const content = btoa(bytes.reduce((s, b) => s + String.fromCharCode(b), ''));
+
+        // Check if file already exists (need SHA for update)
+        const getRes = await fetch(
+            `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(targetPath)}?ref=${encodeURIComponent(branch)}`,
+            { headers: { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+        );
+        let sha = null;
+        if (getRes.ok) {
+            sha = (await getRes.json()).sha;
+        }
+
+        const body = { message: `Upload ${targetPath} via CMS`, content, branch };
+        if (sha) body.sha = sha;
+
+        const putRes = await fetch(
+            `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(targetPath)}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${pat}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }
+        );
+
+        if (!putRes.ok) {
+            const err = await putRes.json();
+            throw new Error(err.message || 'GitHub API error');
+        }
+
+        showToast(`Uploaded ${file.name} successfully!`, 'success');
+        return targetPath;
+    } catch (error) {
+        console.error('Upload error:', error);
+        showToast('Upload failed: ' + error.message, 'error');
+        return null;
+    }
+}
+
+function getProjectId() {
+    const form = $('projectForm');
+    return form?.elements?.id?.value?.trim() || 'unknown';
+}
+
+function getUploadPath(file, subfolder = '') {
+    const projectId = getProjectId();
+    const ext = file.name.split('.').pop().toLowerCase();
+    const baseName = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+    const folder = `res/projects/${projectId}`;
+    const subPath = subfolder ? `${folder}/${subfolder}` : folder;
+    return `${subPath}/${baseName}.${ext}`;
+}
+
+$('mediaFileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !activeUploadTarget) return;
+
+    const projectId = getProjectId();
+    if (!projectId || projectId === 'unknown') {
+        showToast('Set a project ID first before uploading.', 'error');
+        e.target.value = '';
+        return;
+    }
+
+    const targetInput = activeUploadTarget;
+    const path = getUploadPath(file);
+    const result = await uploadFileToGitHub(file, path);
+
+    if (result) {
+        targetInput.value = result;
+        targetInput.dispatchEvent(new Event('input'));
+    }
+
+    activeUploadTarget = null;
+    e.target.value = '';
+});
+
+function triggerUpload(targetInput, accept) {
+    activeUploadTarget = targetInput;
+    const fileInput = $('mediaFileInput');
+    fileInput.accept = accept || 'image/*,video/*';
+    fileInput.click();
+}
+
 
 // ─── Auth ───
 if (auth) {
@@ -295,8 +646,46 @@ function enterDashboard(user) {
         <span class="auth-badge">${mfaEnrolled ? '🔐 MFA' : '🔓 No MFA'}</span>
     `;
 
+    loadCmsSettings();
     loadSettings();
     loadProjects();
+
+    // Init combo boxes
+    const form = $('projectForm');
+    initComboBox(
+        form.elements.language,
+        $('languageDropdown'),
+        () => cmsLanguages.map(l => ({ value: l, label: l })),
+        (val) => {
+            if (!cmsLanguages.includes(val)) {
+                cmsLanguages.push(val);
+                cmsLanguages.sort();
+                saveCmsLanguages();
+                renderSettingsManagers();
+            }
+        }
+    );
+    initComboBox(
+        form.elements.type,
+        $('typeDropdown'),
+        () => cmsTypes.map(t => ({ value: t.value, label: t.label })),
+        (val) => {
+            if (!cmsTypes.find(t => t.value === val)) {
+                cmsTypes.push({ value: val, label: val });
+                saveCmsTypes();
+                renderSettingsManagers();
+            }
+        }
+    );
+
+    // Init upload buttons for mini/banner
+    document.querySelectorAll('.btn-upload[data-upload-target]').forEach(btn => {
+        const targetName = btn.dataset.uploadTarget;
+        const targetInput = form.elements[targetName];
+        if (targetInput) {
+            btn.addEventListener('click', () => triggerUpload(targetInput, 'image/*'));
+        }
+    });
 }
 
 // ─── Tabs ───
@@ -441,21 +830,30 @@ function openEditor(project = null) {
     $('bannerPreview').innerHTML = '';
     clearTags();
 
+    // Reset period to current year
+    const currentYear = new Date().getFullYear();
+    $('periodStart').value = currentYear;
+    $('periodEnd').value = currentYear;
+    $('periodPresent').checked = false;
+    $('periodEnd').disabled = false;
+
     if (project) {
         form.elements.id.value = project.id || '';
         form.elements.title.value = project.title || '';
         form.elements.language.value = project.language || '';
         form.elements.engine.value = project.engine || '';
         form.elements.role.value = project.role || '';
-        form.elements.type.value = project.type || 'Hobby';
+        form.elements.type.value = project.type || '';
         form.elements.duration.value = project.duration || '';
-        form.elements.datetime.value = project.datetime || '';
         form.elements.card.checked = project.card !== false;
         form.elements.minisrc.value = project.minisrc || '';
         form.elements.banner.value = project.banner || '';
         form.elements.description.value = project.description || '';
         form.elements.longdescription.value = project.longdescription || '';
         form.elements.archive.value = project.archive || '';
+
+        // Set period selector
+        setPeriodFromString(project.datetime || '');
 
         // Render image previews
         if (project.minisrc) renderMediaPreview($('miniPreview'), project.minisrc);
@@ -506,9 +904,9 @@ $('btnSaveProject').addEventListener('click', async () => {
         language: form.elements.language.value.trim(),
         engine: form.elements.engine.value.trim(),
         role: form.elements.role.value.trim(),
-        type: form.elements.type.value,
+        type: form.elements.type.value.trim(),
         duration: form.elements.duration.value.trim(),
-        datetime: form.elements.datetime.value.trim(),
+        datetime: getPeriodString(),
         card: form.elements.card.checked,
         minisrc: form.elements.minisrc.value.trim(),
         banner: form.elements.banner.value.trim(),
@@ -657,15 +1055,21 @@ function addSocialItem(data = {}) {
         <div class="array-item-fields">
             <input type="text" placeholder="Label (e.g. github.com)" value="${escapeAttr(data.info || '')}">
             <input type="text" placeholder="URL" value="${escapeAttr(data.url || '')}">
-            <input type="text" placeholder="Icon path (e.g. res/ico_github.png)" value="${escapeAttr(data.icon || '')}">
+            <div class="input-with-upload">
+                <input type="text" placeholder="Icon path (e.g. res/ico_github.png)" value="${escapeAttr(data.icon || '')}">
+                <button type="button" class="btn btn-small btn-upload" title="Upload icon">↑</button>
+            </div>
             <div class="array-item-preview social-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
 
-    // Social preview
+    // Upload button for icon
     const inputs = item.querySelectorAll('input');
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(inputs[2], 'image/*'));
+
+    // Social preview
     const previewTarget = item.querySelector('.social-preview-target');
     const updatePreview = debounce(() => {
         renderSocialPreview(previewTarget, inputs[2].value.trim(), inputs[1].value.trim());
@@ -674,8 +1078,6 @@ function addSocialItem(data = {}) {
     inputs[2].addEventListener('input', updatePreview);
 
     container.appendChild(item);
-
-    // Initial preview
     if (data.icon || data.url) {
         renderSocialPreview(previewTarget, data.icon || '', data.url || '');
     }
@@ -700,7 +1102,10 @@ function addScreenshotItem(data = {}) {
     item.className = 'array-item';
     item.innerHTML = `
         <div class="array-item-fields">
-            <input type="text" placeholder="Image path (e.g. res/projects/xxx/ss_1.png)" value="${escapeAttr(data.src || '')}">
+            <div class="input-with-upload">
+                <input type="text" placeholder="Image path (e.g. res/projects/xxx/ss_1.png)" value="${escapeAttr(data.src || '')}">
+                <button type="button" class="btn btn-small btn-upload" title="Upload image">↑</button>
+            </div>
             <input type="text" placeholder="Alt text" value="${escapeAttr(data.alt || '')}">
             <div class="array-item-preview ss-preview-target"></div>
         </div>
@@ -708,15 +1113,16 @@ function addScreenshotItem(data = {}) {
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
 
-    // Screenshot preview
+    // Upload button
     const srcInput = item.querySelector('input');
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'image/*'));
+
+    // Screenshot preview
     const previewTarget = item.querySelector('.ss-preview-target');
     const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
     srcInput.addEventListener('input', updatePreview);
 
     container.appendChild(item);
-
-    // Initial preview
     if (data.src) renderMediaPreview(previewTarget, data.src);
 }
 
@@ -736,22 +1142,26 @@ function addVideoItem(data = {}) {
     item.className = 'array-item';
     item.innerHTML = `
         <div class="array-item-fields">
-            <input type="text" placeholder="Video URL or path (supports YouTube)" value="${escapeAttr(data.src || '')}">
+            <div class="input-with-upload">
+                <input type="text" placeholder="Video URL or path (supports YouTube)" value="${escapeAttr(data.src || '')}">
+                <button type="button" class="btn btn-small btn-upload" title="Upload video">↑</button>
+            </div>
             <div class="array-item-preview vid-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
 
-    // Video preview
+    // Upload button
     const srcInput = item.querySelector('input');
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'video/*'));
+
+    // Video preview
     const previewTarget = item.querySelector('.vid-preview-target');
     const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
     srcInput.addEventListener('input', updatePreview);
 
     container.appendChild(item);
-
-    // Initial preview
     if (data.src) renderMediaPreview(previewTarget, data.src);
 }
 

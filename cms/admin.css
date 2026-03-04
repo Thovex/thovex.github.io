@@ -1172,3 +1172,142 @@ body::after {
     .mfa-box { padding: 2rem 1.5rem; }
     .actions-cell { flex-direction: column; }
 }
+
+/* ─── Combo Box (searchable dropdown) ─── */
+.combo-box {
+    position: relative;
+}
+
+.combo-box input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border-hard);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.combo-box input:focus {
+    border-color: var(--accent);
+}
+
+.combo-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-hard);
+    border-top: none;
+}
+
+.combo-dropdown.open {
+    display: block;
+}
+
+.combo-option {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.combo-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.combo-option-add {
+    color: var(--color-cyan);
+    border-top: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+/* ─── Period Selector ─── */
+.period-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.period-selector select {
+    flex: 1;
+    padding: 0.6rem 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border-hard);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.period-selector select:focus {
+    border-color: var(--accent);
+}
+
+.period-selector select:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.period-selector select option {
+    background: var(--surface);
+}
+
+.period-sep {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.period-present {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.period-present input[type="checkbox"] {
+    accent-color: var(--color-green);
+    cursor: pointer;
+}
+
+/* ─── Input with Upload Button ─── */
+.input-with-upload {
+    display: flex;
+    gap: 0.4rem;
+    align-items: stretch;
+}
+
+.input-with-upload input {
+    flex: 1;
+    min-width: 0;
+}
+
+.btn-upload {
+    border-color: var(--color-cyan) !important;
+    color: var(--color-cyan) !important;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding: 0.3rem 0.5rem !important;
+}
+
+.btn-upload:hover {
+    background: rgba(0, 240, 255, 0.1) !important;
+}
+

@@ -166,6 +166,22 @@
                     </button>
                 </div>
             </div>
+
+            <div class="settings-section">
+                <h3>Languages</h3>
+                <p>Manage the available languages for the project editor dropdown. Ensures consistency (no "C++" vs "c++").</p>
+                <div class="tags-input-container" id="languagesManager">
+                    <input type="text" id="languageManagerInput" placeholder="Add language and press Enter...">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Types / Sources</h3>
+                <p>Manage the available type/source options (e.g. company names, Hobby). Format: <code style="color:var(--color-cyan);font-family:var(--font-mono);font-size:0.8rem;">value:Label</code> or just <code style="color:var(--color-cyan);font-family:var(--font-mono);font-size:0.8rem;">Label</code>.</p>
+                <div class="tags-input-container" id="typesManager">
+                    <input type="text" id="typeManagerInput" placeholder="Add type (e.g. BSS:Bright Star Studios)...">
+                </div>
+            </div>
         </div>
 
     </div>
@@ -193,7 +209,10 @@
                     </div>
                     <div class="form-group">
                         <label>Language</label>
-                        <input type="text" name="language" placeholder="C++">
+                        <div class="combo-box" id="languageCombo">
+                            <input type="text" name="language" placeholder="Select or type..." autocomplete="off">
+                            <div class="combo-dropdown" id="languageDropdown"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Engine</label>
@@ -205,14 +224,10 @@
                     </div>
                     <div class="form-group">
                         <label>Type / Source</label>
-                        <select name="type">
-                            <option value="Hobby">Hobby</option>
-                            <option value="BSS">Bright Star Studios</option>
-                            <option value="BH">Baer &amp; Hoggo</option>
-                            <option value="HKU">HKU</option>
-                            <option value="Zloppy-Games">Zloppy Games</option>
-                            <option value="PixelPool">PixelPool</option>
-                        </select>
+                        <div class="combo-box" id="typeCombo">
+                            <input type="text" name="type" placeholder="Select or type..." autocomplete="off">
+                            <div class="combo-dropdown" id="typeDropdown"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Duration</label>
@@ -220,7 +235,14 @@
                     </div>
                     <div class="form-group">
                         <label>Period</label>
-                        <input type="text" name="datetime" placeholder="2024">
+                        <div class="period-selector">
+                            <select name="periodStart" id="periodStart"></select>
+                            <span class="period-sep">—</span>
+                            <select name="periodEnd" id="periodEnd"></select>
+                            <label class="period-present">
+                                <input type="checkbox" id="periodPresent"> Present
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -239,12 +261,18 @@
                 <div class="form-grid" style="margin-top:1rem;">
                     <div class="form-group">
                         <label>Mini Image (card thumbnail)</label>
-                        <input type="text" name="minisrc" placeholder="res/bg_mini_xxx.png" data-preview="miniPreview">
+                        <div class="input-with-upload">
+                            <input type="text" name="minisrc" placeholder="res/projects/xxx/mini.png" data-preview="miniPreview">
+                            <button type="button" class="btn btn-small btn-upload" data-upload-target="minisrc">↑ Upload</button>
+                        </div>
                         <div class="media-preview" id="miniPreview"></div>
                     </div>
                     <div class="form-group">
                         <label>Banner Image</label>
-                        <input type="text" name="banner" placeholder="res/banner_xxx.png" data-preview="bannerPreview">
+                        <div class="input-with-upload">
+                            <input type="text" name="banner" placeholder="res/projects/xxx/banner.png" data-preview="bannerPreview">
+                            <button type="button" class="btn btn-small btn-upload" data-upload-target="banner">↑ Upload</button>
+                        </div>
                         <div class="media-preview" id="bannerPreview"></div>
                     </div>
                 </div>
@@ -257,7 +285,7 @@
                     </div>
                     <div class="form-group full-width">
                         <label>Long Description</label>
-                        <textarea name="longdescription" rows="3" placeholder="Detailed description for project page..."></textarea>
+                        <textarea name="longdescription" rows="8" placeholder="Detailed description for project page..."></textarea>
                     </div>
                 </div>
 
@@ -335,8 +363,9 @@
     </div>
 </div>
 
-<!-- ─── Hidden file input for JSON import ─── -->
+<!-- ─── Hidden file inputs ─── -->
 <input type="file" id="jsonFileInput" accept=".json" style="display:none">
+<input type="file" id="mediaFileInput" accept="image/*,video/*" style="display:none">
 
 <!-- ─── Firebase SDK (modular, from CDN) ─── -->
 <script type="module" src="admin.js"></script>
