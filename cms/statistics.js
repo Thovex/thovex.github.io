@@ -7,6 +7,7 @@ const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
 // Country name → flag emoji
 function countryFlag(countryName) {
+    if (!countryName || countryName === '(not set)') return '🌐';
     // Common country name → ISO 3166-1 alpha-2 mapping
     const MAP = {
         'United States': 'US', 'United Kingdom': 'GB', 'Germany': 'DE', 'France': 'FR',
@@ -16,25 +17,33 @@ function countryFlag(countryName) {
         'Sweden': 'SE', 'Norway': 'NO', 'Denmark': 'DK', 'Finland': 'FI',
         'Poland': 'PL', 'Belgium': 'BE', 'Switzerland': 'CH', 'Austria': 'AT',
         'Portugal': 'PT', 'Ireland': 'IE', 'New Zealand': 'NZ', 'Singapore': 'SG',
-        'Turkey': 'TR', 'Indonesia': 'ID', 'Thailand': 'TH', 'Philippines': 'PH',
-        'Vietnam': 'VN', 'Malaysia': 'MY', 'Argentina': 'AR', 'Colombia': 'CO',
-        'Chile': 'CL', 'Peru': 'PE', 'Egypt': 'EG', 'South Africa': 'ZA',
-        'Nigeria': 'NG', 'Kenya': 'KE', 'Israel': 'IL', 'Ukraine': 'UA',
-        'Romania': 'RO', 'Czech Republic': 'CZ', 'Czechia': 'CZ', 'Hungary': 'HU',
-        'Greece': 'GR', 'Croatia': 'HR', 'Slovakia': 'SK', 'Bulgaria': 'BG',
-        'Serbia': 'RS', 'Lithuania': 'LT', 'Latvia': 'LV', 'Estonia': 'EE',
-        'Slovenia': 'SI', 'Luxembourg': 'LU', 'Iceland': 'IS', 'Malta': 'MT',
-        'Cyprus': 'CY', 'Taiwan': 'TW', 'Hong Kong': 'HK', 'Pakistan': 'PK',
-        'Bangladesh': 'BD', 'Sri Lanka': 'LK', 'Nepal': 'NP',
+        'Turkey': 'TR', 'Türkiye': 'TR', 'Indonesia': 'ID', 'Thailand': 'TH',
+        'Philippines': 'PH', 'Vietnam': 'VN', 'Malaysia': 'MY', 'Argentina': 'AR',
+        'Colombia': 'CO', 'Chile': 'CL', 'Peru': 'PE', 'Egypt': 'EG',
+        'South Africa': 'ZA', 'Nigeria': 'NG', 'Kenya': 'KE', 'Israel': 'IL',
+        'Ukraine': 'UA', 'Romania': 'RO', 'Czech Republic': 'CZ', 'Czechia': 'CZ',
+        'Hungary': 'HU', 'Greece': 'GR', 'Croatia': 'HR', 'Slovakia': 'SK',
+        'Bulgaria': 'BG', 'Serbia': 'RS', 'Lithuania': 'LT', 'Latvia': 'LV',
+        'Estonia': 'EE', 'Slovenia': 'SI', 'Luxembourg': 'LU', 'Iceland': 'IS',
+        'Malta': 'MT', 'Cyprus': 'CY', 'Taiwan': 'TW', 'Hong Kong': 'HK',
+        'Pakistan': 'PK', 'Bangladesh': 'BD', 'Sri Lanka': 'LK', 'Nepal': 'NP',
         'Saudi Arabia': 'SA', 'United Arab Emirates': 'AE', 'Qatar': 'QA',
         'Kuwait': 'KW', 'Bahrain': 'BH', 'Oman': 'OM', 'Jordan': 'JO',
         'Lebanon': 'LB', 'Iraq': 'IQ', 'Iran': 'IR', 'Morocco': 'MA',
         'Tunisia': 'TN', 'Algeria': 'DZ', 'Ghana': 'GH', 'Ethiopia': 'ET',
         'Tanzania': 'TZ', 'Uganda': 'UG', 'Mozambique': 'MZ',
     };
-    const code = MAP[countryName];
+    let code = MAP[countryName];
+    // If not in map and name is already a 2-letter code, use it directly
+    if (!code && countryName.length === 2 && /^[A-Z]{2}$/.test(countryName)) {
+        code = countryName;
+    }
     if (!code) return '🌐';
-    return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+    try {
+        return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+    } catch {
+        return '🌐';
+    }
 }
 
 // Generate a deterministic avatar color from a string
@@ -347,7 +356,7 @@ async function fetchRealtimeDetailed(accessToken, propertyId) {
             metrics: [{ name: 'activeUsers' }]
         }),
         runGARealtimeReport(accessToken, propertyId, {
-            dimensions: [{ name: 'country' }, { name: 'deviceCategory' }, { name: 'unifiedScreenName' }],
+            dimensions: [{ name: 'country' }, { name: 'deviceCategory' }, { name: 'pageTitle' }],
             metrics: [{ name: 'activeUsers' }],
             limit: 20
         })
@@ -401,7 +410,9 @@ function updateRealtimePanel(realtimeData) {
         const flag = countryFlag(v.country);
         const color = avatarColor(v.country + v.device + v.page);
         const initials = v.country.substring(0, 2).toUpperCase();
-        const pageName = v.page === '(not set)' ? '/' : v.page;
+        // Clean up page title — strip common suffixes like " | Jesse van Vliet"
+        let pageName = v.page === '(not set)' || !v.page ? 'Home' : v.page;
+        pageName = pageName.replace(/\s*[|–—]\s*Jesse\s*van\s*Vliet.*/i, '').trim() || 'Home';
         const userLabel = v.users > 1 ? `${v.users} visitors` : '1 visitor';
 
         return `

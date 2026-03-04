@@ -902,22 +902,45 @@ function enterDashboard(user) {
             btn.addEventListener('click', () => triggerUpload(targetInput, 'image/*', context));
         }
     });
+
+    // Restore tab from URL hash (e.g. #statistics)
+    restoreTabFromHash();
 }
 
 // ─── Tabs ───
+function switchTab(tabName) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    const tabEl = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    const contentEl = $('tab-' + tabName);
+    if (tabEl && contentEl) {
+        tabEl.classList.add('active');
+        contentEl.classList.add('active');
+    }
+    // Init statistics when tab is shown
+    if (tabName === 'statistics') {
+        initStatistics();
+    }
+}
+
 document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        $('tab-' + tab.dataset.tab).classList.add('active');
-
-        // Init statistics when tab is shown
-        if (tab.dataset.tab === 'statistics') {
-            initStatistics();
-        }
+        const tabName = tab.dataset.tab;
+        switchTab(tabName);
+        history.replaceState(null, '', '#' + tabName);
     });
 });
+
+// Restore tab from URL hash on load
+function restoreTabFromHash() {
+    const hash = location.hash.replace('#', '');
+    if (hash && document.querySelector(`.tab[data-tab="${hash}"]`)) {
+        switchTab(hash);
+    }
+}
+
+// Handle browser back/forward
+window.addEventListener('hashchange', restoreTabFromHash);
 
 // ─── Settings ───
 function loadSettings() {
