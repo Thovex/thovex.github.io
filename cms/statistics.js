@@ -476,7 +476,7 @@ function renderStats(data) {
         </div>
 
         <div class="stats-footer">
-            <span>Data from Google Analytics 4 · Realtime updates every 30s · <button class="btn-link" id="btnRefreshStats">Refresh All</button></span>
+            <span>Data from Google Analytics 4 · Realtime updates every 15s · <button class="btn-link" id="btnRefreshStats">Refresh All</button></span>
         </div>
     `;
 
@@ -529,7 +529,7 @@ function startRealtimeRefresh() {
                 }
             }
         } catch {}
-    }, 30000); // every 30 seconds
+    }, 15000); // every 15 seconds
 }
 
 function stopRealtimeRefresh() {
