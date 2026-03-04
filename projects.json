@@ -47,6 +47,10 @@
             {
                 "src": "res/projects/dtail-spaces/ss_dtail_3.png",
                 "alt": "Dtail Spaces Screenshot 3"
+            },
+            {
+                "src": "res/projects/dtail-spaces/fashion-data-visualization-dya3mqsf.png",
+                "alt": "Dtail Spaces Screenshot 4"
             }
         ]
     },
@@ -66,48 +70,48 @@
         "longdescription": "Ember Sword is a cross-platform free-to-play fantasy MMORPG. Players can own, control, and evolve their land while trading assets with other players. The game runs on the Radiance Engine, a custom engine built by Bright Star Studios.",
         "work": [
             {
-                "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon.",
-                "title": "Exploration"
+                "title": "Exploration",
+                "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon."
             },
             {
-                "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic.",
-                "title": "Trade Packs"
+                "title": "Trade Packs",
+                "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic."
             },
             {
-                "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server.",
-                "title": "Combat"
+                "title": "Combat",
+                "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server."
             },
             {
-                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more.",
-                "title": "Gameplay Data"
+                "title": "Gameplay Data",
+                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more."
             },
             {
-                "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases.",
-                "title": "Creature Behaviors"
+                "title": "Creature Behaviors",
+                "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases."
             },
             {
-                "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced.",
-                "title": "Gathering"
+                "title": "Gathering",
+                "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced."
             },
             {
-                "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items.",
-                "title": "Crafting"
+                "title": "Crafting",
+                "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items."
             },
             {
-                "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives.",
-                "title": "Quests"
+                "title": "Quests",
+                "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives."
             },
             {
-                "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system.",
-                "title": "Player Interaction"
+                "title": "Player Interaction",
+                "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system."
             },
             {
-                "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced.",
-                "title": "Boss Battles"
+                "title": "Boss Battles",
+                "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced."
             },
             {
-                "description": "Many other systems and features I contributed to over 4+ years.",
-                "title": "And more..."
+                "title": "And more...",
+                "description": "Many other systems and features I contributed to over 4+ years."
             }
         ],
         "tags": [
@@ -116,19 +120,19 @@
         ],
         "socials": [
             {
+                "url": "https://embersword.com",
                 "info": "embersword.com",
-                "icon": "res/projects/ember-sword/ico_embersword.png",
-                "url": "https://embersword.com"
+                "icon": "res/projects/ember-sword/ico_embersword.png"
             }
         ],
         "screenshots": [
             {
-                "alt": "Ember Sword Screenshot 4",
-                "src": "res/projects/ember-sword/ss_embersword_4.png"
+                "src": "res/projects/ember-sword/ss_embersword_4.png",
+                "alt": "Ember Sword Screenshot 4"
             },
             {
-                "alt": "Ember Sword Screenshot 1",
-                "src": "res/projects/ember-sword/ss_embersword_1.png"
+                "src": "res/projects/ember-sword/ss_embersword_1.png",
+                "alt": "Ember Sword Screenshot 1"
             },
             {
                 "alt": "Ember Sword Screenshot 2",
@@ -141,20 +145,20 @@
         ],
         "videos": [
             {
-                "alt": "Ember Sword Gameplay 1",
-                "src": "res/projects/ember-sword/vid_embersword_1.webm"
+                "src": "res/projects/ember-sword/vid_embersword_1.webm",
+                "alt": "Ember Sword Gameplay 1"
             },
             {
                 "alt": "Ember Sword Gameplay 2",
                 "src": "res/projects/ember-sword/vid_embersword_2.webm"
             },
             {
-                "alt": "Ember Sword Gameplay 3",
-                "src": "res/projects/ember-sword/vid_embersword_3.webm"
+                "src": "res/projects/ember-sword/vid_embersword_3.webm",
+                "alt": "Ember Sword Gameplay 3"
             },
             {
-                "alt": "Ember Sword Gameplay 4",
-                "src": "res/projects/ember-sword/vid_embersword_4.webm"
+                "src": "res/projects/ember-sword/vid_embersword_4.webm",
+                "alt": "Ember Sword Gameplay 4"
             }
         ]
     },
@@ -174,36 +178,36 @@
         "longdescription": "A tycoon game built in Fortnite Creative (UEFN) with my friend. We wanted to make something that's genuinely fun rather than just designed to keep kids glued to the screen.",
         "work": [
             {
-                "description": "Designed the core gameplay loop together with my friend: owning plots, building and upgrading structures, displaying resources, 3D world UI, and more.",
-                "title": "Core Design"
+                "title": "Core Design",
+                "description": "Designed the core gameplay loop together with my friend: owning plots, building and upgrading structures, displaying resources, 3D world UI, and more."
             },
             {
-                "description": "Built responsive gathering feedback with clear visual information. Players collect resources from the world to build and upgrade structures.",
-                "title": "Gathering"
+                "title": "Gathering",
+                "description": "Built responsive gathering feedback with clear visual information. Players collect resources from the world to build and upgrade structures."
             },
             {
-                "description": "Built a persistent cosmetics system where players can purchase and equip clothing, accessories, and other visual customizations.",
-                "title": "Cosmetics"
+                "title": "Cosmetics",
+                "description": "Built a persistent cosmetics system where players can purchase and equip clothing, accessories, and other visual customizations."
             },
             {
-                "description": "Built a cooperative system where players work together on shared objectives like building structures or gathering resources.",
-                "title": "Co-op Projects"
+                "title": "Co-op Projects",
+                "description": "Built a cooperative system where players work together on shared objectives like building structures or gathering resources."
             },
             {
-                "description": "Built teleportation for quick travel, plus barriers that gate areas behind objectives or progression milestones.",
-                "title": "Teleportation, Barriers and More"
+                "title": "Teleportation, Barriers and More",
+                "description": "Built teleportation for quick travel, plus barriers that gate areas behind objectives or progression milestones."
             },
             {
-                "description": "Built a reward system for completing objectives, hitting milestones, or simply waiting.",
-                "title": "Gifts"
+                "title": "Gifts",
+                "description": "Built a reward system for completing objectives, hitting milestones, or simply waiting."
             },
             {
-                "description": "Designed the main level layout including resource spawners, player plots, and the overall look and feel.",
-                "title": "Level Design"
+                "title": "Level Design",
+                "description": "Designed the main level layout including resource spawners, player plots, and the overall look and feel."
             },
             {
-                "description": "Various other systems and features.",
-                "title": "And more..."
+                "title": "And more...",
+                "description": "Various other systems and features."
             }
         ],
         "tags": [
@@ -212,9 +216,9 @@
         ],
         "socials": [
             {
-                "info": "fortnite.gg",
                 "url": "https://fortnite.gg/island?code=3579-7551-5955",
-                "icon": "res/ico_site.png"
+                "icon": "res/ico_site.png",
+                "info": "fortnite.gg"
             }
         ],
         "videos": [
@@ -240,44 +244,44 @@
         "longdescription": "Solo dev production. Various art is from the Unreal Marketplace, some made by me. Farmion is a time-management wizard-themed farming sim with cooperative play!",
         "work": [
             {
-                "description": "Time management is everything. You have limited daylight and every day is a 'Tick' in gameplay terms. Forget to water crops? They die. Left your cows outside? They vanish. You'll die too if you're caught outside during the Cycle transition.",
-                "title": "A Cycle a Day"
+                "title": "A Cycle a Day",
+                "description": "Time management is everything. You have limited daylight and every day is a 'Tick' in gameplay terms. Forget to water crops? They die. Left your cows outside? They vanish. You'll die too if you're caught outside during the Cycle transition."
             },
             {
-                "description": "You can hold and throw any object. Real physics isn't in play, just the illusion of it, keeping things reliable in multiplayer while still feeling satisfying.",
-                "title": "Physics Fun"
+                "title": "Physics Fun",
+                "description": "You can hold and throw any object. Real physics isn't in play, just the illusion of it, keeping things reliable in multiplayer while still feeling satisfying."
             },
             {
-                "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants.",
-                "title": "Stage-Based Farming"
+                "title": "Stage-Based Farming",
+                "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants."
             },
             {
-                "description": "Purchase upgrades like a Pantry to store goods, an Animal Barn for your livestock, a Greenhouse, and more.",
-                "title": "Upgrades Everywhere"
+                "title": "Upgrades Everywhere",
+                "description": "Purchase upgrades like a Pantry to store goods, an Animal Barn for your livestock, a Greenhouse, and more."
             },
             {
-                "description": "Games are better together. Farmion is designed for 1-6 players from the ground up.",
-                "title": "Multiplayer"
+                "title": "Multiplayer",
+                "description": "Games are better together. Farmion is designed for 1-6 players from the ground up."
             },
             {
-                "description": "Redesign your magical mansion while waiting for the night to pass.",
-                "title": "House & Character Customization"
+                "title": "House & Character Customization",
+                "description": "Redesign your magical mansion while waiting for the night to pass."
             },
             {
-                "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely.",
-                "title": "Cheese System"
+                "title": "Cheese System",
+                "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely."
             },
             {
-                "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive.",
-                "title": "Buffs System"
+                "title": "Buffs System",
+                "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive."
             },
             {
-                "description": "You can only hold one item at a time, so use carts to haul multiple items around.",
-                "title": "Transportation and Carts"
+                "title": "Transportation and Carts",
+                "description": "You can only hold one item at a time, so use carts to haul multiple items around."
             },
             {
-                "description": "Various other systems and features.",
-                "title": "And more..."
+                "title": "And more...",
+                "description": "Various other systems and features."
             }
         ],
         "tags": [
@@ -286,28 +290,28 @@
         ],
         "socials": [
             {
-                "icon": "res/projects/farmion/ico_farmion.png",
                 "url": "https://linktr.ee/baerandhoggo",
-                "info": "link.tree"
+                "info": "link.tree",
+                "icon": "res/projects/farmion/ico_farmion.png"
             },
             {
+                "url": "https://discord.gg/7X7gYf93ph",
                 "info": "discord",
-                "icon": "res/ico_discord.png",
-                "url": "https://discord.gg/7X7gYf93ph"
+                "icon": "res/ico_discord.png"
             }
         ],
         "screenshots": [
             {
-                "alt": "S11",
-                "src": "res/projects/farmion/ss_farmion_11.png"
+                "src": "res/projects/farmion/ss_farmion_11.png",
+                "alt": "S11"
             },
             {
-                "alt": "S12 - Steam",
-                "src": "res/projects/farmion/ss_farmion_12.png"
+                "src": "res/projects/farmion/ss_farmion_12.png",
+                "alt": "S12 - Steam"
             },
             {
-                "alt": "S1",
-                "src": "res/projects/farmion/ss_farmion_01.png"
+                "src": "res/projects/farmion/ss_farmion_01.png",
+                "alt": "S1"
             },
             {
                 "alt": "S2",
@@ -326,30 +330,30 @@
                 "src": "res/projects/farmion/ss_farmion_05.png"
             },
             {
-                "alt": "S6",
-                "src": "res/projects/farmion/ss_farmion_06.png"
+                "src": "res/projects/farmion/ss_farmion_06.png",
+                "alt": "S6"
             },
             {
-                "alt": "S7",
-                "src": "res/projects/farmion/ss_farmion_07.png"
+                "src": "res/projects/farmion/ss_farmion_07.png",
+                "alt": "S7"
             },
             {
-                "alt": "S8",
-                "src": "res/projects/farmion/ss_farmion_08.png"
+                "src": "res/projects/farmion/ss_farmion_08.png",
+                "alt": "S8"
             },
             {
                 "alt": "S9",
                 "src": "res/projects/farmion/ss_farmion_09.png"
             },
             {
-                "alt": "S10",
-                "src": "res/projects/farmion/ss_farmion_10.png"
+                "src": "res/projects/farmion/ss_farmion_10.png",
+                "alt": "S10"
             }
         ],
         "videos": [
             {
-                "alt": "V1",
-                "src": "res/projects/farmion/vid_farmion_01.mp4"
+                "src": "res/projects/farmion/vid_farmion_01.mp4",
+                "alt": "V1"
             }
         ]
     },
@@ -369,24 +373,24 @@
         "longdescription": "Radiance is a custom engine built by Bright Star Studios for the MMORPG Ember Sword. It's web-based, enabling cross-platform play.",
         "work": [
             {
-                "description": "Created a system to sync Unity with Radiance during the transition between engines. This let Level Design and World Design keep working in Unity until Radiance had matching capabilities.",
-                "title": "Unity to Radiance Sync"
+                "title": "Unity to Radiance Sync",
+                "description": "Created a system to sync Unity with Radiance during the transition between engines. This let Level Design and World Design keep working in Unity until Radiance had matching capabilities."
             },
             {
-                "description": "Created an Animation State Machine Editor so designers could view animation states and their transitions visually.",
-                "title": "Animation State Machine Editor"
+                "title": "Animation State Machine Editor",
+                "description": "Created an Animation State Machine Editor so designers could view animation states and their transitions visually."
             },
             {
-                "description": "Built a visual Behavior Tree Editor for creating and modifying AI behaviors.",
-                "title": "Behavior Tree Editor"
+                "title": "Behavior Tree Editor",
+                "description": "Built a visual Behavior Tree Editor for creating and modifying AI behaviors."
             },
             {
-                "description": "Created an Item Editor for designers to create and modify in-game items.",
-                "title": "Item Editor"
+                "title": "Item Editor",
+                "description": "Created an Item Editor for designers to create and modify in-game items."
             },
             {
-                "description": "Created a Crafting Recipe Editor for managing recipes. Both this and the Item Editor are built on a shared Base Editor Tool I created.",
-                "title": "Crafting Recipe Editor"
+                "title": "Crafting Recipe Editor",
+                "description": "Created a Crafting Recipe Editor for managing recipes. Both this and the Item Editor are built on a shared Base Editor Tool I created."
             }
         ],
         "tags": [
@@ -395,20 +399,20 @@
         ],
         "screenshots": [
             {
-                "alt": "S5",
-                "src": "res/projects/radiance/ss_radiance_05.png"
+                "src": "res/projects/radiance/ss_radiance_05.png",
+                "alt": "S5"
             },
             {
-                "alt": "S1",
-                "src": "res/projects/radiance/ss_radiance_01.png"
+                "src": "res/projects/radiance/ss_radiance_01.png",
+                "alt": "S1"
             },
             {
                 "alt": "S2",
                 "src": "res/projects/radiance/ss_radiance_02.png"
             },
             {
-                "alt": "S3",
-                "src": "res/projects/radiance/ss_radiance_03.png"
+                "src": "res/projects/radiance/ss_radiance_03.png",
+                "alt": "S3"
             },
             {
                 "alt": "S4",
@@ -432,20 +436,20 @@
         "longdescription": "A theme-traversal co-op FPS with roguelike elements. Players travel through differently themed dungeons, each with unique mechanics and enemies, and upgrade their characters as they progress.",
         "work": [
             {
-                "description": "Created seamless multiplayer level transitions so all players travel through dungeon levels together and regroup at the lobby.",
-                "title": "Seamless Co-op"
+                "title": "Seamless Co-op",
+                "description": "Created seamless multiplayer level transitions so all players travel through dungeon levels together and regroup at the lobby."
             },
             {
-                "description": "Worked on weapon mechanics: shooting, reloading, weapon switching, aiming down sights, and more. Accuracy and feel had to be right for all players, with proper replication so everyone sees correct third-person muzzle flashes and projectiles.",
-                "title": "First Person Gunplay"
+                "title": "First Person Gunplay",
+                "description": "Worked on weapon mechanics: shooting, reloading, weapon switching, aiming down sights, and more. Accuracy and feel had to be right for all players, with proper replication so everyone sees correct third-person muzzle flashes and projectiles."
             },
             {
-                "description": "Implemented a loot table system for breakables, enemies, and chests.",
-                "title": "Loot, Loot, and Destructible Loot"
+                "title": "Loot, Loot, and Destructible Loot",
+                "description": "Implemented a loot table system for breakables, enemies, and chests."
             },
             {
-                "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory.",
-                "title": "User Interface"
+                "title": "User Interface",
+                "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory."
             }
         ],
         "tags": [
@@ -458,8 +462,8 @@
                 "src": "res/projects/bitfarers/ss_bitfarers_01.png"
             },
             {
-                "alt": "S2",
-                "src": "res/projects/bitfarers/ss_bitfarers_02.png"
+                "src": "res/projects/bitfarers/ss_bitfarers_02.png",
+                "alt": "S2"
             }
         ],
         "videos": [
@@ -497,16 +501,16 @@
         "longdescription": "An idle game at its core with an active card battling system on top. Players collect cards, upgrade them, and use them in battles to progress.",
         "work": [
             {
-                "description": "Created a turn-based card battling system with AI opponents. The AI evaluates the board state to determine its best move.",
-                "title": "Card Battling vs AI"
+                "title": "Card Battling vs AI",
+                "description": "Created a turn-based card battling system with AI opponents. The AI evaluates the board state to determine its best move."
             },
             {
-                "description": "Built offline simulation so the game progresses while you're away. Come back to big numbers and that sweet dopamine hit.",
-                "title": "Offline Idle Progression"
+                "title": "Offline Idle Progression",
+                "description": "Built offline simulation so the game progresses while you're away. Come back to big numbers and that sweet dopamine hit."
             },
             {
-                "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings.",
-                "title": "Unity UI"
+                "title": "Unity UI",
+                "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings."
             }
         ],
         "tags": [
@@ -515,22 +519,22 @@
         ],
         "screenshots": [
             {
-                "alt": "S2",
-                "src": "res/projects/idle-cards/ss_idlecards_02.png"
+                "src": "res/projects/idle-cards/ss_idlecards_02.png",
+                "alt": "S2"
             },
             {
                 "alt": "S3",
                 "src": "res/projects/idle-cards/ss_idlecards_03.png"
             },
             {
-                "alt": "S1",
-                "src": "res/projects/idle-cards/ss_idlecards_01.png"
+                "src": "res/projects/idle-cards/ss_idlecards_01.png",
+                "alt": "S1"
             }
         ],
         "videos": [
             {
-                "alt": "V1",
-                "src": "res/projects/idle-cards/vid_idlecards_01.mp4"
+                "src": "res/projects/idle-cards/vid_idlecards_01.mp4",
+                "alt": "V1"
             },
             {
                 "alt": "V1",
@@ -554,16 +558,16 @@
         "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. A 3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
         "work": [
             {
-                "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity.",
-                "title": "Wave Function Collapse"
+                "title": "Wave Function Collapse",
+                "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity."
             },
             {
-                "description": "Fly around the generated levels with a drone to showcase the results.",
-                "title": "Drone Flying"
+                "title": "Drone Flying",
+                "description": "Fly around the generated levels with a drone to showcase the results."
             },
             {
-                "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm.",
-                "title": "Graduation Papers & Tools"
+                "title": "Graduation Papers & Tools",
+                "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm."
             }
         ],
         "tags": [
@@ -597,20 +601,20 @@
         "longdescription": "Two Ragdoll cats: one white, one grey. Excellent office staff.",
         "work": [
             {
-                "description": "",
-                "title": "Feeding the Cats"
+                "title": "Feeding the Cats",
+                "description": ""
             },
             {
-                "description": "",
-                "title": "Petting the Cats"
+                "title": "Petting the Cats",
+                "description": ""
             },
             {
-                "description": "",
-                "title": "Playing with the Cats"
+                "title": "Playing with the Cats",
+                "description": ""
             },
             {
-                "description": "",
-                "title": "Cleaning the Litterbox"
+                "title": "Cleaning the Litterbox",
+                "description": ""
             }
         ],
         "tags": [
@@ -618,24 +622,24 @@
         ],
         "screenshots": [
             {
-                "alt": "S1",
-                "src": "res/projects/cat/ss_cat_01.png"
+                "src": "res/projects/cat/ss_cat_01.png",
+                "alt": "S1"
             },
             {
                 "alt": "S3",
                 "src": "res/projects/cat/ss_cat_03.png"
             },
             {
-                "alt": "S4",
-                "src": "res/projects/cat/ss_cat_04.png"
+                "src": "res/projects/cat/ss_cat_04.png",
+                "alt": "S4"
             },
             {
                 "alt": "S5",
                 "src": "res/projects/cat/ss_cat_05.png"
             },
             {
-                "alt": "S2",
-                "src": "res/projects/cat/ss_cat_02.png"
+                "src": "res/projects/cat/ss_cat_02.png",
+                "alt": "S2"
             }
         ]
     },
