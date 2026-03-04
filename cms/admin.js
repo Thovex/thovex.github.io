@@ -28,6 +28,7 @@ import {
 // ─── Constants ───
 const ALLOWED_EMAIL = 'thovexii@gmail.com';
 const GITHUB_DEFAULTS = { owner: 'Thovex', repo: 'thovex.github.io', branch: 'main' };
+const SITE_ROOT = '../';
 
 // ─── Firebase Init ───
 let app, auth, db;
@@ -61,6 +62,12 @@ const screens = {
 function showScreen(name) {
     Object.values(screens).forEach(s => s.classList.remove('active'));
     if (screens[name]) screens[name].classList.add('active');
+    // Trigger reveal animation on visible elements
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.screen.active [data-reveal]').forEach(el => {
+            el.classList.add('revealed');
+        });
+    });
 }
 
 // ─── Toast Notifications ───
@@ -90,6 +97,117 @@ function showConfirm(title, message, { okLabel = 'Confirm', okClass = 'btn-prima
         btn.onclick = () => { cleanup(); resolve(true); };
         $('btnConfirmCancel').onclick = () => { cleanup(); resolve(false); };
     });
+}
+
+// ─── Media Helpers ───
+function getYouTubeId(url) {
+    if (!url) return null;
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+    return m ? m[1] : null;
+}
+
+function isVideoUrl(src) {
+    if (!src) return false;
+    return /\.(mp4|webm|ogg|mov)$/i.test(src) || getYouTubeId(src);
+}
+
+function isImageUrl(src) {
+    if (!src) return false;
+    return /\.(png|jpg|jpeg|gif|webp|svg|bmp)$/i.test(src);
+}
+
+function resolveMediaPath(src) {
+    if (!src) return '';
+    if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('//')) return src;
+    return SITE_ROOT + src;
+}
+
+function renderMediaPreview(container, src) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!src) return;
+
+    const ytId = getYouTubeId(src);
+    if (ytId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}`;
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('frameborder', '0');
+        container.appendChild(iframe);
+        return;
+    }
+
+    const resolved = resolveMediaPath(src);
+
+    if (isVideoUrl(src)) {
+        const video = document.createElement('video');
+        video.src = resolved;
+        video.muted = true;
+        video.loop = true;
+        video.setAttribute('preload', 'metadata');
+        video.addEventListener('mouseenter', () => video.play());
+        video.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+        container.appendChild(video);
+    } else if (isImageUrl(src)) {
+        const img = document.createElement('img');
+        img.src = resolved;
+        img.alt = 'Preview';
+        img.loading = 'lazy';
+        img.onerror = () => { container.innerHTML = '<span class="preview-error">⚠ Image not found</span>'; };
+        container.appendChild(img);
+    } else if (src) {
+        container.innerHTML = '<span class="preview-error">Unknown media type</span>';
+    }
+}
+
+function renderSocialPreview(container, icon, url) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!icon && !url) return;
+
+    const preview = document.createElement('div');
+    preview.className = 'social-link-preview';
+
+    if (icon) {
+        const img = document.createElement('img');
+        img.src = resolveMediaPath(icon);
+        img.alt = 'Icon';
+        img.onerror = () => img.remove();
+        preview.appendChild(img);
+    } else if (url) {
+        try {
+            const hostname = new URL(url).hostname;
+            const favicon = document.createElement('img');
+            favicon.className = 'favicon';
+            favicon.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
+            favicon.alt = '';
+            preview.appendChild(favicon);
+        } catch {}
+    }
+
+    if (url) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = url;
+        preview.appendChild(link);
+    }
+
+    container.appendChild(preview);
+}
+
+function debounce(fn, ms = 400) {
+    let timer;
+    return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+}
+
+function attachPreviewListener(input, previewContainer) {
+    const update = debounce(() => renderMediaPreview(previewContainer, input.value.trim()));
+    input.addEventListener('input', update);
+    // Initial render
+    if (input.value.trim()) update();
 }
 
 // ─── Auth ───
@@ -124,9 +242,7 @@ $('btnGoogleLogin').addEventListener('click', async () => {
         if (user.email !== ALLOWED_EMAIL) {
             showToast('Access denied. Only the authorized account may sign in.', 'error');
             await signOut(auth);
-            return;
         }
-
     } catch (error) {
         if (error.code === 'auth/multi-factor-auth-required') {
             mfaResolver = getMultiFactorResolver(auth, error);
@@ -243,27 +359,49 @@ function renderProjectList() {
         return;
     }
 
-    const rows = projects.map((p, i) => `
-        <tr>
+    const ssIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+    const vidIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+
+    const rows = projects.map((p, i) => {
+        const thumbSrc = p.minisrc ? resolveMediaPath(p.minisrc) : '';
+        const thumbHtml = thumbSrc
+            ? `<img class="project-row-thumb" src="${thumbSrc}" alt="" loading="lazy" onerror="this.style.display='none'">`
+            : '';
+        const ssCount = (p.screenshots || []).length;
+        const vidCount = (p.videos || []).length;
+        const mediaHtml = (ssCount || vidCount) ? `
+            <span class="media-count">
+                ${ssCount ? `${ssIcon} ${ssCount}` : ''}
+                ${vidCount ? `${vidIcon} ${vidCount}` : ''}
+            </span>` : '';
+
+        return `
+        <tr style="animation-delay:${i * 0.04}s">
             <td class="order-cell">
                 <input type="number" value="${p.order ?? i}" min="0" data-id="${p.id}" class="order-input">
             </td>
-            <td class="project-title-cell">${escapeHtml(p.title || '')}</td>
+            <td class="project-title-cell">
+                <div class="title-with-thumb">
+                    ${thumbHtml}
+                    <span>${escapeHtml(p.title || '')}</span>
+                </div>
+            </td>
             <td>${p.card ? '<span class="badge badge-featured">Featured</span>' : '<span class="badge badge-archive">Archive</span>'}</td>
             <td>${escapeHtml(p.engine || '')}</td>
             <td>${escapeHtml(p.language || '')}</td>
             <td>${escapeHtml(p.datetime || '')}</td>
+            <td>${mediaHtml}</td>
             <td class="actions-cell">
                 <button class="btn btn-small" onclick="window.cmsEditProject('${p.id}')">Edit</button>
                 <button class="btn btn-small btn-danger" onclick="window.cmsDeleteProject('${p.id}')">Delete</button>
             </td>
         </tr>
-    `).join('');
+    `}).join('');
 
     container.innerHTML = `
         <table class="project-table">
             <thead><tr>
-                <th>Order</th><th>Title</th><th>Status</th><th>Engine</th><th>Language</th><th>Period</th><th>Actions</th>
+                <th>Order</th><th>Title</th><th>Status</th><th>Engine</th><th>Language</th><th>Period</th><th>Media</th><th>Actions</th>
             </tr></thead>
             <tbody>${rows}</tbody>
         </table>`;
@@ -299,6 +437,8 @@ function openEditor(project = null) {
     $('socialItems').innerHTML = '';
     $('screenshotItems').innerHTML = '';
     $('videoItems').innerHTML = '';
+    $('miniPreview').innerHTML = '';
+    $('bannerPreview').innerHTML = '';
     clearTags();
 
     if (project) {
@@ -317,12 +457,20 @@ function openEditor(project = null) {
         form.elements.longdescription.value = project.longdescription || '';
         form.elements.archive.value = project.archive || '';
 
+        // Render image previews
+        if (project.minisrc) renderMediaPreview($('miniPreview'), project.minisrc);
+        if (project.banner) renderMediaPreview($('bannerPreview'), project.banner);
+
         (project.tags || []).forEach(t => addTag(t));
         (project.work || []).forEach(w => addWorkItem(w));
         (project.socials || []).forEach(s => addSocialItem(s));
         (project.screenshots || []).forEach(s => addScreenshotItem(s));
         (project.videos || []).forEach(v => addVideoItem(v));
     }
+
+    // Attach preview listeners for mini/banner
+    attachPreviewListener(form.elements.minisrc, $('miniPreview'));
+    attachPreviewListener(form.elements.banner, $('bannerPreview'));
 
     $('editorModal').classList.add('active');
 }
@@ -510,11 +658,27 @@ function addSocialItem(data = {}) {
             <input type="text" placeholder="Label (e.g. github.com)" value="${escapeAttr(data.info || '')}">
             <input type="text" placeholder="URL" value="${escapeAttr(data.url || '')}">
             <input type="text" placeholder="Icon path (e.g. res/ico_github.png)" value="${escapeAttr(data.icon || '')}">
+            <div class="array-item-preview social-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
+
+    // Social preview
+    const inputs = item.querySelectorAll('input');
+    const previewTarget = item.querySelector('.social-preview-target');
+    const updatePreview = debounce(() => {
+        renderSocialPreview(previewTarget, inputs[2].value.trim(), inputs[1].value.trim());
+    });
+    inputs[1].addEventListener('input', updatePreview);
+    inputs[2].addEventListener('input', updatePreview);
+
     container.appendChild(item);
+
+    // Initial preview
+    if (data.icon || data.url) {
+        renderSocialPreview(previewTarget, data.icon || '', data.url || '');
+    }
 }
 
 function collectSocialItems() {
@@ -538,11 +702,22 @@ function addScreenshotItem(data = {}) {
         <div class="array-item-fields">
             <input type="text" placeholder="Image path (e.g. res/projects/xxx/ss_1.png)" value="${escapeAttr(data.src || '')}">
             <input type="text" placeholder="Alt text" value="${escapeAttr(data.alt || '')}">
+            <div class="array-item-preview ss-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
+
+    // Screenshot preview
+    const srcInput = item.querySelector('input');
+    const previewTarget = item.querySelector('.ss-preview-target');
+    const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
+    srcInput.addEventListener('input', updatePreview);
+
     container.appendChild(item);
+
+    // Initial preview
+    if (data.src) renderMediaPreview(previewTarget, data.src);
 }
 
 function collectScreenshotItems() {
@@ -561,12 +736,23 @@ function addVideoItem(data = {}) {
     item.className = 'array-item';
     item.innerHTML = `
         <div class="array-item-fields">
-            <input type="text" placeholder="Video URL or path" value="${escapeAttr(data.src || '')}">
+            <input type="text" placeholder="Video URL or path (supports YouTube)" value="${escapeAttr(data.src || '')}">
+            <div class="array-item-preview vid-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
     `;
     item.querySelector('.btn-remove-item').addEventListener('click', () => item.remove());
+
+    // Video preview
+    const srcInput = item.querySelector('input');
+    const previewTarget = item.querySelector('.vid-preview-target');
+    const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
+    srcInput.addEventListener('input', updatePreview);
+
     container.appendChild(item);
+
+    // Initial preview
+    if (data.src) renderMediaPreview(previewTarget, data.src);
 }
 
 function collectVideoItems() {
@@ -669,7 +855,6 @@ function generateProjectsJson() {
     return projects.map(p => {
         const out = {};
 
-        // Maintain field order matching original projects.json
         if (p.id) out.id = p.id;
         out.card = p.card !== false;
         if (p.title) out.title = p.title;
@@ -699,12 +884,10 @@ $('btnDownloadJson').addEventListener('click', () => {
     const data = generateProjectsJson();
     const json = JSON.stringify(data, null, 4);
 
-    // Show preview
     const preview = $('publishPreview');
     preview.style.display = 'block';
     preview.querySelector('pre').textContent = json;
 
-    // Download
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -740,7 +923,6 @@ $('btnCommitGithub').addEventListener('click', async () => {
         const jsonStr = JSON.stringify(data, null, 4);
         const content = btoa(new TextEncoder().encode(jsonStr).reduce((s, b) => s + String.fromCharCode(b), ''));
 
-        // Get current file SHA (needed for update)
         const getRes = await fetch(
             `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/projects.json?ref=${encodeURIComponent(branch)}`,
             { headers: { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
@@ -782,6 +964,27 @@ $('btnCommitGithub').addEventListener('click', async () => {
         console.error('GitHub commit error:', error);
         showToast('Commit failed: ' + error.message, 'error');
     }
+});
+
+// ─── Scroll Reveal ───
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('[data-reveal]').forEach(el => {
+    revealObserver.observe(el);
+});
+
+// Trigger reveal for login screen elements on load
+requestAnimationFrame(() => {
+    document.querySelectorAll('.screen.active [data-reveal]').forEach(el => {
+        el.classList.add('revealed');
+    });
 });
 
 // ─── Utility ───
