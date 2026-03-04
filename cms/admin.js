@@ -7,6 +7,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.3.0/firebas
 import {
     getAuth,
     signInWithPopup,
+    signInWithCredential,
     GoogleAuthProvider,
     multiFactor,
     TotpMultiFactorGenerator,
@@ -787,10 +788,7 @@ $('btnGoogleLogin').addEventListener('click', async () => {
         const user = result.user;
 
         // Capture OAuth access token for GA4 API
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        if (credential?.accessToken) {
-            localStorage.setItem('cms_google_access_token', credential.accessToken);
-        }
+        storeOAuthToken(GoogleAuthProvider.credentialFromResult(result));
 
         if (user.email !== ALLOWED_EMAIL) {
             showToast('Access denied. Only the authorized account may sign in.', 'error');
@@ -798,6 +796,16 @@ $('btnGoogleLogin').addEventListener('click', async () => {
         }
     } catch (error) {
         if (error.code === 'auth/multi-factor-auth-required') {
+            // Try multiple methods to capture the OAuth credential before MFA
+            const pendingCredential = GoogleAuthProvider.credentialFromError(error);
+            if (pendingCredential) {
+                window._pendingOAuthCredential = pendingCredential;
+            }
+            // Also try to extract access token from the error's custom data
+            if (error.customData?._tokenResponse?.oauthAccessToken) {
+                localStorage.setItem('cms_google_access_token', error.customData._tokenResponse.oauthAccessToken);
+                localStorage.setItem('cms_google_token_time', Date.now().toString());
+            }
             mfaResolver = getMultiFactorResolver(auth, error);
             showScreen('mfa');
             $('mfaCode').focus();
@@ -807,6 +815,14 @@ $('btnGoogleLogin').addEventListener('click', async () => {
         }
     }
 });
+
+// ─── Store OAuth token helper ───
+function storeOAuthToken(credential) {
+    if (credential?.accessToken) {
+        localStorage.setItem('cms_google_access_token', credential.accessToken);
+        localStorage.setItem('cms_google_token_time', Date.now().toString());
+    }
+}
 
 // ─── MFA Verification ───
 $('btnMfaVerify').addEventListener('click', async () => {
@@ -820,7 +836,33 @@ $('btnMfaVerify').addEventListener('click', async () => {
             return;
         }
         const assertion = TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
-        await mfaResolver.resolveSignIn(assertion);
+        const userCredential = await mfaResolver.resolveSignIn(assertion);
+
+        // Try to get OAuth token from the MFA resolution result
+        const resolvedCredential = GoogleAuthProvider.credentialFromResult(userCredential);
+        if (resolvedCredential?.accessToken) {
+            storeOAuthToken(resolvedCredential);
+        }
+
+        // Fallback: use the pending credential captured before MFA
+        if (!localStorage.getItem('cms_google_access_token') && window._pendingOAuthCredential?.accessToken) {
+            storeOAuthToken(window._pendingOAuthCredential);
+        }
+
+        // Last resort: re-sign-in silently with the pending credential
+        const pendingCred = window._pendingOAuthCredential;
+        window._pendingOAuthCredential = null;
+
+        if (!localStorage.getItem('cms_google_access_token') && pendingCred) {
+            try {
+                const reAuthResult = await signInWithCredential(auth, pendingCred);
+                const reAuthCred = GoogleAuthProvider.credentialFromResult(reAuthResult);
+                storeOAuthToken(reAuthCred);
+            } catch (e) {
+                console.warn('Could not re-auth for OAuth token:', e);
+            }
+        }
+
         mfaResolver = null;
     } catch (error) {
         console.error('MFA error:', error);
@@ -834,6 +876,8 @@ $('mfaCode').addEventListener('keydown', (e) => {
 
 // ─── Logout ───
 $('btnLogout').addEventListener('click', async () => {
+    localStorage.removeItem('cms_google_access_token');
+    localStorage.removeItem('cms_google_token_time');
     if (auth) await signOut(auth);
     showScreen('login');
 });
@@ -1838,6 +1882,8 @@ $('btnLogout').addEventListener('click', async (e) => {
         );
         if (!confirmed) return;
         isDirty = false;  // Clear so beforeunload doesn't double-prompt
+        localStorage.removeItem('cms_google_access_token');
+        localStorage.removeItem('cms_google_token_time');
         if (auth) await signOut(auth);
         showScreen('login');
     }

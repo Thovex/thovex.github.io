@@ -4,10 +4,11 @@
 
 const CACHE_KEY = 'cms_analytics_cache';
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
+const TOKEN_TTL = 55 * 60 * 1000; // Google OAuth tokens expire after ~60min, check at 55min
 
 // Country name → flag emoji
 function countryFlag(countryName) {
-    if (!countryName || countryName === '(not set)') return '🌐';
+    if (!countryName || countryName === '(not set)') return '<span class="flag-icon">🌐</span>';
     // Common country name → ISO 3166-1 alpha-2 mapping
     const MAP = {
         'United States': 'US', 'United Kingdom': 'GB', 'Germany': 'DE', 'France': 'FR',
@@ -32,18 +33,37 @@ function countryFlag(countryName) {
         'Lebanon': 'LB', 'Iraq': 'IQ', 'Iran': 'IR', 'Morocco': 'MA',
         'Tunisia': 'TN', 'Algeria': 'DZ', 'Ghana': 'GH', 'Ethiopia': 'ET',
         'Tanzania': 'TZ', 'Uganda': 'UG', 'Mozambique': 'MZ',
+        'Costa Rica': 'CR', 'Panama': 'PA', 'Uruguay': 'UY', 'Paraguay': 'PY',
+        'Bolivia': 'BO', 'Ecuador': 'EC', 'Venezuela': 'VE', 'Cuba': 'CU',
+        'Dominican Republic': 'DO', 'Guatemala': 'GT', 'Honduras': 'HN',
+        'El Salvador': 'SV', 'Nicaragua': 'NI', 'Jamaica': 'JM',
+        'Trinidad and Tobago': 'TT', 'Haiti': 'HT', 'Puerto Rico': 'PR',
+        'Myanmar': 'MM', 'Cambodia': 'KH', 'Laos': 'LA',
+        'Mongolia': 'MN', 'Uzbekistan': 'UZ', 'Kazakhstan': 'KZ',
+        'Georgia': 'GE', 'Armenia': 'AM', 'Azerbaijan': 'AZ',
+        'Belarus': 'BY', 'Moldova': 'MD', 'North Macedonia': 'MK',
+        'Bosnia and Herzegovina': 'BA', 'Montenegro': 'ME', 'Albania': 'AL',
+        'Kosovo': 'XK', 'Senegal': 'SN', 'Cameroon': 'CM',
+        'Ivory Coast': 'CI', "Côte d'Ivoire": 'CI', 'Zimbabwe': 'ZW',
+        'Zambia': 'ZM', 'Rwanda': 'RW', 'Angola': 'AO',
+        'Libya': 'LY', 'Sudan': 'SD', 'Somalia': 'SO',
+        'Afghanistan': 'AF', 'Yemen': 'YE', 'Syria': 'SY',
+        'Palestine': 'PS', 'Macau': 'MO',
     };
     let code = MAP[countryName];
     // If not in map and name is already a 2-letter code, use it directly
     if (!code && countryName.length === 2 && /^[A-Z]{2}$/.test(countryName)) {
         code = countryName;
     }
-    if (!code) return '🌐';
-    try {
-        return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
-    } catch {
-        return '🌐';
-    }
+    if (!code) return '<span class="flag-icon">🌐</span>';
+    
+    // Use flagcdn.com for crisp SVG flags that render on all platforms
+    return `<img class="flag-icon" src="https://flagcdn.com/w40/${code.toLowerCase()}.png" 
+                 srcset="https://flagcdn.com/w80/${code.toLowerCase()}.png 2x" 
+                 alt="${countryName}" 
+                 width="20" height="15" 
+                 loading="lazy"
+                 onerror="this.outerHTML='<span class=\\'flag-icon\\'>🌐</span>'">`; 
 }
 
 // Generate a deterministic avatar color from a string
@@ -61,6 +81,15 @@ function deviceIcon(category) {
         case 'tablet': return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`;
         default: return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
     }
+}
+
+// Check if the stored OAuth token is still likely valid
+function isTokenValid() {
+    const token = localStorage.getItem('cms_google_access_token');
+    if (!token) return false;
+    const tokenTime = parseInt(localStorage.getItem('cms_google_token_time') || '0');
+    if (tokenTime && (Date.now() - tokenTime) > TOKEN_TTL) return false;
+    return true;
 }
 
 let statsInitialized = false;
@@ -85,8 +114,10 @@ export function initStatistics() {
 // ─── Auto-detect GA4 Property ───
 async function autoDetectProperty() {
     const accessToken = localStorage.getItem('cms_google_access_token');
-    if (!accessToken) {
-        showSetupState('Sign out and back in to grant analytics access, then auto-detection will work.');
+    if (!accessToken || !isTokenValid()) {
+        showSetupState(accessToken
+            ? 'Your analytics session has expired. Sign out and back in to refresh access.'
+            : 'Sign out and back in to grant analytics access, then auto-detection will work.');
         return;
     }
 
@@ -254,7 +285,7 @@ async function fetchAnalytics(propertyId) {
     }
 
     const accessToken = localStorage.getItem('cms_google_access_token');
-    if (!accessToken) {
+    if (!accessToken || !isTokenValid()) {
         container.innerHTML = `
             <div class="stats-empty">
                 <div class="stats-empty-icon" style="color: var(--color-yellow);">
@@ -262,10 +293,12 @@ async function fetchAnalytics(propertyId) {
                         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
                 </div>
-                <h3>Authentication Required</h3>
-                <p>Sign in again to grant analytics access.</p>
+                <h3>${accessToken ? 'Session Expired' : 'Authentication Required'}</h3>
+                <p>${accessToken ? 'Your Google Analytics access token has expired.' : 'No access token found.'} Sign out and back in to grant analytics access.</p>
+                <button class="btn btn-small btn-primary" onclick="document.getElementById('btnLogout').click();">Sign Out &amp; Re-authenticate</button>
             </div>
         `;
+        stopRealtimeRefresh();
         return;
     }
 
@@ -458,7 +491,10 @@ async function runGAReport(accessToken, propertyId, body) {
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         if (res.status === 401 || res.status === 403) {
-            throw new Error('Access denied. Sign out and back in.');
+            // Token likely expired — clear it so next refresh shows re-auth prompt
+            localStorage.removeItem('cms_google_access_token');
+            localStorage.removeItem('cms_google_token_time');
+            throw new Error('Access token expired. Sign out and back in to refresh.');
         }
         throw new Error(err.error?.message || `GA4 API error (${res.status})`);
     }
@@ -477,6 +513,11 @@ async function runGARealtimeReport(accessToken, propertyId, body) {
         );
         if (!res.ok) {
             const err = await res.json().catch(() => ({}));
+            if (res.status === 401 || res.status === 403) {
+                localStorage.removeItem('cms_google_access_token');
+                localStorage.removeItem('cms_google_token_time');
+                console.warn('Realtime: access token expired');
+            }
             console.warn('Realtime API error:', res.status, err.error?.message || err);
             return { rows: [] };
         }
@@ -638,13 +679,25 @@ function startRealtimeRefresh() {
     realtimeInterval = setInterval(async () => {
         const propertyId = localStorage.getItem('cms_ga4_property');
         const accessToken = localStorage.getItem('cms_google_access_token');
-        if (!propertyId || !accessToken) return;
+        if (!propertyId || !accessToken || !isTokenValid()) {
+            // Token expired — show expiry state and stop polling
+            if (!accessToken || !isTokenValid()) {
+                stopRealtimeRefresh();
+                const countEl = document.getElementById('realtimeCount');
+                const feedEl = document.getElementById('realtimeFeed');
+                if (countEl) countEl.textContent = '—';
+                if (feedEl) feedEl.innerHTML = `<div class="stats-empty-mini">Session expired — sign out and back in to resume</div>`;
+            }
+            return;
+        }
 
         const fullId = propertyId.startsWith('properties/') ? propertyId : `properties/${propertyId}`;
         try {
             const realtimeData = await fetchRealtimeDetailed(accessToken, fullId);
             updateRealtimePanel(realtimeData);
-        } catch {}
+        } catch (e) {
+            console.warn('Realtime refresh failed:', e);
+        }
     }, 15000);
 }
 

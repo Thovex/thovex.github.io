@@ -1668,6 +1668,34 @@ body::after {
 .visitor-flag {
     font-size: 0.9rem;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Flag images from flagcdn.com */
+.flag-icon {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+    object-fit: cover;
+}
+
+img.flag-icon {
+    width: 20px;
+    height: 15px;
+}
+
+span.flag-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+    width: 20px;
+    text-align: center;
+}
+
+/* Flags in the stats table */
+.stats-table td .flag-icon {
+    margin-right: 0.3rem;
 }
 
 .visitor-users {
