@@ -87,8 +87,35 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" data-tab="projects">Projects</button>
+            <button class="tab" data-tab="statistics">Statistics</button>
             <button class="tab" data-tab="publish">Publish</button>
             <button class="tab" data-tab="settings">Settings</button>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div class="tab-content" id="tab-statistics">
+            <div class="stats-header">
+                <div class="globe-container">
+                    <canvas id="globeCanvas"></canvas>
+                    <div class="globe-label">
+                        <span class="globe-label-dot"></span>
+                        LIVE TRAFFIC
+                    </div>
+                </div>
+            </div>
+            <div id="statsContent">
+                <div class="stats-empty">
+                    <div class="stats-empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
+                            <path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3>Connect Google Analytics</h3>
+                    <p>Enter your GA4 property ID in the Settings tab to view site traffic data here.</p>
+                    <p class="stats-empty-hint">Format: <code>properties/XXXXXXXXX</code> or just the numeric ID</p>
+                </div>
+            </div>
         </div>
 
         <!-- Projects Tab -->
@@ -143,6 +170,26 @@
 
         <!-- Settings Tab -->
         <div class="tab-content" id="tab-settings">
+            <div class="settings-section">
+                <h3>Google Analytics</h3>
+                <p>Connect your GA4 property to view traffic stats in the Statistics tab. Click Auto-Detect or enter the numeric property ID manually.</p>
+                <div class="settings-row">
+                    <div class="form-group">
+                        <label>GA4 Property ID</label>
+                        <input type="text" id="ga4PropertyInput" placeholder="e.g. 456789012">
+                    </div>
+                    <button class="btn" id="btnAutoDetectGA4" type="button">Auto-Detect</button>
+                    <button class="btn btn-primary" id="btnSaveGA4" type="button">Save</button>
+                </div>
+                <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.5rem;">
+                    Requires enabling the
+                    <a href="https://console.cloud.google.com/apis/library/analyticsdata.googleapis.com?project=portfolio-d5d94" target="_blank" rel="noopener" style="color:var(--color-cyan)">Analytics Data API</a>
+                    and
+                    <a href="https://console.cloud.google.com/apis/library/analyticsadmin.googleapis.com?project=portfolio-d5d94" target="_blank" rel="noopener" style="color:var(--color-cyan)">Analytics Admin API</a>
+                    in Google Cloud Console (click each link → Enable).
+                </p>
+            </div>
+
             <div class="settings-section">
                 <h3>GitHub Integration</h3>
                 <p>Enter a GitHub Personal Access Token to enable direct commits. Create one at

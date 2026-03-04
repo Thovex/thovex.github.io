@@ -25,6 +25,8 @@ import {
     orderBy
 } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js';
 
+import { initStatistics, saveGA4Property } from './statistics.js';
+
 // ─── Constants ───
 const ALLOWED_EMAIL = 'thovexii@gmail.com';
 const GITHUB_DEFAULTS = { owner: 'Thovex', repo: 'thovex.github.io', branch: 'main' };
@@ -777,11 +779,18 @@ $('btnGoogleLogin').addEventListener('click', async () => {
     }
 
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ login_hint: ALLOWED_EMAIL });
+    provider.setCustomParameters({ prompt: 'select_account' });
+    provider.addScope('https://www.googleapis.com/auth/analytics.readonly');
 
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
+
+        // Capture OAuth access token for GA4 API
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (credential?.accessToken) {
+            localStorage.setItem('cms_google_access_token', credential.accessToken);
+        }
 
         if (user.email !== ALLOWED_EMAIL) {
             showToast('Access denied. Only the authorized account may sign in.', 'error');
@@ -842,6 +851,7 @@ function enterDashboard(user) {
     loadCmsSettings();
     loadSettings();
     loadProjects();
+    initStatistics();
 
     // Init combo boxes
     const form = $('projectForm');
@@ -916,6 +926,9 @@ function loadSettings() {
     $('githubOwner').value = owner;
     $('githubRepo').value = repo;
     $('githubBranch').value = branch;
+
+    // Load GA4 property
+    $('ga4PropertyInput').value = localStorage.getItem('cms_ga4_property') || '';
 }
 
 $('btnSavePat').addEventListener('click', () => {
@@ -924,6 +937,16 @@ $('btnSavePat').addEventListener('click', () => {
     localStorage.setItem('cms_github_repo', $('githubRepo').value.trim());
     localStorage.setItem('cms_github_branch', $('githubBranch').value.trim());
     showToast('Settings saved.', 'success');
+});
+
+$('btnSaveGA4').addEventListener('click', () => {
+    const val = $('ga4PropertyInput').value.trim();
+    saveGA4Property(val);
+    showToast(val ? 'GA4 property saved. Switch to Statistics tab to view data.' : 'GA4 property cleared.', 'success');
+});
+
+$('btnAutoDetectGA4').addEventListener('click', () => {
+    window.cmsAutoDetectGA4();
 });
 
 // ─── Dirty State Tracking ───
