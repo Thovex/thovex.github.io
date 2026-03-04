@@ -1427,3 +1427,105 @@ body::after {
     font-size: 0.8rem;
 }
 
+/* ─── Dirty State Indicator ─── */
+.dirty-indicator {
+    display: inline-block;
+    color: var(--color-yellow);
+    font-size: 0.6rem;
+    vertical-align: middle;
+    margin-left: 0.3rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-shadow: 0 0 8px var(--color-yellow), 0 0 16px rgba(255, 224, 58, 0.3);
+}
+
+.dirty-indicator.visible {
+    opacity: 1;
+    transform: scale(1);
+    animation: dirty-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dirty-pulse {
+    0%, 100% { 
+        text-shadow: 0 0 8px var(--color-yellow), 0 0 16px rgba(255, 224, 58, 0.3);
+        opacity: 1;
+    }
+    50% { 
+        text-shadow: 0 0 4px var(--color-yellow), 0 0 8px rgba(255, 224, 58, 0.15);
+        opacity: 0.7;
+    }
+}
+
+/* ─── Dirty Action Bar ─── */
+.dirty-bar {
+    max-height: 0;
+    overflow: hidden;
+    background: rgba(255, 224, 58, 0.04);
+    border-bottom: 1px solid transparent;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.3s ease,
+                background 0.3s ease;
+}
+
+.dirty-bar.visible {
+    max-height: 60px;
+    border-bottom-color: rgba(255, 224, 58, 0.2);
+    background: rgba(255, 224, 58, 0.06);
+}
+
+.dirty-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+
+.dirty-bar.visible .dirty-bar-inner {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dirty-bar-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--color-yellow);
+    white-space: nowrap;
+}
+
+.dirty-bar-label svg {
+    flex-shrink: 0;
+    stroke: var(--color-yellow);
+}
+
+.dirty-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .dirty-bar-inner {
+        padding: 0.5rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .dirty-bar.visible {
+        max-height: 100px;
+    }
+
+    .dirty-bar-label {
+        font-size: 0.7rem;
+    }
+}
+

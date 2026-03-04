@@ -926,6 +926,51 @@ $('btnSavePat').addEventListener('click', () => {
     showToast('Settings saved.', 'success');
 });
 
+// ─── Dirty State Tracking ───
+let isDirty = false;
+let cleanSnapshot = '';  // JSON string of projects at last save/load
+
+function takeSnapshot() {
+    cleanSnapshot = JSON.stringify(generateProjectsJson());
+}
+
+function checkDirty() {
+    const current = JSON.stringify(generateProjectsJson());
+    const nowDirty = current !== cleanSnapshot;
+    if (nowDirty !== isDirty) {
+        isDirty = nowDirty;
+        updateDirtyUI();
+    }
+}
+
+function markDirty() {
+    if (!isDirty) {
+        isDirty = true;
+        updateDirtyUI();
+    }
+}
+
+function markClean() {
+    isDirty = false;
+    takeSnapshot();
+    updateDirtyUI();
+}
+
+function updateDirtyUI() {
+    const indicator = $('dirtyIndicator');
+    const bar = $('dirtyBar');
+    if (indicator) indicator.classList.toggle('visible', isDirty);
+    if (bar) bar.classList.toggle('visible', isDirty);
+}
+
+// Browser beforeunload guard
+window.addEventListener('beforeunload', (e) => {
+    if (isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+
 // ─── Projects CRUD ───
 let projects = [];
 
@@ -937,6 +982,7 @@ async function loadProjects() {
         const snapshot = await getDocs(q);
         projects = snapshot.docs.map(d => ({ ...d.data(), _docId: d.id }));
         renderProjectList();
+        markClean();
     } catch (error) {
         console.error('Load projects error:', error);
         showToast('Failed to load projects: ' + error.message, 'error');
@@ -1074,6 +1120,7 @@ async function saveProjectOrder() {
         projects.forEach((p, i) => { p.order = i; });
 
         showToast('Order saved.', 'success');
+        markDirty();  // Order changed, not yet published
     } catch (err) {
         console.error('Save order error:', err);
         showToast('Failed to save order.', 'error');
@@ -1082,6 +1129,37 @@ async function saveProjectOrder() {
 
 // ─── Project Editor ───
 let editingProjectId = null;
+let editorSnapshot = '';  // snapshot of form state when opened
+
+function getEditorFormState() {
+    const form = $('projectForm');
+    if (!form) return '';
+    return JSON.stringify({
+        id: form.elements.id.value,
+        title: form.elements.title.value,
+        language: form.elements.language.value,
+        engine: form.elements.engine.value,
+        role: form.elements.role.value,
+        type: form.elements.type.value,
+        duration: form.elements.duration.value,
+        card: form.elements.card.checked,
+        minisrc: form.elements.minisrc.value,
+        banner: form.elements.banner.value,
+        description: form.elements.description.value,
+        longdescription: form.elements.longdescription.value,
+        archive: form.elements.archive.value,
+        period: getPeriodString(),
+        tags: collectTags(),
+        work: collectWorkItems(),
+        socials: collectSocialItems(),
+        screenshots: collectScreenshotItems(),
+        videos: collectVideoItems()
+    });
+}
+
+function isEditorDirty() {
+    return getEditorFormState() !== editorSnapshot;
+}
 
 function openEditor(project = null) {
     editingProjectId = project ? project.id : null;
@@ -1139,16 +1217,29 @@ function openEditor(project = null) {
     attachPreviewListener(form.elements.banner, $('bannerPreview'));
 
     $('editorModal').classList.add('active');
+
+    // Take snapshot of editor state after a tick (so combos etc are settled)
+    requestAnimationFrame(() => {
+        editorSnapshot = getEditorFormState();
+    });
 }
 
-function closeEditor() {
+async function closeEditor(skipDirtyCheck = false) {
+    if (!skipDirtyCheck && isEditorDirty()) {
+        const confirmed = await showConfirm(
+            'Unsaved Changes',
+            'You have unsaved changes in this editor. Discard them?',
+            { okLabel: 'Discard', okClass: 'btn-danger' }
+        );
+        if (!confirmed) return;
+    }
     $('editorModal').classList.remove('active');
     editingProjectId = null;
 }
 
 $('btnAddProject').addEventListener('click', () => openEditor());
-$('btnCloseEditor').addEventListener('click', closeEditor);
-$('btnCancelEditor').addEventListener('click', closeEditor);
+$('btnCloseEditor').addEventListener('click', () => closeEditor());
+$('btnCancelEditor').addEventListener('click', () => closeEditor());
 
 // Close modal on overlay click
 $('editorModal').addEventListener('click', (e) => {
@@ -1205,8 +1296,9 @@ $('btnSaveProject').addEventListener('click', async () => {
 
         await setDoc(doc(db, 'projects', id), projectData);
         showToast(`Project "${title}" saved.`, 'success');
-        closeEditor();
+        closeEditor(true);  // skip dirty check, we just saved
         await loadProjects();
+        markDirty();  // Firestore changed but not yet published to GitHub
     } catch (error) {
         console.error('Save error:', error);
         showToast('Failed to save: ' + error.message, 'error');
@@ -1227,6 +1319,7 @@ window.cmsDeleteProject = async (id) => {
         await deleteDoc(doc(db, 'projects', id));
         showToast('Project deleted.', 'success');
         await loadProjects();
+        markDirty();  // Unpublished deletion
     } catch (error) {
         showToast('Failed to delete: ' + error.message, 'error');
     }
@@ -1491,6 +1584,7 @@ $('jsonFileInput').addEventListener('change', async (e) => {
 
         showToast(`Imported ${data.length} projects.`, 'success');
         await loadProjects();
+        markDirty();
     } catch (error) {
         showToast('Import failed: ' + error.message, 'error');
     }
@@ -1520,6 +1614,7 @@ $('btnSeedFirestore').addEventListener('click', async () => {
 
         showToast(`Seeded ${data.length} projects from projects.json.`, 'success');
         await loadProjects();
+        markDirty();
     } catch (error) {
         showToast('Seed failed: ' + error.message, 'error');
     }
@@ -1655,11 +1750,48 @@ $('btnCommitGithub').addEventListener('click', async () => {
         }
 
         showToast('Committed to GitHub! Deploy will start automatically.', 'success');
+        markClean();
     } catch (error) {
         console.error('GitHub commit error:', error);
         showToast('Commit failed: ' + error.message, 'error');
     }
 });
+
+// ─── Dirty Bar Actions ───
+$('btnDirtyRevert')?.addEventListener('click', async () => {
+    const confirmed = await showConfirm(
+        'Revert Changes',
+        'Reload all projects from Firestore? Any unpublished changes in the ordering or data will be refreshed from the database.',
+        { okLabel: 'Revert', okClass: 'btn-danger' }
+    );
+    if (!confirmed) return;
+    await loadProjects();
+    showToast('Reverted to last saved state.', 'info');
+});
+
+$('btnDirtyDownload')?.addEventListener('click', () => {
+    $('btnDownloadJson').click();
+});
+
+$('btnDirtyCommit')?.addEventListener('click', () => {
+    $('btnCommitGithub').click();
+});
+
+// Guard logout when dirty
+$('btnLogout').addEventListener('click', async (e) => {
+    if (isDirty) {
+        e.stopImmediatePropagation();
+        const confirmed = await showConfirm(
+            'Unpublished Changes',
+            'You have unpublished changes. If you log out now, your Firestore data is saved but not published to GitHub. Continue?',
+            { okLabel: 'Logout Anyway', okClass: 'btn-danger' }
+        );
+        if (!confirmed) return;
+        isDirty = false;  // Clear so beforeunload doesn't double-prompt
+        if (auth) await signOut(auth);
+        showScreen('login');
+    }
+}, true);  // capture phase to intercept before the existing handler
 
 // ─── Scroll Reveal ───
 const revealObserver = new IntersectionObserver((entries) => {
