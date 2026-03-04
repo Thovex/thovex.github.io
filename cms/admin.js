@@ -210,7 +210,8 @@ function attachPreviewListener(input, previewContainer) {
 }
 
 // ─── Dynamic Settings (Languages, Types) ───
-let cmsLanguages = ['C++', 'C#', 'C', 'Java', 'JavaScript', 'TypeScript', 'Python', 'GDScript', 'Lua', 'Rust', 'Go', 'Blueprint', 'UEFN', 'meow-speak'];
+let cmsLanguages = ['C++', 'C#', 'C', 'Java', 'JavaScript', 'TypeScript', 'Python', 'GDScript', 'Lua', 'Rust', 'Go', 'Blueprint', 'Verse', 'meow-speak'];
+let cmsEngines = ['Unreal', 'Unity', 'Radiance', 'UEFN', 'Godot', 'Custom', 'Real Life'];
 let cmsTypes = [
     { value: 'Hobby', label: 'Hobby' },
     { value: 'BSS', label: 'Bright Star Studios' },
@@ -226,6 +227,7 @@ async function loadCmsSettings() {
         const langDoc = await getDocs(query(collection(db, 'settings')));
         langDoc.forEach(d => {
             if (d.id === 'languages' && d.data().list) cmsLanguages = d.data().list;
+            if (d.id === 'engines' && d.data().list) cmsEngines = d.data().list;
             if (d.id === 'types' && d.data().list) cmsTypes = d.data().list;
         });
     } catch (e) { console.warn('Settings load failed:', e.message); }
@@ -238,6 +240,14 @@ async function saveCmsLanguages() {
         await setDoc(doc(db, 'settings', 'languages'), { list: cmsLanguages });
         showToast('Languages saved.', 'success');
     } catch (e) { showToast('Failed to save languages.', 'error'); }
+}
+
+async function saveCmsEngines() {
+    if (!db) return;
+    try {
+        await setDoc(doc(db, 'settings', 'engines'), { list: cmsEngines });
+        showToast('Engines saved.', 'success');
+    } catch (e) { showToast('Failed to save engines.', 'error'); }
 }
 
 async function saveCmsTypes() {
@@ -264,6 +274,24 @@ function renderSettingsManagers() {
                 renderSettingsManagers();
             });
             langContainer.insertBefore(pill, input);
+        });
+    }
+
+    // Engines manager
+    const engineContainer = $('enginesManager');
+    if (engineContainer) {
+        engineContainer.querySelectorAll('.tag-pill').forEach(p => p.remove());
+        const input = $('engineManagerInput');
+        cmsEngines.forEach(eng => {
+            const pill = document.createElement('span');
+            pill.className = 'tag-pill';
+            pill.innerHTML = `${escapeHtml(eng)} <button type="button">&times;</button>`;
+            pill.querySelector('button').addEventListener('click', () => {
+                cmsEngines = cmsEngines.filter(e => e !== eng);
+                saveCmsEngines();
+                renderSettingsManagers();
+            });
+            engineContainer.insertBefore(pill, input);
         });
     }
 
@@ -295,6 +323,20 @@ $('languageManagerInput').addEventListener('keydown', (e) => {
             cmsLanguages.push(val);
             cmsLanguages.sort();
             saveCmsLanguages();
+            renderSettingsManagers();
+        }
+        e.target.value = '';
+    }
+});
+
+$('engineManagerInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const val = e.target.value.trim();
+        if (val && !cmsEngines.includes(val)) {
+            cmsEngines.push(val);
+            cmsEngines.sort();
+            saveCmsEngines();
             renderSettingsManagers();
         }
         e.target.value = '';
@@ -812,6 +854,19 @@ function enterDashboard(user) {
                 cmsLanguages.push(val);
                 cmsLanguages.sort();
                 saveCmsLanguages();
+                renderSettingsManagers();
+            }
+        }
+    );
+    initComboBox(
+        form.elements.engine,
+        $('engineDropdown'),
+        () => cmsEngines.map(e => ({ value: e, label: e })),
+        (val) => {
+            if (!cmsEngines.includes(val)) {
+                cmsEngines.push(val);
+                cmsEngines.sort();
+                saveCmsEngines();
                 renderSettingsManagers();
             }
         }
