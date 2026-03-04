@@ -1,30 +1,73 @@
 // ─────────────────────────────────────────────────────────────
-//  Statistics Module — GA4 Analytics + Display
+//  Statistics Module — GA4 Analytics + Live Visitor Feed
 // ─────────────────────────────────────────────────────────────
-
-import { initGlobe } from './globe.js';
 
 const CACHE_KEY = 'cms_analytics_cache';
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
-let globeInstance = null;
+// Country name → flag emoji
+function countryFlag(countryName) {
+    // Common country name → ISO 3166-1 alpha-2 mapping
+    const MAP = {
+        'United States': 'US', 'United Kingdom': 'GB', 'Germany': 'DE', 'France': 'FR',
+        'Netherlands': 'NL', 'Canada': 'CA', 'Australia': 'AU', 'Japan': 'JP',
+        'Brazil': 'BR', 'India': 'IN', 'China': 'CN', 'South Korea': 'KR',
+        'Spain': 'ES', 'Italy': 'IT', 'Mexico': 'MX', 'Russia': 'RU',
+        'Sweden': 'SE', 'Norway': 'NO', 'Denmark': 'DK', 'Finland': 'FI',
+        'Poland': 'PL', 'Belgium': 'BE', 'Switzerland': 'CH', 'Austria': 'AT',
+        'Portugal': 'PT', 'Ireland': 'IE', 'New Zealand': 'NZ', 'Singapore': 'SG',
+        'Turkey': 'TR', 'Indonesia': 'ID', 'Thailand': 'TH', 'Philippines': 'PH',
+        'Vietnam': 'VN', 'Malaysia': 'MY', 'Argentina': 'AR', 'Colombia': 'CO',
+        'Chile': 'CL', 'Peru': 'PE', 'Egypt': 'EG', 'South Africa': 'ZA',
+        'Nigeria': 'NG', 'Kenya': 'KE', 'Israel': 'IL', 'Ukraine': 'UA',
+        'Romania': 'RO', 'Czech Republic': 'CZ', 'Czechia': 'CZ', 'Hungary': 'HU',
+        'Greece': 'GR', 'Croatia': 'HR', 'Slovakia': 'SK', 'Bulgaria': 'BG',
+        'Serbia': 'RS', 'Lithuania': 'LT', 'Latvia': 'LV', 'Estonia': 'EE',
+        'Slovenia': 'SI', 'Luxembourg': 'LU', 'Iceland': 'IS', 'Malta': 'MT',
+        'Cyprus': 'CY', 'Taiwan': 'TW', 'Hong Kong': 'HK', 'Pakistan': 'PK',
+        'Bangladesh': 'BD', 'Sri Lanka': 'LK', 'Nepal': 'NP',
+        'Saudi Arabia': 'SA', 'United Arab Emirates': 'AE', 'Qatar': 'QA',
+        'Kuwait': 'KW', 'Bahrain': 'BH', 'Oman': 'OM', 'Jordan': 'JO',
+        'Lebanon': 'LB', 'Iraq': 'IQ', 'Iran': 'IR', 'Morocco': 'MA',
+        'Tunisia': 'TN', 'Algeria': 'DZ', 'Ghana': 'GH', 'Ethiopia': 'ET',
+        'Tanzania': 'TZ', 'Uganda': 'UG', 'Mozambique': 'MZ',
+    };
+    const code = MAP[countryName];
+    if (!code) return '🌐';
+    return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+}
+
+// Generate a deterministic avatar color from a string
+function avatarColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    const hue = Math.abs(hash) % 360;
+    return `hsl(${hue}, 60%, 45%)`;
+}
+
+// Device category icon
+function deviceIcon(category) {
+    switch ((category || '').toLowerCase()) {
+        case 'mobile': return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`;
+        case 'tablet': return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`;
+        default: return `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+    }
+}
+
+let statsInitialized = false;
 
 // ─── Initialization ───
 export function initStatistics() {
-    // Delay to ensure the tab content is visible and has layout dimensions
     requestAnimationFrame(() => {
-        const canvas = document.getElementById('globeCanvas');
-        if (canvas && !globeInstance) {
-            globeInstance = initGlobe(canvas);
-        }
-
         const propertyId = localStorage.getItem('cms_ga4_property') || '';
         if (propertyId) {
             const input = document.getElementById('ga4PropertyInput');
             if (input) input.value = propertyId;
-            fetchAnalytics(propertyId);
+            if (!statsInitialized) {
+                statsInitialized = true;
+                fetchAnalytics(propertyId);
+            }
         } else {
-            // Try auto-detect first
             autoDetectProperty();
         }
     });
@@ -66,16 +109,15 @@ async function autoDetectProperty() {
         const summaries = data.accountSummaries || [];
 
         if (summaries.length === 0) {
-            showSetupState('No GA4 accounts found on your Google account. Create one at <a href="https://analytics.google.com" target="_blank" style="color:var(--color-cyan)">analytics.google.com</a> first.');
+            showSetupState('No GA4 accounts found. Create one at <a href="https://analytics.google.com" target="_blank" style="color:var(--color-cyan)">analytics.google.com</a> first.');
             return;
         }
 
-        // Collect all properties across all accounts
         const allProperties = [];
         for (const account of summaries) {
             for (const prop of (account.propertySummaries || [])) {
                 allProperties.push({
-                    id: prop.property,          // e.g. "properties/123456789"
+                    id: prop.property,
                     name: prop.displayName,
                     account: account.displayName
                 });
@@ -83,21 +125,20 @@ async function autoDetectProperty() {
         }
 
         if (allProperties.length === 0) {
-            showSetupState('Found GA4 account(s) but no properties. Create a property at <a href="https://analytics.google.com" target="_blank" style="color:var(--color-cyan)">analytics.google.com</a>.');
+            showSetupState('Found GA4 account(s) but no properties.');
             return;
         }
 
         if (allProperties.length === 1) {
-            // Auto-select the only one
             const prop = allProperties[0];
             const numericId = prop.id.replace('properties/', '');
             localStorage.setItem('cms_ga4_property', numericId);
             const input = document.getElementById('ga4PropertyInput');
             if (input) input.value = numericId;
             showToast(`Auto-detected GA4 property: ${prop.name}`, 'success');
+            statsInitialized = true;
             fetchAnalytics(numericId);
         } else {
-            // Multiple properties — let user pick
             showPropertyPicker(allProperties);
         }
     } catch (err) {
@@ -135,11 +176,11 @@ window.cmsPickProperty = (numericId, name) => {
     const input = document.getElementById('ga4PropertyInput');
     if (input) input.value = numericId;
     showToast(`Selected: ${name}`, 'success');
+    statsInitialized = true;
     fetchAnalytics(numericId);
 };
 
 function showToast(message, type) {
-    // Reuse the main CMS toast if available
     const container = document.getElementById('toastContainer');
     if (!container) return;
     const toast = document.createElement('div');
@@ -158,8 +199,7 @@ function showSetupState(extraMessage) {
         <div class="stats-empty">
             <div class="stats-empty-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
-                    <path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
             </div>
             <h3>Connect Google Analytics</h3>
@@ -182,29 +222,28 @@ async function fetchAnalytics(propertyId) {
     const container = document.getElementById('statsContent');
     if (!container) return;
 
-    // Normalize property ID
     if (!propertyId.startsWith('properties/')) {
         propertyId = `properties/${propertyId}`;
     }
 
-    // Check cache
+    // Check cache for 30-day data
+    let cachedData = null;
     try {
         const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
         if (cached && cached.propertyId === propertyId && (Date.now() - cached.timestamp) < CACHE_TTL) {
-            renderStats(cached.data);
-            return;
+            cachedData = cached.data;
         }
     } catch {}
 
-    // Show loading
-    container.innerHTML = `
-        <div class="stats-loading">
-            <div class="stats-loading-spinner"></div>
-            <p>Fetching analytics data...</p>
-        </div>
-    `;
+    if (!cachedData) {
+        container.innerHTML = `
+            <div class="stats-loading">
+                <div class="stats-loading-spinner"></div>
+                <p>Fetching analytics data...</p>
+            </div>
+        `;
+    }
 
-    // Get OAuth access token from Firebase user
     const accessToken = localStorage.getItem('cms_google_access_token');
     if (!accessToken) {
         container.innerHTML = `
@@ -215,67 +254,74 @@ async function fetchAnalytics(propertyId) {
                     </svg>
                 </div>
                 <h3>Authentication Required</h3>
-                <p>Sign in again to grant analytics access. The Google OAuth token is needed to query your GA4 data.</p>
-                <p class="stats-empty-hint">Make sure your Google account has access to the GA4 property.</p>
+                <p>Sign in again to grant analytics access.</p>
             </div>
         `;
         return;
     }
 
     try {
-        // Fetch realtime + overview metrics in parallel
-        const [realtimeRes, overviewRes, pagesRes, referrersRes, countriesRes] = await Promise.all([
-            runGARealtimeReport(accessToken, propertyId),
-            runGAReport(accessToken, propertyId, {
-                dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                metrics: [
-                    { name: 'activeUsers' },
-                    { name: 'screenPageViews' },
-                    { name: 'sessions' },
-                    { name: 'averageSessionDuration' },
-                    { name: 'bounceRate' }
-                ]
-            }),
-            runGAReport(accessToken, propertyId, {
-                dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                dimensions: [{ name: 'pagePath' }],
-                metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
-                orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-                limit: 10
-            }),
-            runGAReport(accessToken, propertyId, {
-                dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                dimensions: [{ name: 'sessionSource' }],
-                metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
-                orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
-                limit: 10
-            }),
-            runGAReport(accessToken, propertyId, {
-                dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                dimensions: [{ name: 'country' }],
-                metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
-                orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
-                limit: 10
-            })
-        ]);
+        // Fetch realtime (with dimensions) + 30-day data in parallel
+        const fetches = [
+            fetchRealtimeDetailed(accessToken, propertyId),
+        ];
 
-        const data = {
-            realtime: parseRealtime(realtimeRes),
-            overview: parseOverview(overviewRes),
-            pages: parseTable(pagesRes),
-            referrers: parseTable(referrersRes),
-            countries: parseTable(countriesRes)
-        };
+        if (!cachedData) {
+            fetches.push(
+                runGAReport(accessToken, propertyId, {
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    metrics: [
+                        { name: 'activeUsers' }, { name: 'screenPageViews' },
+                        { name: 'sessions' }, { name: 'averageSessionDuration' },
+                        { name: 'bounceRate' }
+                    ]
+                }),
+                runGAReport(accessToken, propertyId, {
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    dimensions: [{ name: 'pagePath' }],
+                    metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
+                    orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+                    limit: 10
+                }),
+                runGAReport(accessToken, propertyId, {
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    dimensions: [{ name: 'sessionSource' }],
+                    metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
+                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+                    limit: 10
+                }),
+                runGAReport(accessToken, propertyId, {
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    dimensions: [{ name: 'country' }],
+                    metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
+                    orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
+                    limit: 10
+                })
+            );
+        }
 
-        // Cache it
-        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-            propertyId, timestamp: Date.now(), data
-        }));
+        const results = await Promise.all(fetches);
+        const realtimeData = results[0];
 
+        let data;
+        if (cachedData) {
+            data = { ...cachedData, realtime: realtimeData };
+        } else {
+            data = {
+                realtime: realtimeData,
+                overview: parseOverview(results[1]),
+                pages: parseTable(results[2]),
+                referrers: parseTable(results[3]),
+                countries: parseTable(results[4])
+            };
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                propertyId, timestamp: Date.now(), data
+            }));
+        }
+
+        updateRealtimePanel(realtimeData);
         renderStats(data);
-
-        // Trigger globe pings on data load
-        if (globeInstance) globeInstance.burstPings(6);
+        startRealtimeRefresh();
 
     } catch (error) {
         console.error('Analytics fetch error:', error);
@@ -288,55 +334,134 @@ async function fetchAnalytics(propertyId) {
                 </div>
                 <h3>Failed to Load Analytics</h3>
                 <p>${escapeHtml(error.message)}</p>
-                <p class="stats-empty-hint">Check that your GA4 property ID is correct and your Google account has access.</p>
-                <button class="btn btn-small" onclick="document.getElementById('statsContent').innerHTML=''; window.cmsRetryAnalytics();">Retry</button>
+                <button class="btn btn-small" onclick="window.cmsRetryAnalytics();">Retry</button>
             </div>
         `;
     }
 }
 
-// ─── GA4 API Call ───
+// ─── Realtime Detailed Fetch ───
+async function fetchRealtimeDetailed(accessToken, propertyId) {
+    const [countRes, visitorRes] = await Promise.all([
+        runGARealtimeReport(accessToken, propertyId, {
+            metrics: [{ name: 'activeUsers' }]
+        }),
+        runGARealtimeReport(accessToken, propertyId, {
+            dimensions: [{ name: 'country' }, { name: 'deviceCategory' }, { name: 'unifiedScreenName' }],
+            metrics: [{ name: 'activeUsers' }],
+            limit: 20
+        })
+    ]);
+
+    const totalUsers = countRes.rows?.[0]?.metricValues?.[0]?.value || '0';
+
+    const visitors = (visitorRes.rows || []).map(row => ({
+        country: row.dimensionValues[0].value,
+        device: row.dimensionValues[1].value,
+        page: row.dimensionValues[2].value || '/',
+        users: parseInt(row.metricValues[0].value) || 1
+    }));
+
+    return { totalUsers: parseInt(totalUsers), visitors };
+}
+
+// ─── Update Realtime Panel ───
+function updateRealtimePanel(realtimeData) {
+    const countEl = document.getElementById('realtimeCount');
+    const metaEl = document.getElementById('realtimeMeta');
+    const feedEl = document.getElementById('realtimeFeed');
+    if (!countEl || !feedEl) return;
+
+    const { totalUsers, visitors } = realtimeData;
+
+    // Update counter with animation
+    const oldVal = parseInt(countEl.textContent) || 0;
+    if (totalUsers !== oldVal) {
+        countEl.textContent = totalUsers;
+        countEl.classList.remove('stat-animate');
+        void countEl.offsetWidth;
+        countEl.classList.add('stat-animate');
+    }
+
+    // Meta info — unique countries count
+    const uniqueCountries = [...new Set(visitors.map(v => v.country))];
+    if (metaEl) {
+        metaEl.innerHTML = uniqueCountries.length > 0
+            ? `from <strong>${uniqueCountries.length}</strong> ${uniqueCountries.length === 1 ? 'country' : 'countries'}`
+            : '';
+    }
+
+    // Build visitor feed
+    if (visitors.length === 0) {
+        feedEl.innerHTML = `<div class="stats-empty-mini">No active visitors right now</div>`;
+        return;
+    }
+
+    const visitorCards = visitors.map(v => {
+        const flag = countryFlag(v.country);
+        const color = avatarColor(v.country + v.device + v.page);
+        const initials = v.country.substring(0, 2).toUpperCase();
+        const pageName = v.page === '(not set)' ? '/' : v.page;
+        const userLabel = v.users > 1 ? `${v.users} visitors` : '1 visitor';
+
+        return `
+            <div class="visitor-card" data-reveal>
+                <div class="visitor-avatar" style="background:${color}">${initials}</div>
+                <div class="visitor-info">
+                    <div class="visitor-country">
+                        <span class="visitor-flag">${flag}</span>
+                        ${escapeHtml(v.country)}
+                        <span class="visitor-users">${userLabel}</span>
+                    </div>
+                    <div class="visitor-detail">
+                        <span class="visitor-device">${deviceIcon(v.device)}</span>
+                        <span class="visitor-page" title="${escapeHtml(pageName)}">${escapeHtml(pageName)}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    feedEl.innerHTML = visitorCards;
+
+    // Stagger reveal
+    requestAnimationFrame(() => {
+        feedEl.querySelectorAll('[data-reveal]').forEach((el, i) => {
+            setTimeout(() => el.classList.add('revealed'), i * 60);
+        });
+    });
+}
+
+// ─── GA4 API Calls ───
 async function runGAReport(accessToken, propertyId, body) {
     const res = await fetch(
         `https://analyticsdata.googleapis.com/v1beta/${propertyId}:runReport`,
         {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         }
     );
-
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         if (res.status === 401 || res.status === 403) {
-            throw new Error('Access denied. Your OAuth token may have expired — sign out and back in. Ensure your Google account has access to this GA4 property.');
+            throw new Error('Access denied. Sign out and back in.');
         }
         throw new Error(err.error?.message || `GA4 API error (${res.status})`);
     }
-
     return res.json();
 }
 
-// ─── GA4 Realtime API Call ───
-async function runGARealtimeReport(accessToken, propertyId) {
+async function runGARealtimeReport(accessToken, propertyId, body) {
     try {
         const res = await fetch(
             `https://analyticsdata.googleapis.com/v1beta/${propertyId}:runRealtimeReport`,
             {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    metrics: [{ name: 'activeUsers' }]
-                })
+                headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
             }
         );
-
         if (!res.ok) return { rows: [] };
         return res.json();
     } catch {
@@ -345,11 +470,6 @@ async function runGARealtimeReport(accessToken, propertyId) {
 }
 
 // ─── Parse Responses ───
-function parseRealtime(res) {
-    if (!res.rows || res.rows.length === 0) return { activeUsers: 0 };
-    return { activeUsers: parseInt(res.rows[0].metricValues[0].value) || 0 };
-}
-
 function parseOverview(res) {
     if (!res.rows || res.rows.length === 0) {
         return { users: 0, pageviews: 0, sessions: 0, avgDuration: 0, bounceRate: 0 };
@@ -377,18 +497,12 @@ function renderStats(data) {
     const container = document.getElementById('statsContent');
     if (!container) return;
 
-    const { overview, pages, referrers, countries, realtime } = data;
+    const { overview, pages, referrers, countries } = data;
     const duration = formatDuration(overview.avgDuration);
     const bounce = (overview.bounceRate * 100).toFixed(1);
-    const realtimeUsers = realtime?.activeUsers || 0;
 
     container.innerHTML = `
         <div class="stats-grid">
-            <div class="stat-card stat-card-realtime" data-reveal>
-                <div class="stat-label"><span class="realtime-dot"></span> Right Now</div>
-                <div class="stat-value stat-animate">${realtimeUsers}</div>
-                <div class="stat-sub">Active user${realtimeUsers !== 1 ? 's' : ''} on site</div>
-            </div>
             <div class="stat-card" data-reveal>
                 <div class="stat-label">Visitors</div>
                 <div class="stat-value stat-animate">${formatNumber(overview.users)}</div>
@@ -465,7 +579,7 @@ function renderStats(data) {
                     <tbody>
                         ${countries.length ? countries.map(c => `
                             <tr>
-                                <td>${escapeHtml(c.dimension)}</td>
+                                <td><span style="margin-right:0.4rem">${countryFlag(c.dimension)}</span>${escapeHtml(c.dimension)}</td>
                                 <td>${formatNumber(parseInt(c.metrics[0]))}</td>
                                 <td>${formatNumber(parseInt(c.metrics[1]))}</td>
                             </tr>
@@ -480,22 +594,22 @@ function renderStats(data) {
         </div>
     `;
 
-    // Animate stat values
+    // Animate
     requestAnimationFrame(() => {
         container.querySelectorAll('[data-reveal]').forEach((el, i) => {
             setTimeout(() => el.classList.add('revealed'), i * 80);
         });
     });
 
-    // Refresh button
     document.getElementById('btnRefreshStats')?.addEventListener('click', () => {
         sessionStorage.removeItem(CACHE_KEY);
+        statsInitialized = false;
         const propertyId = localStorage.getItem('cms_ga4_property');
-        if (propertyId) fetchAnalytics(propertyId);
+        if (propertyId) {
+            statsInitialized = true;
+            fetchAnalytics(propertyId);
+        }
     });
-
-    // Auto-refresh realtime counter
-    startRealtimeRefresh(data);
 }
 
 // ─── Realtime Auto-Refresh ───
@@ -510,26 +624,10 @@ function startRealtimeRefresh() {
 
         const fullId = propertyId.startsWith('properties/') ? propertyId : `properties/${propertyId}`;
         try {
-            const res = await runGARealtimeReport(accessToken, fullId);
-            const rt = parseRealtime(res);
-            const valueEl = document.querySelector('.stat-card-realtime .stat-value');
-            const subEl = document.querySelector('.stat-card-realtime .stat-sub');
-            if (valueEl) {
-                const oldVal = parseInt(valueEl.textContent) || 0;
-                if (rt.activeUsers !== oldVal) {
-                    valueEl.textContent = rt.activeUsers;
-                    valueEl.classList.remove('stat-animate');
-                    void valueEl.offsetWidth; // force reflow
-                    valueEl.classList.add('stat-animate');
-                    if (subEl) subEl.textContent = `Active user${rt.activeUsers !== 1 ? 's' : ''} on site`;
-                    // Ping the globe on change
-                    if (globeInstance && rt.activeUsers > oldVal) {
-                        globeInstance.burstPings(rt.activeUsers - oldVal);
-                    }
-                }
-            }
+            const realtimeData = await fetchRealtimeDetailed(accessToken, fullId);
+            updateRealtimePanel(realtimeData);
         } catch {}
-    }, 15000); // every 15 seconds
+    }, 15000);
 }
 
 function stopRealtimeRefresh() {
@@ -539,10 +637,11 @@ function stopRealtimeRefresh() {
     }
 }
 
-// ─── Retry handler (global) ───
+// ─── Retry handler ───
 window.cmsRetryAnalytics = () => {
+    statsInitialized = false;
     const propertyId = localStorage.getItem('cms_ga4_property');
-    if (propertyId) fetchAnalytics(propertyId);
+    if (propertyId) { statsInitialized = true; fetchAnalytics(propertyId); }
     else showSetupState();
 };
 
@@ -550,7 +649,9 @@ window.cmsRetryAnalytics = () => {
 export function saveGA4Property(propertyId) {
     localStorage.setItem('cms_ga4_property', propertyId.trim());
     sessionStorage.removeItem(CACHE_KEY);
+    statsInitialized = false;
     if (propertyId.trim()) {
+        statsInitialized = true;
         fetchAnalytics(propertyId.trim());
     }
 }
@@ -574,4 +675,3 @@ function escapeHtml(str) {
     div.textContent = str || '';
     return div.innerHTML;
 }
-

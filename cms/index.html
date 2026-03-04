@@ -94,21 +94,24 @@
 
         <!-- Statistics Tab -->
         <div class="tab-content" id="tab-statistics">
-            <div class="stats-header">
-                <div class="globe-container">
-                    <canvas id="globeCanvas"></canvas>
-                    <div class="globe-label">
-                        <span class="globe-label-dot"></span>
-                        LIVE TRAFFIC
+            <div class="stats-live-panel">
+                <div class="stats-live-header">
+                    <div class="stats-live-counter">
+                        <span class="realtime-dot"></span>
+                        <span id="realtimeCount">0</span>
+                        <span class="stats-live-label">active now</span>
                     </div>
+                    <div class="stats-live-meta" id="realtimeMeta"></div>
+                </div>
+                <div class="stats-live-feed" id="realtimeFeed">
+                    <div class="stats-empty-mini">Waiting for visitor data...</div>
                 </div>
             </div>
             <div id="statsContent">
                 <div class="stats-empty">
                     <div class="stats-empty-icon">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
-                            <path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                         </svg>
                     </div>
                     <h3>Connect Google Analytics</h3>

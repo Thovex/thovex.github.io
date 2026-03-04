@@ -912,7 +912,7 @@ document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.add('active');
         $('tab-' + tab.dataset.tab).classList.add('active');
 
-        // Lazy-init globe when Statistics tab is first shown
+        // Init statistics when tab is shown
         if (tab.dataset.tab === 'statistics') {
             initStatistics();
         }
