@@ -1,0 +1,9 @@
+# Firebase config (contains project-specific keys)
+admin/firebase-config.js
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

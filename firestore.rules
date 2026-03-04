@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Projects: public read, admin-only write
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Settings: admin-only read and write
+    match /settings/{document} {
+      allow read, write: if isAdmin();
+    }
+
+    // Helper: check if the authenticated user is the sole admin
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email == 'thovexii@gmail.com';
+    }
+  }
+}
