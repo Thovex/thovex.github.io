@@ -11,20 +11,23 @@ let globeInstance = null;
 
 // ─── Initialization ───
 export function initStatistics() {
-    const canvas = document.getElementById('globeCanvas');
-    if (canvas && !globeInstance) {
-        globeInstance = initGlobe(canvas);
-    }
+    // Delay to ensure the tab content is visible and has layout dimensions
+    requestAnimationFrame(() => {
+        const canvas = document.getElementById('globeCanvas');
+        if (canvas && !globeInstance) {
+            globeInstance = initGlobe(canvas);
+        }
 
-    const propertyId = localStorage.getItem('cms_ga4_property') || '';
-    if (propertyId) {
-        const input = document.getElementById('ga4PropertyInput');
-        if (input) input.value = propertyId;
-        fetchAnalytics(propertyId);
-    } else {
-        // Try auto-detect first
-        autoDetectProperty();
-    }
+        const propertyId = localStorage.getItem('cms_ga4_property') || '';
+        if (propertyId) {
+            const input = document.getElementById('ga4PropertyInput');
+            if (input) input.value = propertyId;
+            fetchAnalytics(propertyId);
+        } else {
+            // Try auto-detect first
+            autoDetectProperty();
+        }
+    });
 }
 
 // ─── Auto-detect GA4 Property ───
@@ -220,8 +223,9 @@ async function fetchAnalytics(propertyId) {
     }
 
     try {
-        // Fetch overview metrics (last 30 days)
-        const [overviewRes, pagesRes, referrersRes, countriesRes] = await Promise.all([
+        // Fetch realtime + overview metrics in parallel
+        const [realtimeRes, overviewRes, pagesRes, referrersRes, countriesRes] = await Promise.all([
+            runGARealtimeReport(accessToken, propertyId),
             runGAReport(accessToken, propertyId, {
                 dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
                 metrics: [
@@ -256,6 +260,7 @@ async function fetchAnalytics(propertyId) {
         ]);
 
         const data = {
+            realtime: parseRealtime(realtimeRes),
             overview: parseOverview(overviewRes),
             pages: parseTable(pagesRes),
             referrers: parseTable(referrersRes),
@@ -315,7 +320,36 @@ async function runGAReport(accessToken, propertyId, body) {
     return res.json();
 }
 
+// ─── GA4 Realtime API Call ───
+async function runGARealtimeReport(accessToken, propertyId) {
+    try {
+        const res = await fetch(
+            `https://analyticsdata.googleapis.com/v1beta/${propertyId}:runRealtimeReport`,
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    metrics: [{ name: 'activeUsers' }]
+                })
+            }
+        );
+
+        if (!res.ok) return { rows: [] };
+        return res.json();
+    } catch {
+        return { rows: [] };
+    }
+}
+
 // ─── Parse Responses ───
+function parseRealtime(res) {
+    if (!res.rows || res.rows.length === 0) return { activeUsers: 0 };
+    return { activeUsers: parseInt(res.rows[0].metricValues[0].value) || 0 };
+}
+
 function parseOverview(res) {
     if (!res.rows || res.rows.length === 0) {
         return { users: 0, pageviews: 0, sessions: 0, avgDuration: 0, bounceRate: 0 };
@@ -343,12 +377,18 @@ function renderStats(data) {
     const container = document.getElementById('statsContent');
     if (!container) return;
 
-    const { overview, pages, referrers, countries } = data;
+    const { overview, pages, referrers, countries, realtime } = data;
     const duration = formatDuration(overview.avgDuration);
     const bounce = (overview.bounceRate * 100).toFixed(1);
+    const realtimeUsers = realtime?.activeUsers || 0;
 
     container.innerHTML = `
         <div class="stats-grid">
+            <div class="stat-card stat-card-realtime" data-reveal>
+                <div class="stat-label"><span class="realtime-dot"></span> Right Now</div>
+                <div class="stat-value stat-animate">${realtimeUsers}</div>
+                <div class="stat-sub">Active user${realtimeUsers !== 1 ? 's' : ''} on site</div>
+            </div>
             <div class="stat-card" data-reveal>
                 <div class="stat-label">Visitors</div>
                 <div class="stat-value stat-animate">${formatNumber(overview.users)}</div>
@@ -436,7 +476,7 @@ function renderStats(data) {
         </div>
 
         <div class="stats-footer">
-            <span>Data from Google Analytics 4 · Last 30 days · <button class="btn-link" id="btnRefreshStats">Refresh</button></span>
+            <span>Data from Google Analytics 4 · Realtime updates every 30s · <button class="btn-link" id="btnRefreshStats">Refresh All</button></span>
         </div>
     `;
 
@@ -453,6 +493,50 @@ function renderStats(data) {
         const propertyId = localStorage.getItem('cms_ga4_property');
         if (propertyId) fetchAnalytics(propertyId);
     });
+
+    // Auto-refresh realtime counter
+    startRealtimeRefresh(data);
+}
+
+// ─── Realtime Auto-Refresh ───
+let realtimeInterval = null;
+
+function startRealtimeRefresh() {
+    stopRealtimeRefresh();
+    realtimeInterval = setInterval(async () => {
+        const propertyId = localStorage.getItem('cms_ga4_property');
+        const accessToken = localStorage.getItem('cms_google_access_token');
+        if (!propertyId || !accessToken) return;
+
+        const fullId = propertyId.startsWith('properties/') ? propertyId : `properties/${propertyId}`;
+        try {
+            const res = await runGARealtimeReport(accessToken, fullId);
+            const rt = parseRealtime(res);
+            const valueEl = document.querySelector('.stat-card-realtime .stat-value');
+            const subEl = document.querySelector('.stat-card-realtime .stat-sub');
+            if (valueEl) {
+                const oldVal = parseInt(valueEl.textContent) || 0;
+                if (rt.activeUsers !== oldVal) {
+                    valueEl.textContent = rt.activeUsers;
+                    valueEl.classList.remove('stat-animate');
+                    void valueEl.offsetWidth; // force reflow
+                    valueEl.classList.add('stat-animate');
+                    if (subEl) subEl.textContent = `Active user${rt.activeUsers !== 1 ? 's' : ''} on site`;
+                    // Ping the globe on change
+                    if (globeInstance && rt.activeUsers > oldVal) {
+                        globeInstance.burstPings(rt.activeUsers - oldVal);
+                    }
+                }
+            }
+        } catch {}
+    }, 30000); // every 30 seconds
+}
+
+function stopRealtimeRefresh() {
+    if (realtimeInterval) {
+        clearInterval(realtimeInterval);
+        realtimeInterval = null;
+    }
 }
 
 // ─── Retry handler (global) ───

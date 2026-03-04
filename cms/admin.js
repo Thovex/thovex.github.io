@@ -851,7 +851,6 @@ function enterDashboard(user) {
     loadCmsSettings();
     loadSettings();
     loadProjects();
-    initStatistics();
 
     // Init combo boxes
     const form = $('projectForm');
@@ -912,6 +911,11 @@ document.querySelectorAll('.tab').forEach(tab => {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
         $('tab-' + tab.dataset.tab).classList.add('active');
+
+        // Lazy-init globe when Statistics tab is first shown
+        if (tab.dataset.tab === 'statistics') {
+            initStatistics();
+        }
     });
 });
 

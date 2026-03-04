@@ -1649,6 +1649,42 @@ body::after {
     transform: scale(0.97);
 }
 
+/* ─── Realtime Card ─── */
+.stat-card-realtime {
+    border-color: rgba(0, 255, 120, 0.2);
+}
+
+.stat-card-realtime:hover {
+    border-color: rgba(0, 255, 120, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 120, 0.08), inset 0 0 20px rgba(0, 255, 120, 0.03);
+}
+
+.stat-card-realtime::before {
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 120, 0.6), transparent);
+}
+
+.stat-card-realtime .stat-value {
+    color: rgb(0, 255, 120);
+    text-shadow: 0 0 20px rgba(0, 255, 120, 0.3);
+}
+
+.realtime-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: rgb(0, 255, 120);
+    border-radius: 50%;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+    animation: realtime-pulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(0, 255, 120, 0.6);
+}
+
+@keyframes realtime-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(0, 255, 120, 0.6); }
+    50% { opacity: 0.3; box-shadow: 0 0 2px rgba(0, 255, 120, 0.3); }
+}
+
 .stat-card::before {
     content: '';
     position: absolute;
