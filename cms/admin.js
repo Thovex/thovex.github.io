@@ -520,14 +520,39 @@ function getProjectId() {
     return form?.elements?.id?.value?.trim() || 'unknown';
 }
 
-function getUploadPath(file, subfolder = '') {
+function getUploadPath(file, context = 'file') {
     const projectId = getProjectId();
     const ext = file.name.split('.').pop().toLowerCase();
-    const baseName = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
     const folder = `res/projects/${projectId}`;
-    const subPath = subfolder ? `${folder}/${subfolder}` : folder;
-    return `${subPath}/${baseName}.${ext}`;
+
+    // Auto-name based on context
+    if (context === 'banner') return `${folder}/banner.${ext}`;
+    if (context === 'mini') return `${folder}/mini.${ext}`;
+
+    if (context === 'screenshot') {
+        const existing = $('screenshotItems').querySelectorAll('.array-item');
+        const idx = String(existing.length).padStart(2, '0');
+        return `${folder}/ss_${idx}.${ext}`;
+    }
+
+    if (context === 'video') {
+        const existing = $('videoItems').querySelectorAll('.array-item');
+        const idx = String(existing.length).padStart(2, '0');
+        return `${folder}/vid_${idx}.${ext}`;
+    }
+
+    if (context === 'icon') {
+        const existing = $('socialItems').querySelectorAll('.array-item');
+        const idx = String(existing.length).padStart(2, '0');
+        return `${folder}/ico_${idx}.${ext}`;
+    }
+
+    // Fallback: sanitize original name
+    const baseName = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+    return `${folder}/${baseName}.${ext}`;
 }
+
+let activeUploadContext = 'file';
 
 $('mediaFileInput').addEventListener('change', async (e) => {
     const file = e.target.files[0];
@@ -541,7 +566,7 @@ $('mediaFileInput').addEventListener('change', async (e) => {
     }
 
     const targetInput = activeUploadTarget;
-    const path = getUploadPath(file);
+    const path = getUploadPath(file, activeUploadContext);
     const result = await uploadFileToGitHub(file, path);
 
     if (result) {
@@ -550,14 +575,140 @@ $('mediaFileInput').addEventListener('change', async (e) => {
     }
 
     activeUploadTarget = null;
+    activeUploadContext = 'file';
     e.target.value = '';
 });
 
-function triggerUpload(targetInput, accept) {
+function triggerUpload(targetInput, accept, context = 'file') {
     activeUploadTarget = targetInput;
+    activeUploadContext = context;
     const fileInput = $('mediaFileInput');
     fileInput.accept = accept || 'image/*,video/*';
     fileInput.click();
+}
+
+// ─── Drag to Reorder ───
+function initDragReorder(item, container) {
+    let draggedItem = null;
+
+    item.addEventListener('dragstart', (e) => {
+        draggedItem = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+    });
+
+    item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        draggedItem = null;
+    });
+
+    item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const dragging = container.querySelector('.dragging');
+        if (dragging && dragging !== item) {
+            item.classList.add('drag-over');
+        }
+    });
+
+    item.addEventListener('dragleave', () => {
+        item.classList.remove('drag-over');
+    });
+
+    item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        item.classList.remove('drag-over');
+        const dragging = container.querySelector('.dragging');
+        if (dragging && dragging !== item) {
+            const items = [...container.children];
+            const fromIdx = items.indexOf(dragging);
+            const toIdx = items.indexOf(item);
+            if (fromIdx < toIdx) {
+                container.insertBefore(dragging, item.nextSibling);
+            } else {
+                container.insertBefore(dragging, item);
+            }
+        }
+    });
+}
+
+// ─── Animated Media Tooltip ───
+let tooltipEl = null;
+
+function getOrCreateTooltip() {
+    if (!tooltipEl) {
+        tooltipEl = document.createElement('div');
+        tooltipEl.className = 'media-tooltip';
+        document.body.appendChild(tooltipEl);
+    }
+    return tooltipEl;
+}
+
+function initMediaTooltip(item, getSrc) {
+    const handle = item.querySelector('.drag-handle');
+    if (!handle) return;
+
+    let showTimeout;
+
+    item.addEventListener('mouseenter', (e) => {
+        const src = getSrc();
+        if (!src) return;
+
+        showTimeout = setTimeout(() => {
+            const tip = getOrCreateTooltip();
+            const resolvedSrc = src.startsWith('http') ? src : SITE_ROOT + src;
+
+            const ytId = extractYouTubeId(src);
+            if (ytId) {
+                tip.innerHTML = `<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="">`;
+            } else if (isVideoPath(src)) {
+                tip.innerHTML = `<video src="${resolvedSrc}" autoplay muted loop style="max-width:100%;max-height:100%;border-radius:4px;"></video>`;
+            } else {
+                tip.innerHTML = `<img src="${resolvedSrc}" alt="" onerror="this.parentElement.innerHTML='<span>⚠ Not found</span>'">`;
+            }
+
+            tip.classList.add('visible');
+            positionTooltip(tip, e);
+        }, 300);
+    });
+
+    item.addEventListener('mousemove', (e) => {
+        if (tooltipEl?.classList.contains('visible')) {
+            positionTooltip(tooltipEl, e);
+        }
+    });
+
+    item.addEventListener('mouseleave', () => {
+        clearTimeout(showTimeout);
+        if (tooltipEl) {
+            tooltipEl.classList.remove('visible');
+            tooltipEl.innerHTML = '';
+        }
+    });
+}
+
+function positionTooltip(tip, e) {
+    const pad = 16;
+    let x = e.clientX + pad;
+    let y = e.clientY + pad;
+
+    // Keep on screen
+    if (x + 260 > window.innerWidth) x = e.clientX - 260 - pad;
+    if (y + 180 > window.innerHeight) y = e.clientY - 180 - pad;
+
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+}
+
+function extractYouTubeId(url) {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+}
+
+function isVideoPath(src) {
+    return /\.(mp4|webm|ogg|mov)$/i.test(src);
 }
 
 
@@ -683,7 +834,8 @@ function enterDashboard(user) {
         const targetName = btn.dataset.uploadTarget;
         const targetInput = form.elements[targetName];
         if (targetInput) {
-            btn.addEventListener('click', () => triggerUpload(targetInput, 'image/*'));
+            const context = targetName === 'minisrc' ? 'mini' : 'banner';
+            btn.addEventListener('click', () => triggerUpload(targetInput, 'image/*', context));
         }
     });
 }
@@ -1067,7 +1219,7 @@ function addSocialItem(data = {}) {
 
     // Upload button for icon
     const inputs = item.querySelectorAll('input');
-    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(inputs[2], 'image/*'));
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(inputs[2], 'image/*', 'icon'));
 
     // Social preview
     const previewTarget = item.querySelector('.social-preview-target');
@@ -1099,14 +1251,16 @@ function collectSocialItems() {
 function addScreenshotItem(data = {}) {
     const container = $('screenshotItems');
     const item = document.createElement('div');
-    item.className = 'array-item';
+    item.className = 'array-item draggable-item';
+    item.draggable = true;
     item.innerHTML = `
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
         <div class="array-item-fields">
             <div class="input-with-upload">
-                <input type="text" placeholder="Image path (e.g. res/projects/xxx/ss_1.png)" value="${escapeAttr(data.src || '')}">
+                <input type="text" placeholder="Image path (e.g. res/projects/xxx/ss_01.png)" value="${escapeAttr(data.src || '')}">
                 <button type="button" class="btn btn-small btn-upload" title="Upload image">↑</button>
             </div>
-            <input type="text" placeholder="Alt text" value="${escapeAttr(data.alt || '')}">
+            <input type="text" placeholder="Alt text (describe what's shown)" value="${escapeAttr(data.alt || '')}">
             <div class="array-item-preview ss-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
@@ -1115,13 +1269,17 @@ function addScreenshotItem(data = {}) {
 
     // Upload button
     const srcInput = item.querySelector('input');
-    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'image/*'));
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'image/*', 'screenshot'));
 
     // Screenshot preview
     const previewTarget = item.querySelector('.ss-preview-target');
     const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
     srcInput.addEventListener('input', updatePreview);
 
+    // Hover tooltip
+    initMediaTooltip(item, () => srcInput.value.trim());
+
+    initDragReorder(item, container);
     container.appendChild(item);
     if (data.src) renderMediaPreview(previewTarget, data.src);
 }
@@ -1139,13 +1297,16 @@ function collectScreenshotItems() {
 function addVideoItem(data = {}) {
     const container = $('videoItems');
     const item = document.createElement('div');
-    item.className = 'array-item';
+    item.className = 'array-item draggable-item';
+    item.draggable = true;
     item.innerHTML = `
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
         <div class="array-item-fields">
             <div class="input-with-upload">
                 <input type="text" placeholder="Video URL or path (supports YouTube)" value="${escapeAttr(data.src || '')}">
                 <button type="button" class="btn btn-small btn-upload" title="Upload video">↑</button>
             </div>
+            <input type="text" placeholder="Alt text (describe the video)" value="${escapeAttr(data.alt || '')}">
             <div class="array-item-preview vid-preview-target"></div>
         </div>
         <button type="button" class="btn-remove-item">&times;</button>
@@ -1154,22 +1315,30 @@ function addVideoItem(data = {}) {
 
     // Upload button
     const srcInput = item.querySelector('input');
-    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'video/*'));
+    item.querySelector('.btn-upload').addEventListener('click', () => triggerUpload(srcInput, 'video/*', 'video'));
 
     // Video preview
     const previewTarget = item.querySelector('.vid-preview-target');
     const updatePreview = debounce(() => renderMediaPreview(previewTarget, srcInput.value.trim()));
     srcInput.addEventListener('input', updatePreview);
 
+    // Hover tooltip
+    initMediaTooltip(item, () => srcInput.value.trim());
+
+    initDragReorder(item, container);
     container.appendChild(item);
     if (data.src) renderMediaPreview(previewTarget, data.src);
 }
 
 function collectVideoItems() {
     return [...$('videoItems').querySelectorAll('.array-item')].map(item => {
-        const src = item.querySelector('input').value.trim();
+        const inputs = item.querySelectorAll('input');
+        const src = inputs[0].value.trim();
+        const alt = inputs[1]?.value.trim() || '';
         if (!src) return null;
-        return { src };
+        const obj = { src };
+        if (alt) obj.alt = alt;
+        return obj;
     }).filter(Boolean);
 }
 
