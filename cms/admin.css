@@ -1109,26 +1109,49 @@ body::after {
     margin-bottom: 1rem;
 }
 
-/* ─── Order Handle ─── */
-.order-cell {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.order-cell input {
-    width: 50px;
-    padding: 0.3rem;
-    background: var(--surface);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+/* ─── Drag Handle (project table) ─── */
+.drag-cell {
+    width: 2rem;
     text-align: center;
-    outline: none;
+    padding: 0.3rem !important;
 }
 
-.order-cell input:focus { border-color: var(--accent); }
+.project-drag-handle {
+    cursor: grab;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    user-select: none;
+    transition: var(--transition-fast);
+    line-height: 1;
+}
+
+.project-drag-handle:hover {
+    color: var(--color-cyan);
+}
+
+.project-drag-handle:active {
+    cursor: grabbing;
+}
+
+.project-table tbody tr[draggable] {
+    transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.project-table tbody tr.dragging {
+    opacity: 0.3;
+}
+
+.project-table tbody tr.drag-over {
+    box-shadow: 0 -2px 0 0 var(--color-cyan) inset;
+}
+
+.project-table tbody tr.drag-over td {
+    border-top: 2px solid var(--color-cyan) !important;
+}
+
+.project-table thead th:first-child {
+    width: 2rem;
+}
 
 /* ─── Media Count Badge ─── */
 .media-count {

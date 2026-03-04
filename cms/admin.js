@@ -972,10 +972,8 @@ function renderProjectList() {
             </span>` : '';
 
         return `
-        <tr style="animation-delay:${i * 0.04}s">
-            <td class="order-cell">
-                <input type="number" value="${p.order ?? i}" min="0" data-id="${p.id}" class="order-input">
-            </td>
+        <tr data-project-id="${p.id}" draggable="true" style="animation-delay:${i * 0.04}s">
+            <td class="drag-cell"><span class="drag-handle project-drag-handle" title="Drag to reorder">⠿</span></td>
             <td class="project-title-cell">
                 <div class="title-with-thumb">
                     ${thumbHtml}
@@ -997,26 +995,89 @@ function renderProjectList() {
     container.innerHTML = `
         <table class="project-table">
             <thead><tr>
-                <th>Order</th><th>Title</th><th>Status</th><th>Engine</th><th>Language</th><th>Period</th><th>Media</th><th>Actions</th>
+                <th></th><th>Title</th><th>Status</th><th>Engine</th><th>Language</th><th>Period</th><th>Media</th><th>Actions</th>
             </tr></thead>
-            <tbody>${rows}</tbody>
+            <tbody id="projectTableBody">${rows}</tbody>
         </table>`;
 
-    container.querySelectorAll('.order-input').forEach(input => {
-        input.addEventListener('change', async (e) => {
-            const id = e.target.dataset.id;
-            const newOrder = parseInt(e.target.value, 10);
-            if (isNaN(newOrder)) return;
+    initProjectTableDrag();
+}
 
-            try {
-                await setDoc(doc(db, 'projects', id), { order: newOrder }, { merge: true });
-                showToast('Order updated.', 'success');
-                await loadProjects();
-            } catch (err) {
-                showToast('Failed to update order.', 'error');
+function initProjectTableDrag() {
+    const tbody = $('projectTableBody');
+    if (!tbody) return;
+
+    let draggedRow = null;
+
+    tbody.querySelectorAll('tr[draggable]').forEach(row => {
+        row.addEventListener('dragstart', (e) => {
+            draggedRow = row;
+            row.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', '');
+        });
+
+        row.addEventListener('dragend', () => {
+            row.classList.remove('dragging');
+            tbody.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+            draggedRow = null;
+        });
+
+        row.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            if (draggedRow && draggedRow !== row) {
+                row.classList.add('drag-over');
             }
         });
+
+        row.addEventListener('dragleave', () => {
+            row.classList.remove('drag-over');
+        });
+
+        row.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            row.classList.remove('drag-over');
+            if (!draggedRow || draggedRow === row) return;
+
+            const rows = [...tbody.children];
+            const fromIdx = rows.indexOf(draggedRow);
+            const toIdx = rows.indexOf(row);
+            if (fromIdx < toIdx) {
+                tbody.insertBefore(draggedRow, row.nextSibling);
+            } else {
+                tbody.insertBefore(draggedRow, row);
+            }
+
+            // Persist new order to Firestore
+            await saveProjectOrder();
+        });
     });
+}
+
+async function saveProjectOrder() {
+    const tbody = $('projectTableBody');
+    if (!tbody || !db) return;
+
+    const rows = [...tbody.querySelectorAll('tr[data-project-id]')];
+    try {
+        const updates = rows.map((row, i) => {
+            const id = row.dataset.projectId;
+            return setDoc(doc(db, 'projects', id), { order: i }, { merge: true });
+        });
+        await Promise.all(updates);
+
+        // Update local projects array order
+        const orderMap = {};
+        rows.forEach((row, i) => { orderMap[row.dataset.projectId] = i; });
+        projects.sort((a, b) => (orderMap[a.id] ?? 999) - (orderMap[b.id] ?? 999));
+        projects.forEach((p, i) => { p.order = i; });
+
+        showToast('Order saved.', 'success');
+    } catch (err) {
+        console.error('Save order error:', err);
+        showToast('Failed to save order.', 'error');
+    }
 }
 
 // ─── Project Editor ───
