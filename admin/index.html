@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS — jessevanvliet.xyz</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ─── Toast Container ─── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ─── Login Screen ─── -->
+<div class="screen active" id="loginScreen">
+    <div class="login-box">
+        <h1>CMS<span>.</span>admin</h1>
+        <p class="login-subtitle">Content management for jessevanvliet.xyz</p>
+
+        <button class="btn-google" id="btnGoogleLogin" type="button">
+            <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.1 24.1 0 0 0 0 21.56l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Sign in with Google
+        </button>
+
+        <div class="login-security">
+            <span><span class="lock-icon">🔒</span> Restricted to authorized account only</span>
+            <span><span class="lock-icon">🛡️</span> 2FA required via Google account</span>
+        </div>
+    </div>
+</div>
+
+<!-- ─── MFA Verification Screen ─── -->
+<div class="screen" id="mfaScreen">
+    <div class="mfa-box">
+        <h2>🔐 Two-Factor Authentication</h2>
+        <p>Enter the verification code from your authenticator app.</p>
+        <div class="mfa-input">
+            <input type="text" id="mfaCode" maxlength="6" placeholder="000000" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*">
+        </div>
+        <button class="btn btn-primary" id="btnMfaVerify" type="button">Verify</button>
+    </div>
+</div>
+
+<!-- ─── Dashboard Screen ─── -->
+<div class="screen" id="dashboardScreen">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-brand">CMS<span>.</span>admin</div>
+        <div class="topbar-right">
+            <span class="topbar-user" id="topbarUser"></span>
+            <button class="btn btn-small" id="btnLogout" type="button">Logout</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="projects">Projects</button>
+            <button class="tab" data-tab="publish">Publish</button>
+            <button class="tab" data-tab="settings">Settings</button>
+        </div>
+
+        <!-- Projects Tab -->
+        <div class="tab-content active" id="tab-projects">
+            <div class="project-list-header">
+                <div>
+                    <h2>Projects</h2>
+                    <span class="project-count" id="projectCount"></span>
+                </div>
+                <div style="display:flex;gap:0.75rem;">
+                    <button class="btn" id="btnImportJson" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Import JSON
+                    </button>
+                    <button class="btn btn-primary" id="btnAddProject" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Project
+                    </button>
+                </div>
+            </div>
+
+            <div id="projectListContainer">
+                <div class="empty-state" id="emptyState">
+                    <p>No projects yet. Add one or import from projects.json.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Publish Tab -->
+        <div class="tab-content" id="tab-publish">
+            <div class="settings-section">
+                <h3>Publish to Website</h3>
+                <p>Export your CMS data as projects.json and publish it to your GitHub Pages site. You can download the file or commit it directly.</p>
+
+                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:2rem;">
+                    <button class="btn btn-success" id="btnDownloadJson" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download projects.json
+                    </button>
+                    <button class="btn btn-primary" id="btnCommitGithub" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                        Commit to GitHub
+                    </button>
+                </div>
+
+                <div id="publishPreview" style="display:none;">
+                    <h3>Preview</h3>
+                    <pre style="background:var(--surface);border:1px solid var(--border-subtle);padding:1rem;max-height:400px;overflow:auto;font-size:0.75rem;font-family:var(--font-mono);color:var(--text-secondary);white-space:pre-wrap;"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="tab-settings">
+            <div class="settings-section">
+                <h3>GitHub Integration</h3>
+                <p>Enter a GitHub Personal Access Token to enable direct commits. Create one at
+                    <a href="https://github.com/settings/tokens" target="_blank" rel="noopener" style="color:var(--color-cyan)">github.com/settings/tokens</a>
+                    with "repo" scope.
+                </p>
+                <div class="settings-row">
+                    <div class="form-group">
+                        <label>Personal Access Token</label>
+                        <input type="password" id="githubPat" placeholder="ghp_xxxxxxxxxxxx">
+                    </div>
+                    <button class="btn btn-primary" id="btnSavePat" type="button">Save</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Repository</h3>
+                <div class="settings-row">
+                    <div class="form-group">
+                        <label>Owner</label>
+                        <input type="text" id="githubOwner" value="Thovex" placeholder="Thovex">
+                    </div>
+                    <div class="form-group">
+                        <label>Repo</label>
+                        <input type="text" id="githubRepo" value="thovex.github.io" placeholder="thovex.github.io">
+                    </div>
+                    <div class="form-group">
+                        <label>Branch</label>
+                        <input type="text" id="githubBranch" value="main" placeholder="main">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Data Management</h3>
+                <p>Seed Firestore from the live projects.json on the website, or clear all CMS data.</p>
+                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                    <button class="btn" id="btnSeedFirestore" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Seed from projects.json
+                    </button>
+                    <button class="btn btn-danger" id="btnClearAll" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        Clear All Projects
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ─── Project Editor Modal ─── -->
+<div class="modal-overlay" id="editorModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="editorTitle">Add Project</h2>
+            <button class="modal-close" id="btnCloseEditor" type="button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="projectForm">
+
+                <!-- Basic Info -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>ID (slug)</label>
+                        <input type="text" name="id" required placeholder="my-project">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required placeholder="Project Title">
+                    </div>
+                    <div class="form-group">
+                        <label>Language</label>
+                        <input type="text" name="language" placeholder="C++">
+                    </div>
+                    <div class="form-group">
+                        <label>Engine</label>
+                        <input type="text" name="engine" placeholder="Unreal">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" name="role" placeholder="Game Programmer">
+                    </div>
+                    <div class="form-group">
+                        <label>Type / Source</label>
+                        <select name="type">
+                            <option value="Hobby">Hobby</option>
+                            <option value="BSS">Bright Star Studios</option>
+                            <option value="BH">Baer &amp; Hoggo</option>
+                            <option value="HKU">HKU</option>
+                            <option value="Zloppy-Games">Zloppy Games</option>
+                            <option value="PixelPool">PixelPool</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" name="duration" placeholder="6 months">
+                    </div>
+                    <div class="form-group">
+                        <label>Period</label>
+                        <input type="text" name="datetime" placeholder="2024">
+                    </div>
+                </div>
+
+                <!-- Toggle -->
+                <div class="form-group" style="margin-top:1rem;">
+                    <div class="form-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="card" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span style="font-size:0.85rem;">Featured project (show as card)</span>
+                    </div>
+                </div>
+
+                <!-- Images -->
+                <div class="form-grid" style="margin-top:1rem;">
+                    <div class="form-group">
+                        <label>Mini Image (card thumbnail)</label>
+                        <input type="text" name="minisrc" placeholder="res/bg_mini_xxx.png">
+                    </div>
+                    <div class="form-group">
+                        <label>Banner Image</label>
+                        <input type="text" name="banner" placeholder="res/banner_xxx.png">
+                    </div>
+                </div>
+
+                <!-- Descriptions -->
+                <div class="form-grid" style="margin-top:1rem;">
+                    <div class="form-group full-width">
+                        <label>Short Description</label>
+                        <textarea name="description" rows="2" placeholder="Brief description for cards..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Long Description</label>
+                        <textarea name="longdescription" rows="3" placeholder="Detailed description for project page..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Archive URL (for non-card projects) -->
+                <div class="form-group" style="margin-top:1rem;">
+                    <label>Archive URL (optional, for non-featured projects)</label>
+                    <input type="text" name="archive" placeholder="https://web.archive.org/...">
+                </div>
+
+                <!-- Tags -->
+                <div class="array-section">
+                    <h3>
+                        Tags
+                        <button type="button" class="btn btn-small" id="btnAddTag">+ Add</button>
+                    </h3>
+                    <div class="tags-input-container" id="tagsContainer">
+                        <input type="text" id="tagInput" placeholder="Type tag and press Enter...">
+                    </div>
+                </div>
+
+                <!-- Work Items -->
+                <div class="array-section">
+                    <h3>
+                        Work / Contributions
+                        <button type="button" class="btn btn-small" id="btnAddWork">+ Add</button>
+                    </h3>
+                    <div class="array-items" id="workItems"></div>
+                </div>
+
+                <!-- Socials -->
+                <div class="array-section">
+                    <h3>
+                        Social Links
+                        <button type="button" class="btn btn-small" id="btnAddSocial">+ Add</button>
+                    </h3>
+                    <div class="array-items" id="socialItems"></div>
+                </div>
+
+                <!-- Screenshots -->
+                <div class="array-section">
+                    <h3>
+                        Screenshots
+                        <button type="button" class="btn btn-small" id="btnAddScreenshot">+ Add</button>
+                    </h3>
+                    <div class="array-items" id="screenshotItems"></div>
+                </div>
+
+                <!-- Videos -->
+                <div class="array-section">
+                    <h3>
+                        Videos
+                        <button type="button" class="btn btn-small" id="btnAddVideo">+ Add</button>
+                    </h3>
+                    <div class="array-items" id="videoItems"></div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" id="btnCancelEditor" type="button">Cancel</button>
+            <button class="btn btn-primary" id="btnSaveProject" type="button">Save Project</button>
+        </div>
+    </div>
+</div>
+
+<!-- ─── Confirm Dialog ─── -->
+<div class="confirm-overlay" id="confirmDialog">
+    <div class="confirm-box">
+        <h3 id="confirmTitle">Are you sure?</h3>
+        <p id="confirmMessage">This action cannot be undone.</p>
+        <div class="confirm-actions">
+            <button class="btn" id="btnConfirmCancel" type="button">Cancel</button>
+            <button class="btn btn-danger" id="btnConfirmOk" type="button">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- ─── Hidden file input for JSON import ─── -->
+<input type="file" id="jsonFileInput" accept=".json" style="display:none">
+
+<!-- ─── Firebase SDK (modular, from CDN) ─── -->
+<script type="module" src="admin.js"></script>
+
+</body>
+</html>
