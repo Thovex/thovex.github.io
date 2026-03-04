@@ -7,7 +7,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.3.0/firebas
 import {
     getAuth,
     signInWithPopup,
-    signInWithCredential,
+    reauthenticateWithPopup,
     GoogleAuthProvider,
     multiFactor,
     TotpMultiFactorGenerator,
@@ -796,12 +796,7 @@ $('btnGoogleLogin').addEventListener('click', async () => {
         }
     } catch (error) {
         if (error.code === 'auth/multi-factor-auth-required') {
-            // Try multiple methods to capture the OAuth credential before MFA
-            const pendingCredential = GoogleAuthProvider.credentialFromError(error);
-            if (pendingCredential) {
-                window._pendingOAuthCredential = pendingCredential;
-            }
-            // Also try to extract access token from the error's custom data
+            // Try to extract access token from the error's internal data (fast path, avoids second popup)
             if (error.customData?._tokenResponse?.oauthAccessToken) {
                 localStorage.setItem('cms_google_access_token', error.customData._tokenResponse.oauthAccessToken);
                 localStorage.setItem('cms_google_token_time', Date.now().toString());
@@ -824,6 +819,27 @@ function storeOAuthToken(credential) {
     }
 }
 
+// ─── Refresh Analytics Token (callable from statistics module) ───
+window.cmsRefreshAnalyticsToken = async () => {
+    if (!auth?.currentUser) {
+        showToast('Not signed in. Please log in first.', 'error');
+        return false;
+    }
+    try {
+        const provider = new GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/analytics.readonly');
+        const result = await reauthenticateWithPopup(auth.currentUser, provider);
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        storeOAuthToken(credential);
+        showToast('Analytics access refreshed!', 'success');
+        return true;
+    } catch (e) {
+        console.error('Token refresh failed:', e);
+        showToast('Failed to refresh analytics access: ' + e.message, 'error');
+        return false;
+    }
+};
+
 // ─── MFA Verification ───
 $('btnMfaVerify').addEventListener('click', async () => {
     const code = $('mfaCode').value.trim();
@@ -837,33 +853,23 @@ $('btnMfaVerify').addEventListener('click', async () => {
         }
         const assertion = TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
         const userCredential = await mfaResolver.resolveSignIn(assertion);
+        mfaResolver = null;
 
-        // Try to get OAuth token from the MFA resolution result
-        const resolvedCredential = GoogleAuthProvider.credentialFromResult(userCredential);
-        if (resolvedCredential?.accessToken) {
-            storeOAuthToken(resolvedCredential);
-        }
-
-        // Fallback: use the pending credential captured before MFA
-        if (!localStorage.getItem('cms_google_access_token') && window._pendingOAuthCredential?.accessToken) {
-            storeOAuthToken(window._pendingOAuthCredential);
-        }
-
-        // Last resort: re-sign-in silently with the pending credential
-        const pendingCred = window._pendingOAuthCredential;
-        window._pendingOAuthCredential = null;
-
-        if (!localStorage.getItem('cms_google_access_token') && pendingCred) {
+        // Firebase MFA flow does NOT preserve the Google OAuth access token.
+        // We need to re-authenticate to get it for GA4 API access.
+        const hasToken = localStorage.getItem('cms_google_access_token');
+        if (!hasToken) {
             try {
-                const reAuthResult = await signInWithCredential(auth, pendingCred);
+                const provider = new GoogleAuthProvider();
+                provider.addScope('https://www.googleapis.com/auth/analytics.readonly');
+                const reAuthResult = await reauthenticateWithPopup(userCredential.user, provider);
                 const reAuthCred = GoogleAuthProvider.credentialFromResult(reAuthResult);
                 storeOAuthToken(reAuthCred);
-            } catch (e) {
-                console.warn('Could not re-auth for OAuth token:', e);
+            } catch (reAuthErr) {
+                console.warn('Re-auth for analytics token failed:', reAuthErr.message);
+                // Non-fatal — CMS works, just analytics won't load until they re-auth
             }
         }
-
-        mfaResolver = null;
     } catch (error) {
         console.error('MFA error:', error);
         showToast('Invalid verification code.', 'error');
@@ -1016,7 +1022,13 @@ $('btnSaveGA4').addEventListener('click', () => {
     showToast(val ? 'GA4 property saved. Switch to Statistics tab to view data.' : 'GA4 property cleared.', 'success');
 });
 
-$('btnAutoDetectGA4').addEventListener('click', () => {
+$('btnAutoDetectGA4').addEventListener('click', async () => {
+    // Ensure we have a valid analytics token before auto-detecting
+    const token = localStorage.getItem('cms_google_access_token');
+    if (!token) {
+        const ok = await window.cmsRefreshAnalyticsToken();
+        if (!ok) return;
+    }
     window.cmsAutoDetectGA4();
 });
 

@@ -116,8 +116,8 @@ async function autoDetectProperty() {
     const accessToken = localStorage.getItem('cms_google_access_token');
     if (!accessToken || !isTokenValid()) {
         showSetupState(accessToken
-            ? 'Your analytics session has expired. Sign out and back in to refresh access.'
-            : 'Sign out and back in to grant analytics access, then auto-detection will work.');
+            ? 'Your analytics session has expired. Click the button below to refresh access.'
+            : 'Grant analytics access to auto-detect your GA4 property.');
         return;
     }
 
@@ -138,7 +138,11 @@ async function autoDetectProperty() {
 
         if (!res.ok) {
             if (res.status === 403) {
-                showSetupState('Analytics access not granted. Sign out and back in — approve the analytics permission when prompted.');
+                showSetupState('Analytics access not granted or has expired. Click the button above to grant access.');
+            } else if (res.status === 401) {
+                localStorage.removeItem('cms_google_access_token');
+                localStorage.removeItem('cms_google_token_time');
+                showSetupState('Analytics session expired. Click the button above to refresh access.');
             } else {
                 showSetupState();
             }
@@ -243,14 +247,14 @@ function showSetupState(extraMessage) {
                 </svg>
             </div>
             <h3>Connect Google Analytics</h3>
-            <p>${extraMessage || 'Click the button below to auto-detect your GA4 property, or enter the property ID manually in the Settings tab.'}</p>
+            <p>${extraMessage || 'Click the button below to grant analytics access and auto-detect your GA4 property.'}</p>
             <div style="margin-top:1rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-                <button class="btn btn-primary btn-small" onclick="window.cmsAutoDetectGA4()">
+                <button class="btn btn-primary btn-small" onclick="window.cmsRefreshAnalyticsToken().then(ok => { if (ok) window.cmsAutoDetectGA4(); })">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    Auto-Detect Property
+                    Grant Access &amp; Auto-Detect
                 </button>
             </div>
-            <p class="stats-empty-hint" style="margin-top:1rem;">Or enter it manually in Settings: <code>Admin ⚙ → Property Settings → Property ID</code></p>
+            <p class="stats-empty-hint" style="margin-top:1rem;">Or enter the property ID manually in Settings: <code>Admin ⚙ → Property Settings → Property ID</code></p>
         </div>
     `;
 }
@@ -293,9 +297,12 @@ async function fetchAnalytics(propertyId) {
                         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
                 </div>
-                <h3>${accessToken ? 'Session Expired' : 'Authentication Required'}</h3>
-                <p>${accessToken ? 'Your Google Analytics access token has expired.' : 'No access token found.'} Sign out and back in to grant analytics access.</p>
-                <button class="btn btn-small btn-primary" onclick="document.getElementById('btnLogout').click();">Sign Out &amp; Re-authenticate</button>
+                <h3>${accessToken ? 'Session Expired' : 'Analytics Access Required'}</h3>
+                <p>${accessToken ? 'Your Google Analytics access token has expired.' : 'No analytics access token found.'} Click below to grant access — a Google popup will appear.</p>
+                <button class="btn btn-small btn-primary" onclick="window.cmsRefreshAnalyticsToken().then(ok => { if (ok) window.cmsRetryAnalytics(); })">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                    Grant Analytics Access
+                </button>
             </div>
         `;
         stopRealtimeRefresh();
@@ -686,7 +693,7 @@ function startRealtimeRefresh() {
                 const countEl = document.getElementById('realtimeCount');
                 const feedEl = document.getElementById('realtimeFeed');
                 if (countEl) countEl.textContent = '—';
-                if (feedEl) feedEl.innerHTML = `<div class="stats-empty-mini">Session expired — sign out and back in to resume</div>`;
+                if (feedEl) feedEl.innerHTML = `<div class="stats-empty-mini">Session expired — <a href="#" onclick="event.preventDefault(); window.cmsRefreshAnalyticsToken().then(ok => { if (ok) window.cmsRetryAnalytics(); })" style="color:var(--color-cyan);text-decoration:underline;cursor:pointer;">click to refresh</a></div>`;
             }
             return;
         }
