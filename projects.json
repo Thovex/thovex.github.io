@@ -8,8 +8,8 @@
         "role": "Game Programmer",
         "duration": "Active",
         "datetime": "2025",
-        "minisrc": "res/bg_mini_dtail.png",
-        "banner": "res/banner_dtail.png",
+        "minisrc": "res/projects/dtail-spaces/mini.png",
+        "banner": "res/projects/dtail-spaces/banner.png",
         "type": "PixelPool",
         "description": "A 3D application built with Unreal Engine 5 that lets fashion brands create virtual store environments with fixtures and products, walking customers through customizable showrooms.",
         "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces. Users showcase collections with 360-degree product views and detailed zoom, providing a hands-on alternative to traditional 2D presentations for B2B buyers and internal merchandising teams.",
@@ -37,15 +37,15 @@
         ],
         "screenshots": [
             {
-                "src": "res/projects/dtail/ss_dtail_1.png",
+                "src": "res/projects/dtail-spaces/ss_dtail_1.png",
                 "alt": "Dtail Spaces Screenshot 1"
             },
             {
-                "src": "res/projects/dtail/ss_dtail_2.jpg",
+                "src": "res/projects/dtail-spaces/ss_dtail_2.jpg",
                 "alt": "Dtail Spaces Screenshot 2"
             },
             {
-                "src": "res/projects/dtail/ss_dtail_3.png",
+                "src": "res/projects/dtail-spaces/ss_dtail_3.png",
                 "alt": "Dtail Spaces Screenshot 3"
             }
         ]
@@ -59,8 +59,8 @@
         "role": "Gameplay Programmer",
         "duration": "4y+",
         "datetime": "2021-2025",
-        "minisrc": "res/bg_mini_embersword.png",
-        "banner": "res/banner_embersword.png",
+        "minisrc": "res/projects/ember-sword/mini.png",
+        "banner": "res/projects/ember-sword/banner.png",
         "type": "BSS",
         "description": "An open-world sandbox MMORPG by Bright Star Studios.",
         "longdescription": "Ember Sword is a cross-platform free-to-play fantasy MMORPG. Players can own, control, and evolve their land while trading assets with other players. The game runs on the Radiance Engine, a custom engine built by Bright Star Studios.",
@@ -117,44 +117,44 @@
         "socials": [
             {
                 "info": "embersword.com",
-                "icon": "res/ico_embersword.png",
+                "icon": "res/projects/ember-sword/ico_embersword.png",
                 "url": "https://embersword.com"
             }
         ],
         "screenshots": [
             {
                 "alt": "Ember Sword Screenshot 4",
-                "src": "res/projects/embersword/ss_embersword_4.png"
+                "src": "res/projects/ember-sword/ss_embersword_4.png"
             },
             {
                 "alt": "Ember Sword Screenshot 1",
-                "src": "res/projects/embersword/ss_embersword_1.png"
+                "src": "res/projects/ember-sword/ss_embersword_1.png"
             },
             {
                 "alt": "Ember Sword Screenshot 2",
-                "src": "res/projects/embersword/ss_embersword_2.png"
+                "src": "res/projects/ember-sword/ss_embersword_2.png"
             },
             {
                 "alt": "Ember Sword Screenshot 3",
-                "src": "res/projects/embersword/ss_embersword_3.png"
+                "src": "res/projects/ember-sword/ss_embersword_3.png"
             }
         ],
         "videos": [
             {
                 "alt": "Ember Sword Gameplay 1",
-                "src": "res/projects/embersword/vid_embersword_1.webm"
+                "src": "res/projects/ember-sword/vid_embersword_1.webm"
             },
             {
                 "alt": "Ember Sword Gameplay 2",
-                "src": "res/projects/embersword/vid_embersword_2.webm"
+                "src": "res/projects/ember-sword/vid_embersword_2.webm"
             },
             {
                 "alt": "Ember Sword Gameplay 3",
-                "src": "res/projects/embersword/vid_embersword_3.webm"
+                "src": "res/projects/ember-sword/vid_embersword_3.webm"
             },
             {
                 "alt": "Ember Sword Gameplay 4",
-                "src": "res/projects/embersword/vid_embersword_4.webm"
+                "src": "res/projects/ember-sword/vid_embersword_4.webm"
             }
         ]
     },
@@ -167,8 +167,8 @@
         "role": "Game Programmer",
         "duration": "2m",
         "datetime": "2025",
-        "minisrc": "res/bg_mini_motherlode.png",
-        "banner": "res/banner_motherlode.png",
+        "minisrc": "res/projects/motherlode-tycoon/mini.png",
+        "banner": "res/projects/motherlode-tycoon/banner.png",
         "type": "Zloppy-Games",
         "description": "A take on the classic tycoon genre in Fortnite Creative, aiming for a fun and engaging experience without predatory hooks.",
         "longdescription": "A tycoon game built in Fortnite Creative (UEFN) with my friend. We wanted to make something that's genuinely fun rather than just designed to keep kids glued to the screen.",
@@ -233,8 +233,8 @@
         "role": "Game Programmer",
         "duration": "6m",
         "datetime": "2022-2023",
-        "minisrc": "res/bg_mini_farmion.png",
-        "banner": "res/banner_farmion.png",
+        "minisrc": "res/projects/farmion/mini.png",
+        "banner": "res/projects/farmion/banner.png",
         "type": "BH",
         "description": "A time-management wizard-themed farming sim with cooperative play!",
         "longdescription": "Solo dev production. Various art is from the Unreal Marketplace, some made by me. Farmion is a time-management wizard-themed farming sim with cooperative play!",
@@ -286,7 +286,7 @@
         ],
         "socials": [
             {
-                "icon": "res/ico_farmion.png",
+                "icon": "res/projects/farmion/ico_farmion.png",
                 "url": "https://linktr.ee/baerandhoggo",
                 "info": "link.tree"
             },
@@ -362,8 +362,8 @@
         "role": "Tools Programmer",
         "duration": "4y+",
         "datetime": "2021-2025",
-        "minisrc": "res/bg_mini_radiance.png",
-        "banner": "res/banner_radiance.png",
+        "minisrc": "res/projects/radiance/mini.png",
+        "banner": "res/projects/radiance/banner.png",
         "type": "BSS",
         "description": "The creation of a web-based MMORPG game engine.",
         "longdescription": "Radiance is a custom engine built by Bright Star Studios for the MMORPG Ember Sword. It's web-based, enabling cross-platform play.",
@@ -425,8 +425,8 @@
         "role": "Game Programmer",
         "duration": "4m",
         "datetime": "2021",
-        "minisrc": "res/bg_mini_bitfarers.png",
-        "banner": "res/banner_bitfarers.png",
+        "minisrc": "res/projects/bitfarers/mini.png",
+        "banner": "res/projects/bitfarers/banner.png",
         "type": "Hobby",
         "description": "A co-op dungeon running game with a theme traversal twist.",
         "longdescription": "A theme-traversal co-op FPS with roguelike elements. Players travel through differently themed dungeons, each with unique mechanics and enemies, and upgrade their characters as they progress.",
@@ -490,8 +490,8 @@
         "role": "Game Programmer",
         "duration": "4m",
         "datetime": "2020",
-        "minisrc": "res/bg_mini_idlecards.png",
-        "banner": "res/banner_idlecards.png",
+        "minisrc": "res/projects/idle-cards/mini.png",
+        "banner": "res/projects/idle-cards/banner.png",
         "type": "Hobby",
         "description": "An idle game with card-based combat for phones.",
         "longdescription": "An idle game at its core with an active card battling system on top. Players collect cards, upgrade them, and use them in battles to progress.",
@@ -516,25 +516,25 @@
         "screenshots": [
             {
                 "alt": "S2",
-                "src": "res/projects/idlecards/ss_idlecards_02.png"
+                "src": "res/projects/idle-cards/ss_idlecards_02.png"
             },
             {
                 "alt": "S3",
-                "src": "res/projects/idlecards/ss_idlecards_03.png"
+                "src": "res/projects/idle-cards/ss_idlecards_03.png"
             },
             {
                 "alt": "S1",
-                "src": "res/projects/idlecards/ss_idlecards_01.png"
+                "src": "res/projects/idle-cards/ss_idlecards_01.png"
             }
         ],
         "videos": [
             {
                 "alt": "V1",
-                "src": "res/projects/idlecards/vid_idlecards_01.mp4"
+                "src": "res/projects/idle-cards/vid_idlecards_01.mp4"
             },
             {
                 "alt": "V1",
-                "src": "res/projects/idlecards/vid_idlecards_02.mp4"
+                "src": "res/projects/idle-cards/vid_idlecards_02.mp4"
             }
         ]
     },
@@ -547,8 +547,8 @@
         "role": "Game Programmer",
         "duration": "4m",
         "datetime": "2019",
-        "minisrc": "res/bg_mini_andromedaresonance.png",
-        "banner": "res/bg_banner_andromedaresonance.png",
+        "minisrc": "res/projects/andromeda-resonance/mini.png",
+        "banner": "res/projects/andromeda-resonance/banner.png",
         "type": "HKU",
         "description": "3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
         "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. A 3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
@@ -590,8 +590,8 @@
         "role": "Assistant",
         "duration": "2y+",
         "datetime": "2022",
-        "minisrc": "res/bg_mini_cat.png",
-        "banner": "res/bg_mini_cat.png",
+        "minisrc": "res/projects/cat/mini.png",
+        "banner": "res/projects/cat/mini.png",
         "type": "Hobby",
         "description": "Finn & Dusty need a lot of attention!",
         "longdescription": "Two Ragdoll cats: one white, one grey. Excellent office staff.",
