@@ -727,7 +727,8 @@ $('btnCommitGithub').addEventListener('click', async () => {
 
     try {
         const data = generateProjectsJson();
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 4))));
+        const jsonStr = JSON.stringify(data, null, 4);
+        const content = btoa(new TextEncoder().encode(jsonStr).reduce((s, b) => s + String.fromCharCode(b), ''));
 
         // Get current file SHA (needed for update)
         const getRes = await fetch(
