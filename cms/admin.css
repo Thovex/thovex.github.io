@@ -1692,16 +1692,12 @@ body::after {
 .visitor-device {
     display: flex;
     align-items: center;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
-.visitor-page {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-    color: var(--color-cyan);
-    opacity: 0.7;
+.visitor-device-label {
+    color: var(--text-muted);
+    opacity: 0.8;
 }
 
 .realtime-dot {
@@ -2018,10 +2014,6 @@ body::after {
         flex-direction: column;
         gap: 0.5rem;
         align-items: flex-start;
-    }
-
-    .visitor-page {
-        max-width: 120px;
     }
 }
 

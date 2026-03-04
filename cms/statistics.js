@@ -356,9 +356,9 @@ async function fetchRealtimeDetailed(accessToken, propertyId) {
             metrics: [{ name: 'activeUsers' }]
         }),
         runGARealtimeReport(accessToken, propertyId, {
-            dimensions: [{ name: 'country' }, { name: 'deviceCategory' }, { name: 'pageTitle' }],
+            dimensions: [{ name: 'country' }, { name: 'deviceCategory' }],
             metrics: [{ name: 'activeUsers' }],
-            limit: 20
+            limit: 30
         })
     ]);
 
@@ -367,7 +367,6 @@ async function fetchRealtimeDetailed(accessToken, propertyId) {
     const visitors = (visitorRes.rows || []).map(row => ({
         country: row.dimensionValues[0].value,
         device: row.dimensionValues[1].value,
-        page: row.dimensionValues[2].value || '/',
         users: parseInt(row.metricValues[0].value) || 1
     }));
 
@@ -400,19 +399,22 @@ function updateRealtimePanel(realtimeData) {
             : '';
     }
 
-    // Build visitor feed
-    if (visitors.length === 0) {
+    // Build visitor feed — if we have a count but no dimension data, show a generic entry
+    let displayVisitors = visitors;
+    if (visitors.length === 0 && totalUsers > 0) {
+        displayVisitors = [{ country: 'Unknown', device: 'desktop', users: totalUsers }];
+    }
+
+    if (displayVisitors.length === 0) {
         feedEl.innerHTML = `<div class="stats-empty-mini">No active visitors right now</div>`;
         return;
     }
 
-    const visitorCards = visitors.map(v => {
+    const visitorCards = displayVisitors.map(v => {
         const flag = countryFlag(v.country);
-        const color = avatarColor(v.country + v.device + v.page);
+        const color = avatarColor(v.country + v.device);
         const initials = v.country.substring(0, 2).toUpperCase();
-        // Clean up page title — strip common suffixes like " | Jesse van Vliet"
-        let pageName = v.page === '(not set)' || !v.page ? 'Home' : v.page;
-        pageName = pageName.replace(/\s*[|–—]\s*Jesse\s*van\s*Vliet.*/i, '').trim() || 'Home';
+        const deviceLabel = (v.device || 'desktop').charAt(0).toUpperCase() + (v.device || 'desktop').slice(1);
         const userLabel = v.users > 1 ? `${v.users} visitors` : '1 visitor';
 
         return `
@@ -426,7 +428,7 @@ function updateRealtimePanel(realtimeData) {
                     </div>
                     <div class="visitor-detail">
                         <span class="visitor-device">${deviceIcon(v.device)}</span>
-                        <span class="visitor-page" title="${escapeHtml(pageName)}">${escapeHtml(pageName)}</span>
+                        <span class="visitor-device-label">${escapeHtml(deviceLabel)}</span>
                     </div>
                 </div>
             </div>
@@ -473,9 +475,14 @@ async function runGARealtimeReport(accessToken, propertyId, body) {
                 body: JSON.stringify(body)
             }
         );
-        if (!res.ok) return { rows: [] };
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            console.warn('Realtime API error:', res.status, err.error?.message || err);
+            return { rows: [] };
+        }
         return res.json();
-    } catch {
+    } catch (e) {
+        console.warn('Realtime fetch failed:', e);
         return { rows: [] };
     }
 }
