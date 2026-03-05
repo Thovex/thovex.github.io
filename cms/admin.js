@@ -1981,3 +1981,13 @@ function escapeHtml(str) {
 function escapeAttr(str) {
     return (str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var btnBack = document.getElementById('btnBackToMain');
+    if (btnBack) {
+        btnBack.addEventListener('click', function() {
+            window.location.href = '/'; // Change to your main page path if needed
+        });
+    }
+});
+
