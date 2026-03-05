@@ -763,11 +763,13 @@ if (auth) {
         if (user) {
             if (user.email !== ALLOWED_EMAIL) {
                 showToast('Access denied. Only the authorized account may sign in.', 'error');
+                localStorage.removeItem('cms_authed');
                 await signOut(auth);
                 return;
             }
             enterDashboard(user);
         } else {
+            localStorage.removeItem('cms_authed');
             showScreen('login');
         }
     });
@@ -884,6 +886,7 @@ $('mfaCode').addEventListener('keydown', (e) => {
 $('btnLogout').addEventListener('click', async () => {
     localStorage.removeItem('cms_google_access_token');
     localStorage.removeItem('cms_google_token_time');
+    localStorage.removeItem('cms_authed');
     if (auth) await signOut(auth);
     showScreen('login');
 });
@@ -891,6 +894,9 @@ $('btnLogout').addEventListener('click', async () => {
 // ─── Dashboard Entry ───
 function enterDashboard(user) {
     showScreen('dashboard');
+
+    // Signal to public pages that admin is logged in
+    localStorage.setItem('cms_authed', '1');
 
     const mfaEnrolled = multiFactor(user).enrolledFactors.length > 0;
     $('topbarUser').innerHTML = `
@@ -984,6 +990,36 @@ document.querySelectorAll('.tab').forEach(tab => {
 // Restore tab from URL hash on load
 function restoreTabFromHash() {
     const hash = location.hash.replace('#', '');
+
+    // Deep-link: #edit-{projectId}
+    if (hash.startsWith('edit-')) {
+        const projectId = hash.slice(5);
+        switchTab('projects');
+        // Wait for projects to load, then open editor
+        let retries = 0;
+        const tryOpen = () => {
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                openEditor(project);
+                history.replaceState(null, '', '#projects');
+            } else if (projects.length === 0 && retries++ < 25) {
+                setTimeout(tryOpen, 200);
+            }
+        };
+        setTimeout(tryOpen, 300);
+        return;
+    }
+
+    // Deep-link: #new
+    if (hash === 'new') {
+        switchTab('projects');
+        setTimeout(() => {
+            openEditor(null);
+            history.replaceState(null, '', '#projects');
+        }, 300);
+        return;
+    }
+
     if (hash && document.querySelector(`.tab[data-tab="${hash}"]`)) {
         switchTab(hash);
     }

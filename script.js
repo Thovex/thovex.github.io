@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.dataset.engine = project.engine;
             card.dataset.role = project.role;
             card.dataset.type = project.type;
+            card.dataset.projectId = project.id;
             card.setAttribute('data-reveal', '');
 
             const tagsHTML = (project.tags || []).map(t =>
