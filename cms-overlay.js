@@ -7,8 +7,6 @@
 (function () {
     'use strict';
 
-    console.log('CMS Overlay ACTIVE', {date: new Date().toISOString()});
-
     if (!localStorage.getItem('cms_authed')) return;
 
     const CMS_URL = window.location.pathname.includes('/cms/') ? './' : 'cms/';
@@ -1098,19 +1096,6 @@
             btn.classList.toggle('active', editMode);
             btn.querySelector('.cms-label').textContent = editMode ? 'Edit: ON' : 'Edit: OFF';
         }
-        showEditModeBanner();
-    }
-
-    function showEditModeBanner() {
-        let banner = document.getElementById('cms-edit-banner');
-        if (!banner) {
-            banner = document.createElement('div');
-            banner.id = 'cms-edit-banner';
-            banner.style.cssText = 'position:fixed;top:0;left:0;width:100%;z-index:99999;background:#00f0ff;color:#222;font-family:monospace;font-size:1rem;padding:0.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);';
-            banner.textContent = 'CMS Overlay Edit Mode ENABLED';
-            document.body.appendChild(banner);
-        }
-        banner.style.display = editMode ? 'block' : 'none';
     }
 
     // ─── Inject Nav Buttons ───
@@ -1170,6 +1155,4 @@
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', activate);
     else activate();
-    showEditModeBanner();
-
 })();
