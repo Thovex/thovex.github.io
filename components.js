@@ -104,11 +104,63 @@ function initScrollReveal() {
     });
 }
 
+// ─── Grunge Hover Lines (generic) ───
+function initGrungeHoverLines() {
+    // Archive items
+    const archiveWrapper = document.querySelector('.archive-hover-wrapper');
+    if (archiveWrapper) {
+        const lineL = archiveWrapper.querySelector('.row-hover-line--left');
+        const lineR = archiveWrapper.querySelector('.row-hover-line--right');
+        const list = archiveWrapper.querySelector('.archive-list');
+        if (lineL && lineR && list) {
+            setupItemHover(list, '.archive-item', lineL, lineR);
+        }
+    }
+
+    // Contact cards
+    const contactWrapper = document.querySelector('.contact-hover-wrapper');
+    if (contactWrapper) {
+        const lineL = contactWrapper.querySelector('.row-hover-line--left');
+        const lineR = contactWrapper.querySelector('.row-hover-line--right');
+        const options = contactWrapper.querySelector('.contact-options');
+        if (lineL && lineR && options) {
+            setupItemHover(options, '.contact-card', lineL, lineR);
+        }
+    }
+}
+
+function setupItemHover(container, itemSelector, lineL, lineR) {
+    if (container.dataset.hoverBound) return;
+    container.dataset.hoverBound = '1';
+
+    container.addEventListener('mouseover', (e) => {
+        const item = e.target.closest(itemSelector);
+        if (!item) return;
+
+        const top = item.offsetTop;
+        const height = item.offsetHeight;
+
+        lineL.style.top = top + 'px';
+        lineL.style.height = height + 'px';
+        lineL.classList.add('active');
+
+        lineR.style.top = top + 'px';
+        lineR.style.height = height + 'px';
+        lineR.classList.add('active');
+    });
+
+    container.addEventListener('mouseleave', () => {
+        lineL.classList.remove('active');
+        lineR.classList.remove('active');
+    });
+}
+
 // ─── Boot ───
 document.addEventListener('DOMContentLoaded', () => {
     injectNav();
     injectFooter();
     initMobileNav();
     initScrollReveal();
+    initGrungeHoverLines();
 });
 

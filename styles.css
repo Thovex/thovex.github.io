@@ -543,6 +543,14 @@ ul {
   background: var(--color-cyan);
   border-color: var(--color-cyan);
   color: var(--bg-primary);
+  animation: pill-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pill-pop {
+  0%   { transform: scale(1); filter: brightness(1); }
+  30%  { transform: scale(1.15); filter: brightness(1.8); }
+  60%  { transform: scale(0.95); }
+  100% { transform: scale(1); filter: brightness(1); }
 }
 
 .filter-pill.active + .filter-pill {
@@ -592,7 +600,9 @@ ul {
 /* ---------- Project Cards ---------- */
 
 /* Row-hover grunge lines wrapper */
-.grid-row-hover-wrapper {
+.grid-row-hover-wrapper,
+.archive-hover-wrapper,
+.contact-hover-wrapper {
   position: relative;
 }
 
@@ -636,16 +646,16 @@ ul {
       180deg,
       transparent 0px,
       transparent 3px,
-      rgba(255, 58, 58, 0.07) 3px,
-      rgba(255, 58, 58, 0.07) 4px,
+      rgba(0, 240, 255, 0.1) 3px,
+      rgba(0, 240, 255, 0.1) 4px,
       transparent 4px,
       transparent 9px,
-      rgba(255, 255, 255, 0.02) 9px,
-      rgba(255, 255, 255, 0.02) 10px,
+      rgba(255, 255, 255, 0.03) 9px,
+      rgba(255, 255, 255, 0.03) 10px,
       transparent 10px,
       transparent 17px
     ),
-    linear-gradient(90deg, transparent 0%, transparent 60%, rgba(255, 58, 58, 0.03) 80%, rgba(255, 58, 58, 0.06) 100%);
+    linear-gradient(90deg, transparent 0%, transparent 50%, rgba(0, 240, 255, 0.04) 75%, rgba(0, 240, 255, 0.08) 100%);
 }
 
 .row-hover-line--left::after {
@@ -654,21 +664,21 @@ ul {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(255, 58, 58, 0.35) 8%,
+    rgba(0, 240, 255, 0.5) 8%,
     transparent 12%,
-    rgba(255, 58, 58, 0.1) 20%,
-    rgba(255, 58, 58, 0.5) 30%,
+    rgba(0, 240, 255, 0.15) 20%,
+    rgba(0, 240, 255, 0.6) 30%,
     transparent 35%,
-    rgba(255, 58, 58, 0.15) 45%,
-    rgba(255, 58, 58, 0.45) 55%,
+    rgba(0, 240, 255, 0.2) 45%,
+    rgba(0, 240, 255, 0.55) 55%,
     transparent 60%,
-    rgba(255, 58, 58, 0.3) 70%,
+    rgba(0, 240, 255, 0.4) 70%,
     transparent 75%,
-    rgba(255, 58, 58, 0.4) 85%,
-    rgba(255, 58, 58, 0.1) 92%,
+    rgba(0, 240, 255, 0.5) 85%,
+    rgba(0, 240, 255, 0.15) 92%,
     transparent 100%
   );
-  box-shadow: -4px 0 0 0 rgba(255, 58, 58, 0.04), -8px 0 0 0 rgba(255, 58, 58, 0.02);
+  box-shadow: -4px 0 0 0 rgba(0, 240, 255, 0.06), -8px 0 0 0 rgba(0, 240, 255, 0.03);
   animation: grunge-flicker 0.8s steps(2) infinite;
 }
 
@@ -679,16 +689,16 @@ ul {
       180deg,
       transparent 0px,
       transparent 5px,
-      rgba(255, 58, 58, 0.06) 5px,
-      rgba(255, 58, 58, 0.06) 6px,
+      rgba(0, 240, 255, 0.08) 5px,
+      rgba(0, 240, 255, 0.08) 6px,
       transparent 6px,
       transparent 12px,
-      rgba(255, 255, 255, 0.02) 12px,
-      rgba(255, 255, 255, 0.02) 13px,
+      rgba(255, 255, 255, 0.03) 12px,
+      rgba(255, 255, 255, 0.03) 13px,
       transparent 13px,
       transparent 20px
     ),
-    linear-gradient(90deg, rgba(255, 58, 58, 0.06) 0%, rgba(255, 58, 58, 0.03) 20%, transparent 40%, transparent 100%);
+    linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, rgba(0, 240, 255, 0.04) 25%, transparent 50%, transparent 100%);
 }
 
 .row-hover-line--right::after {
@@ -697,21 +707,21 @@ ul {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(255, 58, 58, 0.2) 5%,
-    rgba(255, 58, 58, 0.4) 15%,
+    rgba(0, 240, 255, 0.3) 5%,
+    rgba(0, 240, 255, 0.5) 15%,
     transparent 22%,
-    rgba(255, 58, 58, 0.35) 35%,
-    rgba(255, 58, 58, 0.1) 42%,
+    rgba(0, 240, 255, 0.45) 35%,
+    rgba(0, 240, 255, 0.15) 42%,
     transparent 48%,
-    rgba(255, 58, 58, 0.5) 58%,
+    rgba(0, 240, 255, 0.6) 58%,
     transparent 65%,
-    rgba(255, 58, 58, 0.25) 75%,
-    rgba(255, 58, 58, 0.4) 82%,
+    rgba(0, 240, 255, 0.35) 75%,
+    rgba(0, 240, 255, 0.5) 82%,
     transparent 88%,
-    rgba(255, 58, 58, 0.15) 95%,
+    rgba(0, 240, 255, 0.2) 95%,
     transparent 100%
   );
-  box-shadow: 4px 0 0 0 rgba(255, 58, 58, 0.04), 8px 0 0 0 rgba(255, 58, 58, 0.02);
+  box-shadow: 4px 0 0 0 rgba(0, 240, 255, 0.06), 8px 0 0 0 rgba(0, 240, 255, 0.03);
   animation: grunge-flicker 0.6s steps(3) infinite reverse;
 }
 
@@ -723,14 +733,14 @@ ul {
 /* Extra scratchy decorations via box-shadow on the lines */
 .row-hover-line--left.active::before {
   box-shadow:
-    inset -8px 0 12px -6px rgba(255, 58, 58, 0.04),
-    inset -1px 0 0 0 rgba(255, 255, 255, 0.03);
+    inset -8px 0 12px -6px rgba(0, 240, 255, 0.06),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
 }
 
 .row-hover-line--right.active::before {
   box-shadow:
-    inset 8px 0 12px -6px rgba(255, 58, 58, 0.04),
-    inset 1px 0 0 0 rgba(255, 255, 255, 0.03);
+    inset 8px 0 12px -6px rgba(0, 240, 255, 0.06),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.04);
 }
 
 @keyframes grunge-flicker {

@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Init row-hover grunge lines
             initRowHoverEffect();
+
+            // Re-init grunge lines for archive (items just rendered)
+            if (typeof initGrungeHoverLines === 'function') initGrungeHoverLines();
         })
         .catch(err => console.error('Error loading projects:', err));
 
@@ -126,6 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeFilters[key] = value;
 
                 pill.closest('.filter-row-pills').querySelectorAll('.filter-pill').forEach(p => {
+                    p.classList.remove('active');
+                    p.style.animation = 'none';
+                });
+
+                // Force reflow then set active with animation
+                void pill.offsetWidth;
+                pill.closest('.filter-row-pills').querySelectorAll('.filter-pill').forEach(p => {
+                    p.style.animation = '';
                     p.classList.toggle('active', p.dataset.filterValue === value);
                 });
 
