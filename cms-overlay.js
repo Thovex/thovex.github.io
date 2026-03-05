@@ -143,13 +143,17 @@
             /* ─── CMS select dropdowns ─── */
             .cms-select {
                 font-family: var(--font-mono); font-size: 0.65rem;
-                background: rgba(0,240,255,0.04); border: 1px solid rgba(0,240,255,0.2);
-                color: var(--text-primary); padding: 0.2rem 0.4rem;
+                background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.25);
+                color: var(--color-cyan); padding: 0.2rem 0.4rem;
                 outline: none; cursor: pointer; transition: border-color 0.15s;
+                -webkit-appearance: none; appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2300f0ff'/%3E%3C/svg%3E");
+                background-repeat: no-repeat; background-position: right 6px center;
+                padding-right: 1.2rem;
             }
             .cms-select:hover { border-color: rgba(0,240,255,0.5); }
             .cms-select:focus { border-color: var(--color-cyan); }
-            .cms-select option { background: var(--bg-primary); color: var(--text-primary); }
+            .cms-select option { background: #0a0c12; color: #e8eaed; }
 
             /* ─── Media input ─── */
             .cms-media-input-wrap { display: none; gap: 0.5rem; margin-top: 0.75rem; align-items: center; }
@@ -235,6 +239,26 @@
                 .cms-toolbar { bottom: 0.75rem; padding: 0.5rem 0.8rem; gap: 0.5rem; font-size: 0.55rem; }
                 .cms-nav-btn span.cms-label, .cms-edit-toggle span.cms-label { display: none; }
             }
+
+            /* ─── Toast notifications ─── */
+            .cms-toast {
+                position: fixed; top: 1.5rem; right: 1.5rem; z-index: 10000;
+                padding: 0.65rem 1.2rem; font-family: var(--font-mono); font-size: 0.65rem;
+                font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+                background: rgba(10,12,18,0.95); backdrop-filter: blur(12px);
+                border: 1px solid; display: flex; align-items: center; gap: 0.5rem;
+                animation: cms-toast-in 0.3s ease, cms-toast-out 0.3s ease 4.7s forwards;
+                pointer-events: none;
+            }
+            .cms-toast.success { color: var(--color-green); border-color: rgba(58,255,127,0.3); }
+            .cms-toast.info { color: var(--color-cyan); border-color: rgba(0,240,255,0.3); }
+            .cms-toast.warning { color: var(--color-yellow); border-color: rgba(255,224,58,0.3); }
+            .cms-toast.error { color: var(--color-pink); border-color: rgba(255,58,58,0.3); }
+            .cms-toast .toast-dot {
+                width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+            }
+            @keyframes cms-toast-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+            @keyframes cms-toast-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
         `;
         document.head.appendChild(style);
     }
@@ -278,6 +302,21 @@
         pendingChanges.forEach(f => { total += Object.keys(f).length; });
         bar.querySelector('.cms-change-count').textContent = `${total} change${total !== 1 ? 's' : ''}`;
         bar.classList.toggle('visible', total > 0);
+    }
+
+    // ─── Toast Notifications ───
+    function showToast(message, type = 'info', duration = 5000) {
+        const toast = document.createElement('div');
+        toast.className = `cms-toast ${type}`;
+        toast.innerHTML = `<span class="toast-dot"></span> ${message}`;
+        // Stack multiple toasts
+        const existing = document.querySelectorAll('.cms-toast');
+        if (existing.length) {
+            const offset = existing.length * 44;
+            toast.style.top = `calc(1.5rem + ${offset}px)`;
+        }
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), duration);
     }
 
     // ─── Firebase Init ───
@@ -422,6 +461,14 @@
         );
     }
 
+    // ─── Role dropdown (populated from existing project roles) ───
+    function createRoleSelect(container, projectId, currentValue) {
+        return createFieldSelect(container, projectId, 'role', currentValue, () => {
+            const roles = [...new Set(projectsData.map(p => p.role).filter(Boolean))].sort();
+            return roles.map(r => ({ value: r, label: r }));
+        });
+    }
+
     // ─── Engine dropdown ───
     function createEngineSelect(container, projectId, currentValue) {
         return createFieldSelect(container, projectId, 'engine', currentValue, () =>
@@ -488,8 +535,8 @@
                 const pill = document.createElement('span');
                 pill.className = 'cms-tag-pill';
                 pill.innerHTML = `${tag} <span class="cms-tag-remove">×</span>`;
-                pill.querySelector('.cms-tag-remove').addEventListener('click', (e) => {
-                    e.stopPropagation(); tags.splice(i, 1); render(); check();
+                pill.querySelector('.cms-tag-remove').addEventListener('mousedown', (e) => {
+                    e.stopPropagation(); e.preventDefault(); tags.splice(i, 1); render(); check();
                 });
                 editor.appendChild(pill);
             });
@@ -504,7 +551,7 @@
                 }
                 if (e.key === 'Backspace' && !inp.value && tags.length) { tags.pop(); render(); check(); }
             });
-            inp.addEventListener('click', e => e.stopPropagation());
+            inp.addEventListener('mousedown', e => e.stopPropagation());
             editor.appendChild(inp);
         }
         function check() {
@@ -584,13 +631,14 @@
         if (p) makeEditable(p, projectId, `work.${idx}.description`);
         const rm = document.createElement('button');
         rm.className = 'cms-remove-work'; rm.innerHTML = ICONS.x; rm.title = 'Remove';
-        rm.addEventListener('click', () => { card.remove(); setPending(projectId, `_removeWork.${idx}`, true); });
+        rm.addEventListener('mousedown', (e) => { e.preventDefault(); card.remove(); setPending(projectId, `_removeWork.${idx}`, true); });
         card.appendChild(rm);
     }
 
-    // ─── Add Media UI (below the media section) ───
+    // ─── Add Media UI (below the media grid, inside the container) ───
     function addMediaUI(mediaSection, projectId) {
-        if (mediaSection.parentNode.querySelector('.cms-media-input-wrap')) return;
+        const inner = mediaSection.querySelector('.project-media-inner') || mediaSection;
+        if (inner.querySelector('.cms-media-input-wrap')) return;
         const wrap = document.createElement('div');
         wrap.className = 'cms-media-input-wrap';
         wrap.innerHTML = `<input type="text" placeholder="res/projects/.../ss_01.png or YouTube URL" /><button type="button">+ Add Media</button>`;
@@ -626,7 +674,7 @@
             updateToolbar();
         });
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') addBtn.click(); });
-        mediaSection.parentNode.insertBefore(wrap, mediaSection.nextSibling);
+        inner.appendChild(wrap);
     }
 
     // ─── New Project button ───
@@ -714,7 +762,10 @@
                     createEngineSelect(mE, pid, curEngine);
                 }
                 const mR = card.querySelector('.meta-role');
-                if (mR) makeMetaEditable(mR, pid, 'role');
+                if (mR) {
+                    const curRole = mR.textContent.trim();
+                    createRoleSelect(mR, pid, curRole);
+                }
 
                 const mS = card.querySelector('.meta-source');
                 if (mS) createTypeSelect(mS, pid, card.dataset.type);
@@ -763,9 +814,11 @@
                     createLanguageSelect(item, projectId, val.textContent.trim());
                 } else if (lt === 'engine') {
                     createEngineSelect(item, projectId, val.textContent.trim());
+                } else if (lt === 'role') {
+                    createRoleSelect(item, projectId, val.textContent.trim());
                 } else {
-                    // role, duration → free text
-                    const fm = { 'role': 'role', 'duration': 'duration' };
+                    // duration → free text
+                    const fm = { 'duration': 'duration' };
                     if (fm[lt]) makeEditable(val, projectId, fm[lt]);
                 }
             });
@@ -828,7 +881,7 @@
     async function saveChanges() {
         if (pendingChanges.size === 0) return;
         const ok = await initFirebase();
-        if (!ok) { alert('Firebase auth failed. Please log into the CMS first.'); return; }
+        if (!ok) { showToast('Firebase auth failed. Log into CMS first.', 'error'); return; }
 
         const { doc, getDoc, setDoc, collection, getDocs, query, orderBy } = await import('https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js');
         const saveBtn = document.querySelector('.cms-toolbar-btn.save');
@@ -907,6 +960,7 @@
 
             pendingChanges.clear();
             updateToolbar();
+            showToast('Saved to Firestore', 'success');
 
             // ─── Publish to GitHub ───
             if (saveBtn) saveBtn.textContent = 'Publishing...';
@@ -914,7 +968,7 @@
 
         } catch (e) {
             console.error('CMS save error:', e);
-            alert('Save failed: ' + e.message);
+            showToast('Save failed: ' + e.message, 'error');
         } finally {
             if (saveBtn) { saveBtn.textContent = 'Save'; saveBtn.disabled = false; }
         }
@@ -924,6 +978,7 @@
     async function publishToGitHub(doc, getDocs, query, orderBy, collection) {
         const pat = localStorage.getItem('cms_github_pat');
         if (!pat) {
+            showToast('No GitHub PAT — saved but not published', 'warning');
             console.warn('CMS overlay: No GitHub PAT found — saved to Firestore but not published.');
             return;
         }
@@ -993,11 +1048,14 @@
             if (!putRes.ok) {
                 const err = await putRes.json();
                 console.error('GitHub publish failed:', err);
+                showToast('Publish failed: ' + (err.message || 'GitHub API error'), 'error');
             } else {
                 console.log('CMS overlay: Published to GitHub successfully.');
+                showToast('Published! Deploy building...', 'success', 8000);
             }
         } catch (e) {
             console.error('CMS overlay: GitHub publish error:', e);
+            showToast('Publish error: ' + e.message, 'error');
         }
     }
 
@@ -1045,34 +1103,17 @@
 
     // ─── Intercept card clicks in edit mode ───
     function interceptCardClicks() {
-        // Block card navigation clicks but allow CMS interactive elements
-        const handler = (e) => {
+        // Block ALL click events inside cards in edit mode — this prevents navigation.
+        // CMS interactive elements (select, contenteditable, etc) work via mousedown/focus, not click.
+        document.addEventListener('click', (e) => {
             if (!editMode) return;
             const card = e.target.closest('.project-card');
             if (!card) return;
-
-            // Allow CMS interactive elements to work normally
-            const tag = e.target.tagName;
-            if (tag === 'SELECT' || tag === 'OPTION' || tag === 'INPUT' ||
-                e.target.closest('.cms-tag-remove') ||
-                e.target.closest('.cms-tag-editor') ||
-                e.target.closest('.cms-select') ||
-                e.target.closest('.cms-drag-handle') ||
-                e.target.closest('.cms-add-inline') ||
-                e.target.closest('.cms-social-remove') ||
-                e.target.closest('.cms-remove-work') ||
-                e.target.closest('[data-cms-editable]') ||
-                e.target.closest('a[href]') ||
-                e.target.closest('.socials a')) {
-                return; // Let these through
-            }
-
-            // Block card navigation for everything else
+            // Allow actual <a> links (socials) to still work
+            if (e.target.closest('.socials a')) return;
             e.stopPropagation();
             e.preventDefault();
-        };
-        document.addEventListener('click', handler, true);
-        document.addEventListener('mousedown', handler, true);
+        }, true);
     }
 
     // ─── Load projects.json ───
