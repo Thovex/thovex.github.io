@@ -871,6 +871,15 @@ ul {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+.project-card .card-tags {
+    background: rgba(0,0,0,0.55); /* semi-transparent black */
+    border-radius: 6px 6px 0 0;
+    padding: 0.25rem 0.5rem;
+    margin-top: -1px;
+    position: relative;
+    z-index: 2;
+}
+
 .project-card-image .card-tags {
   position: absolute;
   top: 0;
