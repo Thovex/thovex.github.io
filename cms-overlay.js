@@ -457,10 +457,9 @@
     // ─── Language dropdown ───
     function createLanguageSelect(container, projectId, currentValue) {
         // Merge languages from settings and projects
-        const settingsLanguages = Array.isArray(cmsLanguages) ? cmsLanguages : [];
-        const projectLanguages = Array.isArray(projectsData) ? projectsData.map(p => p.language).filter(Boolean) : [];
-        const allLanguages = [...new Set([...settingsLanguages, ...projectLanguages])].filter(Boolean).sort();
-        console.debug('LANG DROPDOWN:', {settingsLanguages, projectLanguages, allLanguages});
+        const settingsLanguages = cmsLanguages || [];
+        const projectLanguages = projectsData.map(p => p.language).filter(Boolean);
+        const allLanguages = [...new Set([...settingsLanguages, ...projectLanguages])].sort();
         return createFieldSelect(container, projectId, 'language', currentValue, () =>
             allLanguages.map(l => ({ value: l, label: l }))
         );
@@ -469,10 +468,9 @@
     // ─── Role dropdown (populated from settings and project roles) ───
     function createRoleSelect(container, projectId, currentValue) {
         // Merge roles from settings and projects
-        const settingsRoles = Array.isArray(window.cmsRoles) ? window.cmsRoles : [];
-        const projectRoles = Array.isArray(projectsData) ? projectsData.map(p => p.role).filter(Boolean) : [];
-        const allRoles = [...new Set([...settingsRoles, ...projectRoles])].filter(Boolean).sort();
-        console.debug('ROLE DROPDOWN:', {settingsRoles, projectRoles, allRoles});
+        const settingsRoles = (window.cmsRoles || []);
+        const projectRoles = projectsData.map(p => p.role).filter(Boolean);
+        const allRoles = [...new Set([...settingsRoles, ...projectRoles])].sort();
         return createFieldSelect(container, projectId, 'role', currentValue, () => {
             return allRoles.map(r => ({ value: r, label: r }));
         });
@@ -481,10 +479,9 @@
     // ─── Engine dropdown ───
     function createEngineSelect(container, projectId, currentValue) {
         // Merge engines from settings and projects
-        const settingsEngines = Array.isArray(cmsEngines) ? cmsEngines : [];
-        const projectEngines = Array.isArray(projectsData) ? projectsData.map(p => p.engine).filter(Boolean) : [];
-        const allEngines = [...new Set([...settingsEngines, ...projectEngines])].filter(Boolean).sort();
-        console.debug('ENGINE DROPDOWN:', {settingsEngines, projectEngines, allEngines});
+        const settingsEngines = cmsEngines || [];
+        const projectEngines = projectsData.map(p => p.engine).filter(Boolean);
+        const allEngines = [...new Set([...settingsEngines, ...projectEngines])].sort();
         return createFieldSelect(container, projectId, 'engine', currentValue, () =>
             allEngines.map(e => ({ value: e, label: e }))
         );
