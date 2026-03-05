@@ -275,30 +275,51 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('projectsGrid');
         if (!grid) return;
 
-        const lineL = document.querySelector('.row-hover-line--left');
-        const lineR = document.querySelector('.row-hover-line--right');
+        const wrapper = grid.closest('.grid-row-hover-wrapper');
+        if (!wrapper) return;
+        const lineL = wrapper.querySelector('.row-hover-line--left');
+        const lineR = wrapper.querySelector('.row-hover-line--right');
         if (!lineL || !lineR) return;
 
-        function getCardRow(hoveredCard) {
-            // Group visible cards by their offsetTop to find which row
+        function getRows() {
             const cards = Array.from(grid.querySelectorAll('.project-card'))
                 .filter(c => c.style.display !== 'none');
-            const hoveredTop = hoveredCard.offsetTop;
-            // Find all cards in the same row (same offsetTop)
-            const rowCards = cards.filter(c => Math.abs(c.offsetTop - hoveredTop) < 5);
-            if (rowCards.length === 0) return null;
+            if (cards.length === 0) return [];
 
-            const top = rowCards[0].offsetTop;
-            const bottom = Math.max(...rowCards.map(c => c.offsetTop + c.offsetHeight));
-            return { top, height: bottom - top };
+            // Group by offsetTop into rows
+            const rowMap = new Map();
+            cards.forEach(c => {
+                const key = Math.round(c.offsetTop / 5) * 5;
+                if (!rowMap.has(key)) rowMap.set(key, []);
+                rowMap.get(key).push(c);
+            });
+
+            return Array.from(rowMap.values()).map(rowCards => {
+                const top = rowCards[0].offsetTop;
+                const bottom = Math.max(...rowCards.map(c => c.offsetTop + c.offsetHeight));
+                return { top, height: bottom - top };
+            });
         }
 
-        grid.addEventListener('mouseover', (e) => {
-            const card = e.target.closest('.project-card');
-            if (!card) return;
+        function getRowAtY(mouseY) {
+            const gridRect = grid.getBoundingClientRect();
+            const relY = mouseY - gridRect.top + grid.scrollTop;
+            const rows = getRows();
+            for (const row of rows) {
+                if (relY >= row.top && relY <= row.top + row.height) {
+                    return row;
+                }
+            }
+            return null;
+        }
 
-            const row = getCardRow(card);
-            if (!row) return;
+        grid.addEventListener('mousemove', (e) => {
+            const row = getRowAtY(e.clientY);
+            if (!row) {
+                lineL.classList.remove('active');
+                lineR.classList.remove('active');
+                return;
+            }
 
             lineL.style.top = row.top + 'px';
             lineL.style.height = row.height + 'px';

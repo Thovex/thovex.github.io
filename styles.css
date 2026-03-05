@@ -604,7 +604,15 @@ ul {
 .archive-hover-wrapper,
 .contact-hover-wrapper {
   position: relative;
+  --grunge-r: 0;
+  --grunge-g: 240;
+  --grunge-b: 255;
 }
+
+/* Color per section */
+.grid-row-hover-wrapper   { --grunge-r: 0;   --grunge-g: 240; --grunge-b: 255; } /* cyan */
+.archive-hover-wrapper    { --grunge-r: 255; --grunge-g: 224; --grunge-b: 58;  } /* yellow */
+.contact-hover-wrapper    { --grunge-r: 255; --grunge-g: 58;  --grunge-b: 240; } /* pink */
 
 .row-hover-line {
   position: absolute;
@@ -646,8 +654,8 @@ ul {
       180deg,
       transparent 0px,
       transparent 3px,
-      rgba(0, 240, 255, 0.1) 3px,
-      rgba(0, 240, 255, 0.1) 4px,
+      rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.1) 3px,
+      rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.1) 4px,
       transparent 4px,
       transparent 9px,
       rgba(255, 255, 255, 0.03) 9px,
@@ -655,7 +663,7 @@ ul {
       transparent 10px,
       transparent 17px
     ),
-    linear-gradient(90deg, transparent 0%, transparent 50%, rgba(0, 240, 255, 0.04) 75%, rgba(0, 240, 255, 0.08) 100%);
+    linear-gradient(90deg, transparent 0%, transparent 50%, rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.04) 75%, rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.08) 100%);
 }
 
 .row-hover-line--left::after {
@@ -664,21 +672,21 @@ ul {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 240, 255, 0.5) 8%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.5) 8%,
     transparent 12%,
-    rgba(0, 240, 255, 0.15) 20%,
-    rgba(0, 240, 255, 0.6) 30%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.15) 20%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.6) 30%,
     transparent 35%,
-    rgba(0, 240, 255, 0.2) 45%,
-    rgba(0, 240, 255, 0.55) 55%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.2) 45%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.55) 55%,
     transparent 60%,
-    rgba(0, 240, 255, 0.4) 70%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.4) 70%,
     transparent 75%,
-    rgba(0, 240, 255, 0.5) 85%,
-    rgba(0, 240, 255, 0.15) 92%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.5) 85%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.15) 92%,
     transparent 100%
   );
-  box-shadow: -4px 0 0 0 rgba(0, 240, 255, 0.06), -8px 0 0 0 rgba(0, 240, 255, 0.03);
+  box-shadow: -4px 0 0 0 rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.06), -8px 0 0 0 rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.03);
   animation: grunge-flicker 0.8s steps(2) infinite;
 }
 
@@ -689,8 +697,8 @@ ul {
       180deg,
       transparent 0px,
       transparent 5px,
-      rgba(0, 240, 255, 0.08) 5px,
-      rgba(0, 240, 255, 0.08) 6px,
+      rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.08) 5px,
+      rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.08) 6px,
       transparent 6px,
       transparent 12px,
       rgba(255, 255, 255, 0.03) 12px,
@@ -698,7 +706,7 @@ ul {
       transparent 13px,
       transparent 20px
     ),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, rgba(0, 240, 255, 0.04) 25%, transparent 50%, transparent 100%);
+    linear-gradient(90deg, rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.08) 0%, rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.04) 25%, transparent 50%, transparent 100%);
 }
 
 .row-hover-line--right::after {
@@ -707,21 +715,21 @@ ul {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 240, 255, 0.3) 5%,
-    rgba(0, 240, 255, 0.5) 15%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.3) 5%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.5) 15%,
     transparent 22%,
-    rgba(0, 240, 255, 0.45) 35%,
-    rgba(0, 240, 255, 0.15) 42%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.45) 35%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.15) 42%,
     transparent 48%,
-    rgba(0, 240, 255, 0.6) 58%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.6) 58%,
     transparent 65%,
-    rgba(0, 240, 255, 0.35) 75%,
-    rgba(0, 240, 255, 0.5) 82%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.35) 75%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.5) 82%,
     transparent 88%,
-    rgba(0, 240, 255, 0.2) 95%,
+    rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.2) 95%,
     transparent 100%
   );
-  box-shadow: 4px 0 0 0 rgba(0, 240, 255, 0.06), 8px 0 0 0 rgba(0, 240, 255, 0.03);
+  box-shadow: 4px 0 0 0 rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.06), 8px 0 0 0 rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.03);
   animation: grunge-flicker 0.6s steps(3) infinite reverse;
 }
 
@@ -733,13 +741,13 @@ ul {
 /* Extra scratchy decorations via box-shadow on the lines */
 .row-hover-line--left.active::before {
   box-shadow:
-    inset -8px 0 12px -6px rgba(0, 240, 255, 0.06),
+    inset -8px 0 12px -6px rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.06),
     inset -1px 0 0 0 rgba(255, 255, 255, 0.04);
 }
 
 .row-hover-line--right.active::before {
   box-shadow:
-    inset 8px 0 12px -6px rgba(0, 240, 255, 0.06),
+    inset 8px 0 12px -6px rgba(var(--grunge-r), var(--grunge-g), var(--grunge-b), 0.06),
     inset 1px 0 0 0 rgba(255, 255, 255, 0.04);
 }
 
@@ -1588,12 +1596,14 @@ ul {
   flex: 1;
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 
 .contact-inner {
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .contact-header {
