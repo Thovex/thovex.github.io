@@ -1383,6 +1383,19 @@ $('btnAddProject').addEventListener('click', () => openEditor());
 $('btnCloseEditor').addEventListener('click', () => closeEditor());
 $('btnCancelEditor').addEventListener('click', () => closeEditor());
 
+// Auto-open new project editor if navigated with #new
+if (window.location.hash === '#new') {
+    // Wait for projects to load first, then open
+    const waitAndOpen = setInterval(() => {
+        if (projects.length > 0 || document.querySelector('#projectTableBody')) {
+            clearInterval(waitAndOpen);
+            openEditor();
+            history.replaceState(null, '', window.location.pathname);
+        }
+    }, 300);
+    setTimeout(() => clearInterval(waitAndOpen), 10000);
+}
+
 // Close modal on overlay click
 $('editorModal').addEventListener('click', (e) => {
     if (e.target === $('editorModal')) closeEditor();
