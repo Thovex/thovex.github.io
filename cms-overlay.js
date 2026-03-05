@@ -711,13 +711,6 @@
                     createTagEditor(tagsC, pid, curTags);
                 }
 
-                card.addEventListener('click', (e) => {
-                    if (!editMode) return;
-                    if (e.target.closest('[data-cms-editable]') || e.target.closest('.cms-tag-editor') ||
-                        e.target.closest('.cms-select') || e.target.closest('.cms-drag-handle')) {
-                        e.stopPropagation(); e.preventDefault();
-                    }
-                }, true);
             });
         }
 
@@ -1040,9 +1033,25 @@
         document.addEventListener('click', (e) => {
             if (!editMode) return;
             const card = e.target.closest('.project-card');
-            if (card && !e.target.closest('a[href]') && !e.target.closest('.socials a')) {
-                e.stopPropagation(); e.preventDefault();
+            if (!card) return;
+
+            // Allow CMS interactive elements to work normally
+            if (e.target.closest('.cms-tag-remove') ||
+                e.target.closest('.cms-tag-editor') ||
+                e.target.closest('.cms-select') ||
+                e.target.closest('.cms-drag-handle') ||
+                e.target.closest('.cms-add-inline') ||
+                e.target.closest('.cms-social-remove') ||
+                e.target.closest('.cms-remove-work') ||
+                e.target.closest('[data-cms-editable]') ||
+                e.target.closest('a[href]') ||
+                e.target.closest('.socials a')) {
+                return; // Let these through
             }
+
+            // Block card navigation for everything else
+            e.stopPropagation();
+            e.preventDefault();
         }, true);
     }
 
