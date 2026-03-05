@@ -31,6 +31,12 @@
     let firebaseReady = false;
     let editMode = false;
 
+    // CMS Settings (loaded from Firestore)
+    let cmsLanguages = [];
+    let cmsEngines = [];
+    let cmsTypes = [];
+    let cmsSettingsLoaded = false;
+
     // ─── SVG Icons ───
     const ICONS = {
         terminal: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
@@ -161,7 +167,7 @@
             /* ─── Drag & drop ─── */
             body.cms-edit-mode .project-card { cursor: default; }
             .cms-drag-handle {
-                display: none; position: absolute; top: 8px; left: 8px; z-index: 10;
+                display: none; position: absolute; bottom: 8px; right: 8px; z-index: 10;
                 width: 28px; height: 28px; align-items: center; justify-content: center;
                 background: rgba(0,0,0,0.7); border: 1px solid rgba(0,240,255,0.3);
                 color: var(--color-cyan); cursor: grab; backdrop-filter: blur(4px); transition: all 0.15s;
@@ -333,22 +339,79 @@
         makeEditable(ts, projectId, field);
     }
 
-    // ─── Type dropdown ───
-    function createTypeSelect(container, projectId, currentKey) {
+    // ─── Load CMS settings from Firestore (languages, engines, types) ───
+    async function loadCmsSettings() {
+        if (cmsSettingsLoaded) return;
+        const ok = await initFirebase();
+        if (!ok) return;
+        try {
+            const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js');
+            const snapshot = await getDocs(collection(db, 'settings'));
+            snapshot.forEach(d => {
+                if (d.id === 'languages' && d.data().list) cmsLanguages = d.data().list;
+                if (d.id === 'engines' && d.data().list) cmsEngines = d.data().list;
+                if (d.id === 'types' && d.data().list) cmsTypes = d.data().list;
+            });
+            cmsSettingsLoaded = true;
+        } catch (e) { console.warn('CMS overlay: settings load failed', e); }
+    }
+
+    // ─── Generic field select (language, engine, role) ───
+    function createFieldSelect(container, projectId, field, currentValue, getOptions) {
+        if (container.querySelector(`.cms-select[data-cms-field="${field}"]`)) return;
         const sel = document.createElement('select');
         sel.className = 'cms-select cms-only';
-        TYPE_KEYS.forEach(k => {
-            const o = document.createElement('option');
-            o.value = k; o.textContent = TYPE_LABELS[k];
-            if (k === currentKey) o.selected = true;
-            sel.appendChild(o);
-        });
-        sel.dataset.cmsOriginal = currentKey;
+        sel.dataset.cmsField = field;
+
+        function populate() {
+            sel.innerHTML = '';
+            const options = getOptions();
+            let found = false;
+            options.forEach(opt => {
+                const o = document.createElement('option');
+                o.value = opt.value; o.textContent = opt.label;
+                if (opt.value === currentValue) { o.selected = true; found = true; }
+                sel.appendChild(o);
+            });
+            // If current value isn't in options, add it
+            if (!found && currentValue) {
+                const o = document.createElement('option');
+                o.value = currentValue; o.textContent = currentValue; o.selected = true;
+                sel.insertBefore(o, sel.firstChild);
+            }
+        }
+        populate();
+
+        sel.dataset.cmsOriginal = currentValue;
         sel.addEventListener('change', () => {
-            if (sel.value !== sel.dataset.cmsOriginal) setPending(projectId, 'type', sel.value);
-            else clearPending(projectId, 'type');
+            if (sel.value !== sel.dataset.cmsOriginal) setPending(projectId, field, sel.value);
+            else clearPending(projectId, field);
         });
         container.appendChild(sel);
+        return sel;
+    }
+
+    // ─── Type dropdown ───
+    function createTypeSelect(container, projectId, currentKey) {
+        return createFieldSelect(container, projectId, 'type', currentKey, () =>
+            cmsTypes.length > 0
+                ? cmsTypes.map(t => ({ value: t.value, label: t.label }))
+                : TYPE_KEYS.map(k => ({ value: k, label: TYPE_LABELS[k] }))
+        );
+    }
+
+    // ─── Language dropdown ───
+    function createLanguageSelect(container, projectId, currentValue) {
+        return createFieldSelect(container, projectId, 'language', currentValue, () =>
+            cmsLanguages.map(l => ({ value: l, label: l }))
+        );
+    }
+
+    // ─── Engine dropdown ───
+    function createEngineSelect(container, projectId, currentValue) {
+        return createFieldSelect(container, projectId, 'engine', currentValue, () =>
+            cmsEngines.map(e => ({ value: e, label: e }))
+        );
     }
 
     // ─── Period input ───
@@ -624,10 +687,17 @@
                 const desc = card.querySelector('.project-card-desc');
                 if (desc) makeEditable(desc, pid, 'description');
 
+                // Language, Engine → select dropdowns; Role → editable text
                 const mL = card.querySelector('.meta-language');
-                if (mL) makeMetaEditable(mL, pid, 'language');
+                if (mL) {
+                    const curLang = mL.textContent.trim();
+                    createLanguageSelect(mL, pid, curLang);
+                }
                 const mE = card.querySelector('.meta-engine');
-                if (mE) makeMetaEditable(mE, pid, 'engine');
+                if (mE) {
+                    const curEngine = mE.textContent.trim();
+                    createEngineSelect(mE, pid, curEngine);
+                }
                 const mR = card.querySelector('.meta-role');
                 if (mR) makeMetaEditable(mR, pid, 'role');
 
@@ -652,7 +722,7 @@
         }
 
         new MutationObserver(() => process()).observe(grid, { childList: true });
-        loadProjectsData().then(() => { process(); setupDragDrop(); addNewProjectButton(); setupArchiveEditing(); });
+        Promise.all([loadProjectsData(), loadCmsSettings()]).then(() => { process(); setupDragDrop(); addNewProjectButton(); setupArchiveEditing(); });
     }
 
     // ─── Setup Detail Page Editing ───
@@ -681,8 +751,13 @@
                     createTypeSelect(item, projectId, proj ? proj.type : (LABEL_TO_TYPE[val.textContent.trim()] || val.textContent.trim()));
                 } else if (lt === 'period') {
                     createPeriodInput(item, projectId, val.textContent.trim());
+                } else if (lt === 'language') {
+                    createLanguageSelect(item, projectId, val.textContent.trim());
+                } else if (lt === 'engine') {
+                    createEngineSelect(item, projectId, val.textContent.trim());
                 } else {
-                    const fm = { 'role': 'role', 'engine': 'engine', 'language': 'language', 'duration': 'duration' };
+                    // role, duration → free text
+                    const fm = { 'role': 'role', 'duration': 'duration' };
                     if (fm[lt]) makeEditable(val, projectId, fm[lt]);
                 }
             });
@@ -709,8 +784,8 @@
             addMediaUI(ms, projectId);
         }
 
-        // Need projectsData for source dropdown
-        loadProjectsData().then(() => {
+        // Need projectsData and CMS settings for dropdowns
+        Promise.all([loadProjectsData(), loadCmsSettings()]).then(() => {
             const obs = new MutationObserver(() => { process(); processWork(); processMedia(); });
             obs.observe(heroContent, { childList: true });
             process();
@@ -741,13 +816,13 @@
         process();
     }
 
-    // ─── Save ───
+    // ─── Save + Publish to GitHub ───
     async function saveChanges() {
         if (pendingChanges.size === 0) return;
         const ok = await initFirebase();
         if (!ok) { alert('Firebase auth failed. Please log into the CMS first.'); return; }
 
-        const { doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js');
+        const { doc, getDoc, setDoc, collection, getDocs, query, orderBy } = await import('https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js');
         const saveBtn = document.querySelector('.cms-toolbar-btn.save');
         if (saveBtn) { saveBtn.textContent = 'Saving...'; saveBtn.disabled = true; }
 
@@ -824,11 +899,97 @@
 
             pendingChanges.clear();
             updateToolbar();
+
+            // ─── Publish to GitHub ───
+            if (saveBtn) saveBtn.textContent = 'Publishing...';
+            await publishToGitHub(doc, getDocs, query, orderBy, collection);
+
         } catch (e) {
             console.error('CMS save error:', e);
             alert('Save failed: ' + e.message);
         } finally {
             if (saveBtn) { saveBtn.textContent = 'Save'; saveBtn.disabled = false; }
+        }
+    }
+
+    // ─── Generate projects.json from Firestore and push to GitHub ───
+    async function publishToGitHub(doc, getDocs, query, orderBy, collection) {
+        const pat = localStorage.getItem('cms_github_pat');
+        if (!pat) {
+            console.warn('CMS overlay: No GitHub PAT found — saved to Firestore but not published.');
+            return;
+        }
+
+        const owner = localStorage.getItem('cms_github_owner') || 'Thovex';
+        const repo = localStorage.getItem('cms_github_repo') || 'thovex.github.io';
+        const branch = localStorage.getItem('cms_github_branch') || 'main';
+
+        try {
+            // Load all projects from Firestore
+            const q = query(collection(db, 'projects'), orderBy('order', 'asc'));
+            const snapshot = await getDocs(q);
+            const allProjects = snapshot.docs.map(d => d.data());
+
+            // Generate projects.json (same format as admin.js generateProjectsJson)
+            const jsonData = allProjects.map(p => {
+                const out = {};
+                if (p.id) out.id = p.id;
+                out.card = p.card !== false;
+                if (p.title) out.title = p.title;
+                if (p.language) out.language = p.language;
+                if (p.engine) out.engine = p.engine;
+                if (p.role) out.role = p.role;
+                if (p.duration) out.duration = p.duration;
+                if (p.datetime) out.datetime = p.datetime;
+                if (p.minisrc) out.minisrc = p.minisrc;
+                if (p.banner) out.banner = p.banner;
+                if (p.type) out.type = p.type;
+                if (p.description) out.description = p.description;
+                if (p.longdescription) out.longdescription = p.longdescription;
+                if (p.work && p.work.length > 0) out.work = p.work;
+                if (p.tags && p.tags.length > 0) out.tags = p.tags;
+                if (p.socials && p.socials.length > 0) out.socials = p.socials;
+                if (p.screenshots && p.screenshots.length > 0) out.screenshots = p.screenshots;
+                if (p.videos && p.videos.length > 0) out.videos = p.videos;
+                if (p.archive) out.archive = p.archive;
+                return out;
+            });
+
+            const jsonStr = JSON.stringify(jsonData, null, 4);
+            const content = btoa(new TextEncoder().encode(jsonStr).reduce((s, b) => s + String.fromCharCode(b), ''));
+
+            // Get current file SHA
+            const getRes = await fetch(
+                `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/projects.json?ref=${encodeURIComponent(branch)}`,
+                { headers: { 'Authorization': `Bearer ${pat}`, 'Accept': 'application/vnd.github.v3+json' } }
+            );
+            let sha = null;
+            if (getRes.ok) { sha = (await getRes.json()).sha; }
+
+            const body = { message: 'Update projects.json via CMS overlay', content, branch };
+            if (sha) body.sha = sha;
+
+            const putRes = await fetch(
+                `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/projects.json`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${pat}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                }
+            );
+
+            if (!putRes.ok) {
+                const err = await putRes.json();
+                console.error('GitHub publish failed:', err);
+            } else {
+                console.log('CMS overlay: Published to GitHub successfully.');
+            }
+        } catch (e) {
+            console.error('CMS overlay: GitHub publish error:', e);
         }
     }
 
