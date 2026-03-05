@@ -262,7 +262,13 @@
         ],
         "videos": [
             {
-                "src": "https://cdn.discordapp.com/attachments/847183622611927071/1217081402575818782/UnrealEditor_0CxU7xX9yN.mp4?ex=69aa1aa2&is=69a8c922&hm=4b88e07f2f961e0c6319b92c04f120b59862075742ef89a011c9f23207f000ab&"
+                "src": "res/projects/ecs-ue/vid_02.mp4"
+            },
+            {
+                "src": "res/projects/ecs-ue/vid_01.mp4"
+            },
+            {
+                "src": "res/projects/ecs-ue/vid_04.mp4"
             }
         ]
     },
