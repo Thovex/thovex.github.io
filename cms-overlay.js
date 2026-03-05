@@ -1,7 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 //  CMS Overlay — Inline editing tools for authenticated admin
-//  Only loads Firebase when cms_authed flag is set in localStorage.
-//  Regular visitors pay zero cost.
+//  Only activates when cms_authed flag is set in localStorage.
+//  This flag is set by the CMS after successful Firebase Auth
+//  + email verification + MFA — so no re-verification needed.
+//  Regular visitors pay zero cost (flag absent = instant exit).
 // ─────────────────────────────────────────────────────────────
 
 (function () {
@@ -10,73 +12,14 @@
     // Fast exit — no auth flag means no CMS session
     if (!localStorage.getItem('cms_authed')) return;
 
-    const ALLOWED_EMAIL = 'thovexii@gmail.com';
-
     // Resolve CMS path relative to current page
-    function getCmsUrl() {
-        const loc = window.location.pathname;
-        if (loc.includes('/cms/')) return './';
-        return 'cms/';
-    }
-
-    // Resolve firebase-config.js path
-    function getConfigPath() {
-        const loc = window.location.pathname;
-        if (loc.includes('/cms/')) return './firebase-config.js';
-        return './cms/firebase-config.js';
-    }
-
-    const CMS_URL = getCmsUrl();
-
-    // ─── Verify auth via Firebase (lazy-loaded) ───
-    async function verifyAuth() {
-        try {
-            const [{ initializeApp }, { getAuth, onAuthStateChanged }] = await Promise.all([
-                import('https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js'),
-                import('https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js')
-            ]);
-
-            const configModule = await import(getConfigPath());
-            const firebaseConfig = configModule.default;
-
-            if (!firebaseConfig || firebaseConfig.apiKey === 'YOUR_API_KEY') {
-                localStorage.removeItem('cms_authed');
-                return null;
-            }
-
-            // Use a separate app name to avoid conflicts with CMS page
-            let app;
-            try {
-                app = initializeApp(firebaseConfig, 'cms-overlay');
-            } catch (e) {
-                const { getApp } = await import('https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js');
-                try { app = getApp('cms-overlay'); } catch { app = getApp(); }
-            }
-
-            const auth = getAuth(app);
-
-            return new Promise((resolve) => {
-                const unsub = onAuthStateChanged(auth, (user) => {
-                    unsub();
-                    if (user && user.email === ALLOWED_EMAIL) {
-                        resolve(user);
-                    } else {
-                        localStorage.removeItem('cms_authed');
-                        resolve(null);
-                    }
-                });
-                setTimeout(() => resolve(null), 5000);
-            });
-        } catch (e) {
-            console.warn('CMS overlay: auth check failed', e);
-            localStorage.removeItem('cms_authed');
-            return null;
-        }
-    }
+    const CMS_URL = window.location.pathname.includes('/cms/') ? './' : 'cms/';
 
     // ─── Inject Styles ───
     function injectStyles() {
+        if (document.getElementById('cms-overlay-styles')) return;
         const style = document.createElement('style');
+        style.id = 'cms-overlay-styles';
         style.textContent = `
             /* CMS Admin Overlay */
             .cms-nav-btn {
@@ -236,6 +179,7 @@
             });
         }
 
+        // Cards render async — observe for additions
         const observer = new MutationObserver(() => addButtons());
         observer.observe(grid, { childList: true });
         addButtons();
@@ -287,36 +231,29 @@
         addButton();
     }
 
-    // ─── Boot ───
-    async function init() {
-        const user = await verifyAuth();
-        if (!user) return;
-
+    // ─── Activate ───
+    function activate() {
         injectStyles();
+        injectNavButton();
+        injectCardEditButtons();
+        injectProjectEditButton();
+        injectAddButton();
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', activate);
-        } else {
-            activate();
+        // Retry nav injection — components.js may not have run yet
+        if (!document.querySelector('.cms-nav-btn')) {
+            const retryNav = setInterval(() => {
+                injectNavButton();
+                if (document.querySelector('.cms-nav-btn')) clearInterval(retryNav);
+            }, 200);
+            // Stop retrying after 5s
+            setTimeout(() => clearInterval(retryNav), 5000);
         }
     }
 
-    function activate() {
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                injectNavButton();
-                injectCardEditButtons();
-                injectProjectEditButton();
-                injectAddButton();
-
-                // Retry nav injection if it wasn't ready yet
-                if (!document.querySelector('.cms-nav-btn')) {
-                    setTimeout(injectNavButton, 500);
-                }
-            }, 100);
-        });
+    // ─── Boot ───
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', activate);
+    } else {
+        activate();
     }
-
-    init();
 })();
-
