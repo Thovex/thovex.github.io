@@ -12,11 +12,22 @@
 
     const CMS_URL = window.location.pathname.includes('/cms/') ? './' : 'cms/';
 
+    // ─── Type key ↔ label mapping ───
+    const TYPE_LABELS = {
+        'BSS': 'Bright Star Studios',
+        'Zloppy-Games': 'Zloppy Games',
+        'BH': 'Baer & Hoggo',
+        'HKU': 'University of the Arts Utrecht',
+        'Hobby': 'Personal Project',
+        'PixelPool': 'PixelPool'
+    };
+    const LABEL_TO_TYPE = Object.fromEntries(Object.entries(TYPE_LABELS).map(([k, v]) => [v, k]));
+
     // ─── State ───
     let firebaseApp = null;
     let db = null;
-    let projectsData = []; // loaded from projects.json
-    let pendingChanges = new Map(); // projectId → { field: newValue, ... }
+    let projectsData = [];
+    let pendingChanges = new Map();
     let firebaseReady = false;
 
     // ─── Inject Styles ───
@@ -81,6 +92,110 @@
             @keyframes cms-flash-save {
                 0%   { outline-color: var(--color-green); background: rgba(58, 255, 127, 0.06); }
                 100% { outline-color: transparent; background: transparent; }
+            }
+
+            /* CMS inline tag editing */
+            .cms-tag-editor {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                align-items: center;
+                margin-top: 0.25rem;
+            }
+            .cms-tag-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+                padding: 0.15rem 0.5rem;
+                font-family: var(--font-mono);
+                font-size: 0.55rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                background: rgba(0, 240, 255, 0.08);
+                border: 1px solid rgba(0, 240, 255, 0.2);
+                color: var(--color-cyan);
+            }
+            .cms-tag-remove {
+                cursor: pointer;
+                opacity: 0.5;
+                font-size: 0.7rem;
+                line-height: 1;
+                transition: opacity 0.15s;
+            }
+            .cms-tag-remove:hover { opacity: 1; color: var(--color-pink); }
+            .cms-tag-input {
+                border: none;
+                background: transparent;
+                color: var(--text-primary);
+                font-family: var(--font-mono);
+                font-size: 0.55rem;
+                width: 70px;
+                outline: none;
+                padding: 0.15rem 0.3rem;
+                border-bottom: 1px dashed rgba(0, 240, 255, 0.3);
+            }
+            .cms-tag-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+
+            /* CMS Add Button (for work items, media, etc.) */
+            .cms-add-inline {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                padding: 0.5rem 1rem;
+                font-family: var(--font-mono);
+                font-size: 0.6rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--color-cyan);
+                border: 1px dashed rgba(0, 240, 255, 0.25);
+                background: rgba(0, 240, 255, 0.03);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                margin-top: 0.75rem;
+            }
+            .cms-add-inline:hover {
+                background: rgba(0, 240, 255, 0.08);
+                border-color: rgba(0, 240, 255, 0.5);
+                border-style: solid;
+            }
+
+            /* CMS media input (for adding screenshot/video URLs) */
+            .cms-media-input-wrap {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: 0.75rem;
+                align-items: center;
+            }
+            .cms-media-input-wrap input {
+                flex: 1;
+                padding: 0.4rem 0.6rem;
+                font-family: var(--font-mono);
+                font-size: 0.6rem;
+                background: rgba(0, 240, 255, 0.03);
+                border: 1px solid rgba(0, 240, 255, 0.2);
+                color: var(--text-primary);
+                outline: none;
+            }
+            .cms-media-input-wrap input:focus {
+                border-color: var(--color-cyan);
+            }
+            .cms-media-input-wrap button {
+                padding: 0.4rem 0.7rem;
+                font-family: var(--font-mono);
+                font-size: 0.6rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: var(--color-green);
+                border: 1px solid rgba(58, 255, 127, 0.3);
+                background: rgba(58, 255, 127, 0.05);
+                cursor: pointer;
+                transition: all 0.15s ease;
+            }
+            .cms-media-input-wrap button:hover {
+                background: rgba(58, 255, 127, 0.15);
+                border-color: var(--color-green);
             }
 
             /* Floating CMS toolbar */
@@ -161,15 +276,6 @@
                 color: var(--color-pink);
                 border-color: rgba(255, 58, 58, 0.3);
             }
-            .cms-toolbar-btn.publish {
-                color: var(--color-cyan);
-                border-color: rgba(0, 240, 255, 0.3);
-                background: rgba(0, 240, 255, 0.05);
-            }
-            .cms-toolbar-btn.publish:hover {
-                background: rgba(0, 240, 255, 0.15);
-                border-color: var(--color-cyan);
-            }
             .cms-toolbar-btn.cms-link {
                 color: var(--text-muted);
                 border-color: var(--border-subtle);
@@ -201,6 +307,7 @@
     // ─── SVG Icons ───
     const ICONS = {
         terminal: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
+        plus: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     };
 
     // ─── Create Floating Toolbar ───
@@ -243,7 +350,26 @@
         }
     }
 
+    // ─── Pending change helpers ───
+    function setPending(projectId, field, value) {
+        if (!pendingChanges.has(projectId)) pendingChanges.set(projectId, {});
+        pendingChanges.get(projectId)[field] = value;
+        updateToolbar();
+    }
+
+    function clearPending(projectId, field) {
+        if (pendingChanges.has(projectId)) {
+            delete pendingChanges.get(projectId)[field];
+            if (Object.keys(pendingChanges.get(projectId)).length === 0) {
+                pendingChanges.delete(projectId);
+            }
+        }
+        updateToolbar();
+    }
+
     // ─── Firebase Init (lazy) ───
+    // Must use the DEFAULT app name (no name) to share the auth session
+    // that admin.js created. Firebase persists auth in IndexedDB keyed by app name.
     async function initFirebase() {
         if (firebaseReady) return true;
         try {
@@ -257,28 +383,28 @@
             const firebaseConfig = configModule.default;
             if (!firebaseConfig || firebaseConfig.apiKey === 'YOUR_API_KEY') return false;
 
+            // Try to get the existing default app first (admin.js may have created it),
+            // otherwise initialize it ourselves with the default name.
             try {
-                firebaseApp = initializeApp(firebaseConfig, 'cms-inline');
+                firebaseApp = getApp();
             } catch {
-                try { firebaseApp = getApp('cms-inline'); } catch { firebaseApp = getApp(); }
+                firebaseApp = initializeApp(firebaseConfig);
             }
 
             db = getFirestore(firebaseApp);
 
-            // Verify auth
             const auth = getAuth(firebaseApp);
             const user = await new Promise((resolve) => {
                 const unsub = onAuthStateChanged(auth, (u) => { unsub(); resolve(u); });
-                setTimeout(() => resolve(null), 5000);
+                setTimeout(() => resolve(null), 8000);
             });
 
             if (!user || user.email !== 'thovexii@gmail.com') {
+                console.warn('CMS overlay: auth check failed — user:', user?.email);
                 localStorage.removeItem('cms_authed');
                 return false;
             }
 
-            // Store Firestore helpers globally for save
-            window._cmsFirestore = { db };
             firebaseReady = true;
             return true;
         } catch (e) {
@@ -287,7 +413,7 @@
         }
     }
 
-    // ─── Make elements editable ───
+    // ─── Make text elements editable ───
     function makeEditable(el, projectId, field) {
         el.setAttribute('contenteditable', 'true');
         el.setAttribute('spellcheck', 'false');
@@ -296,42 +422,210 @@
         el.dataset.cmsField = field;
         el.dataset.cmsOriginal = el.textContent.trim();
 
-        el.addEventListener('focus', () => {
-            // Store original on first focus
-            if (!el.dataset.cmsSnapshot) {
-                el.dataset.cmsSnapshot = el.textContent.trim();
-            }
-        });
-
         el.addEventListener('blur', () => {
             const newVal = el.textContent.trim();
             const original = el.dataset.cmsOriginal;
 
             if (newVal !== original) {
                 el.classList.add('cms-dirty');
-                if (!pendingChanges.has(projectId)) pendingChanges.set(projectId, {});
-                pendingChanges.get(projectId)[field] = newVal;
+                setPending(projectId, field, newVal);
             } else {
                 el.classList.remove('cms-dirty');
-                if (pendingChanges.has(projectId)) {
-                    delete pendingChanges.get(projectId)[field];
-                    if (Object.keys(pendingChanges.get(projectId)).length === 0) {
-                        pendingChanges.delete(projectId);
-                    }
-                }
+                clearPending(projectId, field);
             }
+        });
+
+        // Single-line fields: Enter = commit
+        if (!['description', 'longdescription'].includes(field) && !field.includes('.description')) {
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+            });
+        }
+    }
+
+    // ─── Meta text editable (for card meta spans with SVG + text) ───
+    // These spans contain an SVG icon followed by a text node.
+    // We wrap the text node in a <span> and make THAT editable.
+    function makeMetaEditable(metaSpan, projectId, field) {
+        let textSpan = metaSpan.querySelector('.cms-meta-text');
+        if (!textSpan) {
+            const textContent = metaSpan.textContent.trim();
+            // Remove text nodes, keep SVG
+            Array.from(metaSpan.childNodes)
+                .filter(n => n.nodeType === Node.TEXT_NODE)
+                .forEach(n => n.remove());
+            textSpan = document.createElement('span');
+            textSpan.className = 'cms-meta-text';
+            textSpan.textContent = textContent;
+            metaSpan.appendChild(textSpan);
+        }
+        makeEditable(textSpan, projectId, field);
+    }
+
+    // ─── Tag editor UI ───
+    function createTagEditor(container, projectId, currentTags) {
+        if (container.querySelector('.cms-tag-editor')) return;
+
+        const originalTags = [...currentTags];
+        const tags = [...currentTags];
+
+        const editor = document.createElement('div');
+        editor.className = 'cms-tag-editor';
+
+        function render() {
+            editor.innerHTML = '';
+            tags.forEach((tag, i) => {
+                const pill = document.createElement('span');
+                pill.className = 'cms-tag-pill';
+                pill.innerHTML = `${tag} <span class="cms-tag-remove" data-i="${i}">×</span>`;
+                pill.querySelector('.cms-tag-remove').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    tags.splice(i, 1);
+                    render();
+                    checkDirty();
+                });
+                editor.appendChild(pill);
+            });
+
+            const input = document.createElement('input');
+            input.className = 'cms-tag-input';
+            input.placeholder = '+ tag';
+            input.addEventListener('keydown', (e) => {
+                if ((e.key === 'Enter' || e.key === ',') && input.value.trim()) {
+                    e.preventDefault();
+                    const val = input.value.trim().toLowerCase().replace(/,/g, '');
+                    if (val && !tags.includes(val)) {
+                        tags.push(val);
+                        render();
+                        checkDirty();
+                    }
+                    input.value = '';
+                }
+                if (e.key === 'Backspace' && !input.value && tags.length > 0) {
+                    tags.pop();
+                    render();
+                    checkDirty();
+                }
+            });
+            input.addEventListener('click', (e) => e.stopPropagation());
+            editor.appendChild(input);
+        }
+
+        function checkDirty() {
+            const changed = JSON.stringify(tags) !== JSON.stringify(originalTags);
+            if (changed) {
+                setPending(projectId, 'tags', [...tags]);
+                editor.style.outlineColor = 'rgba(255, 224, 58, 0.5)';
+            } else {
+                clearPending(projectId, 'tags');
+                editor.style.outlineColor = 'transparent';
+            }
+        }
+
+        render();
+        container.appendChild(editor);
+
+        // Store reset function for discard
+        editor.dataset.cmsProjectId = projectId;
+        editor._cmsReset = () => {
+            tags.length = 0;
+            tags.push(...originalTags);
+            render();
+            editor.style.outlineColor = 'transparent';
+        };
+    }
+
+    // ─── Add Work Item UI ───
+    function addWorkItemUI(workGrid, projectId) {
+        if (workGrid.querySelector('.cms-add-inline[data-for="work"]')) return;
+
+        const btn = document.createElement('button');
+        btn.className = 'cms-add-inline';
+        btn.dataset.for = 'work';
+        btn.innerHTML = `${ICONS.plus} Add Contribution`;
+        btn.addEventListener('click', () => {
+            const idx = workGrid.querySelectorAll('.work-card').length;
+
+            const card = document.createElement('div');
+            card.className = 'work-card';
+            card.innerHTML = `<h4>New Contribution</h4><p>Description here...</p>`;
+            workGrid.insertBefore(card, btn);
+
+            const h4 = card.querySelector('h4');
+            const p = card.querySelector('p');
+            makeEditable(h4, projectId, `work.${idx}.title`);
+            makeEditable(p, projectId, `work.${idx}.description`);
+
+            // Mark as new / dirty immediately
+            setPending(projectId, `work.${idx}.title`, 'New Contribution');
+            setPending(projectId, `work.${idx}.description`, 'Description here...');
+            h4.classList.add('cms-dirty');
+            p.classList.add('cms-dirty');
+            h4.focus();
+        });
+
+        workGrid.appendChild(btn);
+    }
+
+    // ─── Add Media UI ───
+    function addMediaUI(mediaGrid, projectId) {
+        if (mediaGrid.querySelector('.cms-media-input-wrap')) return;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-media-input-wrap';
+        wrap.innerHTML = `
+            <input type="text" placeholder="res/projects/.../ss_01.png or YouTube URL" />
+            <button type="button">+ Add</button>
+        `;
+
+        const input = wrap.querySelector('input');
+        const addBtn = wrap.querySelector('button');
+
+        addBtn.addEventListener('click', () => {
+            const src = input.value.trim();
+            if (!src) return;
+
+            // Determine type: screenshot or video
+            const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(src) ||
+                            src.includes('youtube.com') || src.includes('youtu.be');
+
+            const field = isVideo ? '_addVideo' : '_addScreenshot';
+
+            // Build pending array addition
+            if (!pendingChanges.has(projectId)) pendingChanges.set(projectId, {});
+            const pending = pendingChanges.get(projectId);
+            if (!pending[field]) pending[field] = [];
+            pending[field].push(src);
+
+            // Add visual preview
+            const item = document.createElement('div');
+            item.className = 'media-item';
+            item.setAttribute('data-reveal', '');
+            item.classList.add('revealed');
+            if (isVideo) {
+                const ytMatch = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+                if (ytMatch) {
+                    item.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytMatch[1]}" allowfullscreen loading="lazy"></iframe>`;
+                } else {
+                    item.innerHTML = `<video src="${src}" controls muted loop preload="none"></video>`;
+                }
+                item.style.cursor = 'default';
+            } else {
+                item.innerHTML = `<img src="${src}" alt="New media" loading="lazy">`;
+            }
+            item.style.outline = '1px dashed rgba(255, 224, 58, 0.5)';
+            item.style.outlineOffset = '4px';
+            mediaGrid.insertBefore(item, wrap);
+
+            input.value = '';
             updateToolbar();
         });
 
-        // Prevent Enter from inserting line breaks in single-line fields
-        if (field !== 'description' && field !== 'longdescription') {
-            el.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    el.blur();
-                }
-            });
-        }
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addBtn.click();
+        });
+
+        mediaGrid.appendChild(wrap);
     }
 
     // ─── Setup Editable Fields on Index Page Cards ───
@@ -355,9 +649,33 @@
                 const desc = card.querySelector('.project-card-desc');
                 if (desc) makeEditable(desc, projectId, 'description');
 
+                // Meta fields (contain SVG + text)
+                const metaLang = card.querySelector('.meta-language');
+                if (metaLang) makeMetaEditable(metaLang, projectId, 'language');
+
+                const metaEngine = card.querySelector('.meta-engine');
+                if (metaEngine) makeMetaEditable(metaEngine, projectId, 'engine');
+
+                const metaRole = card.querySelector('.meta-role');
+                if (metaRole) makeMetaEditable(metaRole, projectId, 'role');
+
+                const metaSource = card.querySelector('.meta-source');
+                if (metaSource) makeMetaEditable(metaSource, projectId, 'type');
+
+                // Tags — replace static tags with an editable tag editor
+                const tagsContainer = card.querySelector('.card-tags');
+                if (tagsContainer) {
+                    const project = projectsData.find(p => p.id === projectId);
+                    const currentTags = project ? [...(project.tags || [])] :
+                        Array.from(tagsContainer.querySelectorAll('.card-tag')).map(t => t.textContent.trim());
+                    createTagEditor(tagsContainer, projectId, currentTags);
+                }
+
                 // Prevent card click when editing
                 card.addEventListener('click', (e) => {
-                    if (e.target.closest('[data-cms-editable]')) {
+                    if (e.target.closest('[data-cms-editable]') ||
+                        e.target.closest('.cms-tag-editor') ||
+                        e.target.closest('.cms-tag-input')) {
                         e.stopPropagation();
                         e.preventDefault();
                     }
@@ -367,7 +685,11 @@
 
         const observer = new MutationObserver(() => process());
         observer.observe(grid, { childList: true });
-        process();
+        // Wait for projectsData to be loaded before processing
+        loadProjectsData().then(() => {
+            process();
+            setupArchiveEditing();
+        });
     }
 
     // ─── Setup Editable Fields on Project Detail Page ───
@@ -392,7 +714,7 @@
             const longDesc = heroContent.querySelector('.project-long-desc');
             if (longDesc) makeEditable(longDesc, projectId, 'longdescription');
 
-            // Meta values (role, engine, language, duration)
+            // Meta values (role, engine, language, duration, period, source)
             heroContent.querySelectorAll('.meta-item').forEach(item => {
                 const label = item.querySelector('.meta-label');
                 const value = item.querySelector('.meta-value');
@@ -404,29 +726,62 @@
                     'engine': 'engine',
                     'language': 'language',
                     'duration': 'duration',
+                    'period': 'datetime',
+                    'source': 'type',
                 };
                 const field = fieldMap[labelText];
                 if (field) makeEditable(value, projectId, field);
             });
+        }
 
-            // Work card titles and descriptions
-            document.querySelectorAll('.work-card').forEach((card, i) => {
+        function processWork() {
+            const workGrid = document.getElementById('workGrid');
+            if (!workGrid || workGrid.dataset.cmsWorkSetup) return;
+            // Skip if no work cards and section is hidden (no work items at all)
+            const workSection = workGrid.closest('#workSection');
+            if (workGrid.children.length === 0 && workSection && workSection.style.display === 'none') return;
+            workGrid.dataset.cmsWorkSetup = '1';
+
+            workGrid.querySelectorAll('.work-card').forEach((card, i) => {
                 const h4 = card.querySelector('h4');
                 const p = card.querySelector('p');
                 if (h4) makeEditable(h4, projectId, `work.${i}.title`);
                 if (p) makeEditable(p, projectId, `work.${i}.description`);
             });
+
+            // Add "Add Contribution" button
+            addWorkItemUI(workGrid, projectId);
         }
 
-        const observer = new MutationObserver(() => process());
+        function processMedia() {
+            const mediaGrid = document.getElementById('mediaGrid');
+            if (!mediaGrid || mediaGrid.dataset.cmsMediaSetup) return;
+            mediaGrid.dataset.cmsMediaSetup = '1';
+
+            addMediaUI(mediaGrid, projectId);
+        }
+
+        const observer = new MutationObserver(() => {
+            process();
+            processWork();
+            processMedia();
+        });
         observer.observe(heroContent, { childList: true });
         process();
 
-        // Also observe workGrid
+        // Also observe workGrid and mediaGrid
         const workGrid = document.getElementById('workGrid');
         if (workGrid) {
-            const wObserver = new MutationObserver(() => process());
+            const wObserver = new MutationObserver(() => processWork());
             wObserver.observe(workGrid, { childList: true });
+            processWork();
+        }
+
+        const mediaGrid = document.getElementById('mediaGrid');
+        if (mediaGrid) {
+            const mObserver = new MutationObserver(() => processMedia());
+            mObserver.observe(mediaGrid, { childList: true });
+            processMedia();
         }
     }
 
@@ -436,7 +791,6 @@
         if (!archiveList) return;
 
         function process() {
-            // Need to match archive items to project data
             archiveList.querySelectorAll('.archive-item').forEach(item => {
                 if (item.dataset.cmsSetup) return;
                 item.dataset.cmsSetup = '1';
@@ -445,7 +799,6 @@
                 const descEl = item.querySelector('.archive-info > p');
                 if (!titleEl) return;
 
-                // Find matching project by title
                 const title = titleEl.textContent.trim();
                 const project = projectsData.find(p => p.title === title);
                 if (!project) return;
@@ -477,7 +830,6 @@
 
         try {
             for (const [projectId, fields] of pendingChanges) {
-                // Fetch current doc
                 const docRef = doc(db, 'projects', projectId);
                 const snap = await getDoc(docRef);
                 if (!snap.exists()) {
@@ -487,14 +839,43 @@
 
                 const data = snap.data();
 
-                // Apply changes
                 for (const [field, value] of Object.entries(fields)) {
+                    // Special: _addScreenshot array — append to screenshots
+                    if (field === '_addScreenshot') {
+                        if (!data.screenshots) data.screenshots = [];
+                        value.forEach(src => {
+                            data.screenshots.push({ src, alt: '' });
+                        });
+                        continue;
+                    }
+                    // Special: _addVideo array — append to videos
+                    if (field === '_addVideo') {
+                        if (!data.videos) data.videos = [];
+                        value.forEach(src => {
+                            data.videos.push({ src });
+                        });
+                        continue;
+                    }
+                    // Special: type field — convert display label back to key
+                    if (field === 'type') {
+                        data.type = LABEL_TO_TYPE[value] || value;
+                        continue;
+                    }
+                    // Special: tags — direct array replacement
+                    if (field === 'tags') {
+                        data.tags = value;
+                        continue;
+                    }
                     // Handle nested fields like work.0.title
                     if (field.includes('.')) {
                         const parts = field.split('.');
                         let obj = data;
                         for (let i = 0; i < parts.length - 1; i++) {
                             const key = isNaN(parts[i]) ? parts[i] : parseInt(parts[i]);
+                            if (obj[key] === undefined) {
+                                // Create missing intermediate objects/arrays
+                                obj[key] = isNaN(parts[i + 1]) ? {} : [];
+                            }
                             obj = obj[key];
                         }
                         const lastKey = isNaN(parts[parts.length - 1]) ? parts[parts.length - 1] : parseInt(parts[parts.length - 1]);
@@ -502,6 +883,21 @@
                     } else {
                         data[field] = value;
                     }
+                }
+
+                // Handle new work items — they come as work.N.title + work.N.description
+                // Ensure work array is extended
+                const workKeys = Object.keys(fields).filter(k => k.startsWith('work.'));
+                if (workKeys.length > 0) {
+                    if (!data.work) data.work = [];
+                    workKeys.forEach(key => {
+                        const parts = key.split('.');
+                        const idx = parseInt(parts[1]);
+                        while (data.work.length <= idx) {
+                            data.work.push({ title: '', description: '' });
+                        }
+                        data.work[idx][parts[2]] = fields[key];
+                    });
                 }
 
                 await setDoc(docRef, data);
@@ -513,6 +909,17 @@
                 el.classList.add('cms-saved');
                 el.dataset.cmsOriginal = el.textContent.trim();
                 setTimeout(() => el.classList.remove('cms-saved'), 600);
+            });
+
+            // Reset tag editors
+            document.querySelectorAll('.cms-tag-editor').forEach(editor => {
+                if (editor.style) editor.style.outlineColor = 'transparent';
+            });
+
+            // Reset media input outlines
+            document.querySelectorAll('.media-item[style*="outline"]').forEach(item => {
+                item.style.outline = '';
+                item.style.outlineOffset = '';
             });
 
             pendingChanges.clear();
@@ -531,6 +938,15 @@
             el.textContent = el.dataset.cmsOriginal;
             el.classList.remove('cms-dirty');
         });
+
+        // Reset tag editors
+        document.querySelectorAll('.cms-tag-editor').forEach(editor => {
+            if (editor._cmsReset) editor._cmsReset();
+        });
+
+        // Remove newly added media items (those with yellow outline)
+        document.querySelectorAll('.media-item[style*="outline"]').forEach(item => item.remove());
+
         pendingChanges.clear();
         updateToolbar();
     }
@@ -548,7 +964,7 @@
         navLinks.appendChild(cmsLink);
     }
 
-    // ─── Load projects.json for matching archive items ───
+    // ─── Load projects.json ───
     async function loadProjectsData() {
         try {
             const res = await fetch('projects.json');
@@ -564,8 +980,6 @@
         setupCardEditing();
         setupDetailEditing();
 
-        // Archive needs project data to match items
-        loadProjectsData().then(() => setupArchiveEditing());
 
         // Retry nav injection
         if (!document.querySelector('.cms-nav-btn')) {
