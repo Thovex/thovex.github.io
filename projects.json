@@ -1,5 +1,106 @@
 [
     {
+        "id": "ember-sword",
+        "card": true,
+        "title": "Ember Sword",
+        "language": "C++",
+        "engine": "Radiance",
+        "role": "Gameplay Programmer",
+        "duration": "4y+",
+        "datetime": "2021-2025",
+        "minisrc": "res/projects/ember-sword/mini.png",
+        "banner": "res/projects/ember-sword/banner.png",
+        "type": "BSS",
+        "description": "An open-world sandbox MMORPG by Bright Star Studios.",
+        "longdescription": "Ember Sword is a cross-platform free-to-play fantasy MMORPG. Players can own, control, and evolve their land while trading assets with other players. The game runs on the Radiance Engine, a custom engine built by Bright Star Studios.",
+        "work": [
+            {
+                "title": "Exploration",
+                "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon."
+            },
+            {
+                "title": "Trade Packs",
+                "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic."
+            },
+            {
+                "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server.",
+                "title": "Combat"
+            },
+            {
+                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more.",
+                "title": "Gameplay Data"
+            },
+            {
+                "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases.",
+                "title": "Creature Behaviors"
+            },
+            {
+                "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced.",
+                "title": "Gathering"
+            },
+            {
+                "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items.",
+                "title": "Crafting"
+            },
+            {
+                "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives.",
+                "title": "Quests"
+            },
+            {
+                "title": "Player Interaction",
+                "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system."
+            },
+            {
+                "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced.",
+                "title": "Boss Battles"
+            },
+            {
+                "description": "Many other systems and features I contributed to over 4+ years.",
+                "title": "And more..."
+            }
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/ember-sword/ss_04.png",
+                "alt": "Ember Sword open world with player characters in a fantasy landscape"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_01.png",
+                "alt": "Ember Sword combat encounter with creatures in a forest biome"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_02.png",
+                "alt": "Ember Sword player-owned land plots and town building"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_03.png",
+                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/ember-sword/vid_01.webm",
+                "alt": "Ember Sword open world exploration gameplay"
+            },
+            {
+                "src": "res/projects/ember-sword/vid_02.webm",
+                "alt": "Ember Sword PvP combat and ability system"
+            },
+            {
+                "src": "res/projects/ember-sword/vid_03.webm",
+                "alt": "Ember Sword creature behaviors and AI in action"
+            },
+            {
+                "src": "res/projects/ember-sword/vid_04.webm",
+                "alt": "Ember Sword trade pack system and gathering"
+            }
+        ]
+    },
+    {
         "id": "dtail-spaces",
         "card": true,
         "title": "Dtail Spaces",
@@ -30,9 +131,9 @@
         ],
         "socials": [
             {
-                "info": "dtail.com",
+                "url": "https://www.dtail.com/",
                 "icon": "res/ico_site.png",
-                "url": "https://www.dtail.com/"
+                "info": "dtail.com"
             }
         ],
         "screenshots": [
@@ -45,120 +146,12 @@
                 "src": "res/projects/dtail-spaces/ss_02.jpg"
             },
             {
-                "src": "res/projects/dtail-spaces/ss_03.png",
-                "alt": "Dtail Spaces product placement and customization interface"
+                "alt": "Dtail Spaces product placement and customization interface",
+                "src": "res/projects/dtail-spaces/ss_03.png"
             },
             {
                 "alt": "Dtail Spaces data visualization dashboard",
                 "src": "res/projects/dtail-spaces/ss_04.png"
-            }
-        ]
-    },
-    {
-        "id": "ember-sword",
-        "card": true,
-        "title": "Ember Sword",
-        "language": "C++",
-        "engine": "Radiance",
-        "role": "Gameplay Programmer",
-        "duration": "4y+",
-        "datetime": "2021-2025",
-        "minisrc": "res/projects/ember-sword/mini.png",
-        "banner": "res/projects/ember-sword/banner.png",
-        "type": "BSS",
-        "description": "An open-world sandbox MMORPG by Bright Star Studios.",
-        "longdescription": "Ember Sword is a cross-platform free-to-play fantasy MMORPG. Players can own, control, and evolve their land while trading assets with other players. The game runs on the Radiance Engine, a custom engine built by Bright Star Studios.",
-        "work": [
-            {
-                "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon.",
-                "title": "Exploration"
-            },
-            {
-                "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic.",
-                "title": "Trade Packs"
-            },
-            {
-                "title": "Combat",
-                "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server."
-            },
-            {
-                "title": "Gameplay Data",
-                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more."
-            },
-            {
-                "title": "Creature Behaviors",
-                "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases."
-            },
-            {
-                "title": "Gathering",
-                "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced."
-            },
-            {
-                "title": "Crafting",
-                "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items."
-            },
-            {
-                "title": "Quests",
-                "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives."
-            },
-            {
-                "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system.",
-                "title": "Player Interaction"
-            },
-            {
-                "title": "Boss Battles",
-                "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced."
-            },
-            {
-                "title": "And more...",
-                "description": "Many other systems and features I contributed to over 4+ years."
-            }
-        ],
-        "tags": [
-            "networking",
-            "gameplay"
-        ],
-        "socials": [
-            {
-                "url": "https://embersword.com",
-                "info": "embersword.com",
-                "icon": "res/projects/ember-sword/ico_01.png"
-            }
-        ],
-        "screenshots": [
-            {
-                "src": "res/projects/ember-sword/ss_04.png",
-                "alt": "Ember Sword open world with player characters in a fantasy landscape"
-            },
-            {
-                "src": "res/projects/ember-sword/ss_01.png",
-                "alt": "Ember Sword combat encounter with creatures in a forest biome"
-            },
-            {
-                "src": "res/projects/ember-sword/ss_02.png",
-                "alt": "Ember Sword player-owned land plots and town building"
-            },
-            {
-                "src": "res/projects/ember-sword/ss_03.png",
-                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
-            }
-        ],
-        "videos": [
-            {
-                "alt": "Ember Sword open world exploration gameplay",
-                "src": "res/projects/ember-sword/vid_01.webm"
-            },
-            {
-                "alt": "Ember Sword PvP combat and ability system",
-                "src": "res/projects/ember-sword/vid_02.webm"
-            },
-            {
-                "alt": "Ember Sword creature behaviors and AI in action",
-                "src": "res/projects/ember-sword/vid_03.webm"
-            },
-            {
-                "alt": "Ember Sword trade pack system and gathering",
-                "src": "res/projects/ember-sword/vid_04.webm"
             }
         ]
     },
@@ -216,15 +209,15 @@
         ],
         "socials": [
             {
-                "info": "fortnite.gg",
+                "url": "https://fortnite.gg/island?code=3579-7551-5955",
                 "icon": "res/ico_site.png",
-                "url": "https://fortnite.gg/island?code=3579-7551-5955"
+                "info": "fortnite.gg"
             }
         ],
         "videos": [
             {
-                "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building",
-                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw"
+                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
+                "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building"
             }
         ]
     },
@@ -242,22 +235,21 @@
         "longdescription": "After using EnTT for Ember Sword I got intrigued by using an ECS for game development. I decided to make a framework on top of Unreal to create entities, populate them with data and have systems manipulate or read the data.",
         "work": [
             {
-                "title": "Core Framework",
-                "description": "Setting up the initial framework and syntaxing."
+                "description": "Setting up the initial framework and syntaxing.",
+                "title": "Core Framework"
             },
             {
-                "title": "Various Base Systems",
-                "description": "Important systems such as a Transform system, Rendering system, Collision system and Cleanup system have been built."
+                "description": "Important systems such as a Transform system, Rendering system, Collision system and Cleanup system have been built.",
+                "title": "Various Base Systems"
             },
             {
-                "title": "Inspector Tools",
-                "description": "Inspecting an object in the hierarchy is extremely useful, therefor I created an inspector which reads the entity registry and lists their components. This tool also allows you to edit data on the fly."
+                "description": "Inspecting an object in the hierarchy is extremely useful, therefor I created an inspector which reads the entity registry and lists their components. This tool also allows you to edit data on the fly.",
+                "title": "Inspector Tools"
             }
         ],
         "tags": [
             "ECS",
             "Entities",
-            "Unreal",
             "EnTT"
         ],
         "videos": [
@@ -296,28 +288,28 @@
                 "description": "You can hold and throw any object. Real physics isn't in play, just the illusion of it, keeping things reliable in multiplayer while still feeling satisfying."
             },
             {
-                "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants.",
-                "title": "Stage-Based Farming"
+                "title": "Stage-Based Farming",
+                "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants."
             },
             {
                 "title": "Upgrades Everywhere",
                 "description": "Purchase upgrades like a Pantry to store goods, an Animal Barn for your livestock, a Greenhouse, and more."
             },
             {
-                "description": "Games are better together. Farmion is designed for 1-6 players from the ground up.",
-                "title": "Multiplayer"
+                "title": "Multiplayer",
+                "description": "Games are better together. Farmion is designed for 1-6 players from the ground up."
             },
             {
-                "description": "Redesign your magical mansion while waiting for the night to pass.",
-                "title": "House & Character Customization"
+                "title": "House & Character Customization",
+                "description": "Redesign your magical mansion while waiting for the night to pass."
             },
             {
-                "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely.",
-                "title": "Cheese System"
+                "title": "Cheese System",
+                "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely."
             },
             {
-                "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive.",
-                "title": "Buffs System"
+                "title": "Buffs System",
+                "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive."
             },
             {
                 "title": "Transportation and Carts",
@@ -334,14 +326,14 @@
         ],
         "socials": [
             {
+                "url": "https://linktr.ee/baerandhoggo",
                 "info": "link.tree",
-                "icon": "res/projects/farmion/ico_01.png",
-                "url": "https://linktr.ee/baerandhoggo"
+                "icon": "res/projects/farmion/ico_01.png"
             },
             {
                 "info": "discord",
-                "url": "https://discord.gg/7X7gYf93ph",
-                "icon": "res/ico_discord.png"
+                "icon": "res/ico_discord.png",
+                "url": "https://discord.gg/7X7gYf93ph"
             }
         ],
         "screenshots": [
@@ -492,8 +484,8 @@
                 "description": "Implemented a loot table system for breakables, enemies, and chests."
             },
             {
-                "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory.",
-                "title": "User Interface"
+                "title": "User Interface",
+                "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory."
             }
         ],
         "tags": [
@@ -553,8 +545,8 @@
                 "description": "Built offline simulation so the game progresses while you're away. Come back to big numbers and that sweet dopamine hit."
             },
             {
-                "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings.",
-                "title": "Unity UI"
+                "title": "Unity UI",
+                "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings."
             }
         ],
         "tags": [
@@ -602,16 +594,16 @@
         "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. A 3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
         "work": [
             {
-                "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity.",
-                "title": "Wave Function Collapse"
+                "title": "Wave Function Collapse",
+                "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity."
             },
             {
-                "description": "Fly around the generated levels with a drone to showcase the results.",
-                "title": "Drone Flying"
+                "title": "Drone Flying",
+                "description": "Fly around the generated levels with a drone to showcase the results."
             },
             {
-                "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm.",
-                "title": "Graduation Papers & Tools"
+                "title": "Graduation Papers & Tools",
+                "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm."
             }
         ],
         "tags": [
