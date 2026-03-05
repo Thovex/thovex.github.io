@@ -188,7 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div class="project-card-image">
-                    <img src="${project.minisrc}" alt="${project.title}" loading="lazy">
+                    <img src="${project.minisrc}" alt="${project.title}" loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.classList.add('no-image');">
+                    <div class="card-image-fallback"><span>${project.title}</span></div>
                     <div class="card-tags">${tagsHTML}</div>
                 </div>
                 <div class="project-card-body">
