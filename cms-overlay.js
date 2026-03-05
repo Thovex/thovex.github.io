@@ -91,6 +91,10 @@
             /* ─── CMS-only elements: hidden unless edit mode ─── */
             .cms-only { display: none !important; }
             body.cms-edit-mode .cms-only { display: flex !important; }
+            body.cms-edit-mode select.cms-only { display: inline-block !important; }
+
+            /* Hide original text when select replaces it in edit mode */
+            body.cms-edit-mode .cms-original-text { display: none !important; }
 
             /* ─── Tag editing ─── */
             .cms-tag-editor { display: none; flex-wrap: wrap; gap: 0.3rem; align-items: center; padding: 0.25rem; }
@@ -359,6 +363,17 @@
     // ─── Generic field select (language, engine, role) ───
     function createFieldSelect(container, projectId, field, currentValue, getOptions) {
         if (container.querySelector(`.cms-select[data-cms-field="${field}"]`)) return;
+
+        // Wrap existing text nodes in a span that hides in edit mode
+        Array.from(container.childNodes).forEach(n => {
+            if (n.nodeType === Node.TEXT_NODE && n.textContent.trim()) {
+                const wrapper = document.createElement('span');
+                wrapper.className = 'cms-original-text';
+                wrapper.textContent = n.textContent;
+                container.replaceChild(wrapper, n);
+            }
+        });
+
         const sel = document.createElement('select');
         sel.className = 'cms-select cms-only';
         sel.dataset.cmsField = field;
@@ -1030,13 +1045,16 @@
 
     // ─── Intercept card clicks in edit mode ───
     function interceptCardClicks() {
-        document.addEventListener('click', (e) => {
+        // Block card navigation clicks but allow CMS interactive elements
+        const handler = (e) => {
             if (!editMode) return;
             const card = e.target.closest('.project-card');
             if (!card) return;
 
             // Allow CMS interactive elements to work normally
-            if (e.target.closest('.cms-tag-remove') ||
+            const tag = e.target.tagName;
+            if (tag === 'SELECT' || tag === 'OPTION' || tag === 'INPUT' ||
+                e.target.closest('.cms-tag-remove') ||
                 e.target.closest('.cms-tag-editor') ||
                 e.target.closest('.cms-select') ||
                 e.target.closest('.cms-drag-handle') ||
@@ -1052,7 +1070,9 @@
             // Block card navigation for everything else
             e.stopPropagation();
             e.preventDefault();
-        }, true);
+        };
+        document.addEventListener('click', handler, true);
+        document.addEventListener('mousedown', handler, true);
     }
 
     // ─── Load projects.json ───
