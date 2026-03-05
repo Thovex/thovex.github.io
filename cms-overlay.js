@@ -308,6 +308,11 @@
                 injectCardEditButtons();
                 injectProjectEditButton();
                 injectAddButton();
+
+                // Retry nav injection if it wasn't ready yet
+                if (!document.querySelector('.cms-nav-btn')) {
+                    setTimeout(injectNavButton, 500);
+                }
             }, 100);
         });
     }
