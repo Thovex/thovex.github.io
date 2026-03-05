@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Re-observe newly created cards
             initScrollReveal();
+
+            // Init row-hover grunge lines
+            initRowHoverEffect();
         })
         .catch(err => console.error('Error loading projects:', err));
 
@@ -253,6 +256,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             list.appendChild(item);
+        });
+    }
+
+    // ─── Row-Hover Grunge Lines ───
+    function initRowHoverEffect() {
+        const grid = document.getElementById('projectsGrid');
+        if (!grid) return;
+
+        const lineL = document.querySelector('.row-hover-line--left');
+        const lineR = document.querySelector('.row-hover-line--right');
+        if (!lineL || !lineR) return;
+
+        function getCardRow(hoveredCard) {
+            // Group visible cards by their offsetTop to find which row
+            const cards = Array.from(grid.querySelectorAll('.project-card'))
+                .filter(c => c.style.display !== 'none');
+            const hoveredTop = hoveredCard.offsetTop;
+            // Find all cards in the same row (same offsetTop)
+            const rowCards = cards.filter(c => Math.abs(c.offsetTop - hoveredTop) < 5);
+            if (rowCards.length === 0) return null;
+
+            const top = rowCards[0].offsetTop;
+            const bottom = Math.max(...rowCards.map(c => c.offsetTop + c.offsetHeight));
+            return { top, height: bottom - top };
+        }
+
+        grid.addEventListener('mouseover', (e) => {
+            const card = e.target.closest('.project-card');
+            if (!card) return;
+
+            const row = getCardRow(card);
+            if (!row) return;
+
+            lineL.style.top = row.top + 'px';
+            lineL.style.height = row.height + 'px';
+            lineL.classList.add('active');
+
+            lineR.style.top = row.top + 'px';
+            lineR.style.height = row.height + 'px';
+            lineR.classList.add('active');
+        });
+
+        grid.addEventListener('mouseleave', () => {
+            lineL.classList.remove('active');
+            lineR.classList.remove('active');
         });
     }
 });

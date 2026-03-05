@@ -422,10 +422,15 @@ function updateRealtimePanel(realtimeData) {
 
     const { totalUsers, visitors } = realtimeData;
 
+    // Use the sum of dimension rows if available — this matches the visible breakdown.
+    // Fall back to the dimensionless API total only when no rows exist.
+    const rowSum = visitors.reduce((sum, v) => sum + v.users, 0);
+    const displayCount = visitors.length > 0 ? Math.max(rowSum, totalUsers) : totalUsers;
+
     // Update counter with animation
     const oldVal = parseInt(countEl.textContent) || 0;
-    if (totalUsers !== oldVal) {
-        countEl.textContent = totalUsers;
+    if (displayCount !== oldVal) {
+        countEl.textContent = displayCount;
         countEl.classList.remove('stat-animate');
         void countEl.offsetWidth;
         countEl.classList.add('stat-animate');

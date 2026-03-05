@@ -590,6 +590,164 @@ ul {
 }
 
 /* ---------- Project Cards ---------- */
+
+/* Row-hover grunge lines wrapper */
+.grid-row-hover-wrapper {
+  position: relative;
+}
+
+.row-hover-line {
+  position: absolute;
+  top: 0;
+  height: 0;
+  width: calc((100vw - 100%) / 2 - 8px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, top 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.row-hover-line--left {
+  right: 100%;
+  transform-origin: right center;
+}
+
+.row-hover-line--right {
+  left: 100%;
+  transform-origin: left center;
+}
+
+/* The grunge scratches — multiple layered pseudo-lines */
+.row-hover-line::before,
+.row-hover-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Outer scratch cluster */
+.row-hover-line--left::before {
+  right: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(255, 58, 58, 0.07) 3px,
+      rgba(255, 58, 58, 0.07) 4px,
+      transparent 4px,
+      transparent 9px,
+      rgba(255, 255, 255, 0.02) 9px,
+      rgba(255, 255, 255, 0.02) 10px,
+      transparent 10px,
+      transparent 17px
+    ),
+    linear-gradient(90deg, transparent 0%, transparent 60%, rgba(255, 58, 58, 0.03) 80%, rgba(255, 58, 58, 0.06) 100%);
+}
+
+.row-hover-line--left::after {
+  right: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 58, 58, 0.35) 8%,
+    transparent 12%,
+    rgba(255, 58, 58, 0.1) 20%,
+    rgba(255, 58, 58, 0.5) 30%,
+    transparent 35%,
+    rgba(255, 58, 58, 0.15) 45%,
+    rgba(255, 58, 58, 0.45) 55%,
+    transparent 60%,
+    rgba(255, 58, 58, 0.3) 70%,
+    transparent 75%,
+    rgba(255, 58, 58, 0.4) 85%,
+    rgba(255, 58, 58, 0.1) 92%,
+    transparent 100%
+  );
+  box-shadow: -4px 0 0 0 rgba(255, 58, 58, 0.04), -8px 0 0 0 rgba(255, 58, 58, 0.02);
+  animation: grunge-flicker 0.8s steps(2) infinite;
+}
+
+.row-hover-line--right::before {
+  left: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255, 58, 58, 0.06) 5px,
+      rgba(255, 58, 58, 0.06) 6px,
+      transparent 6px,
+      transparent 12px,
+      rgba(255, 255, 255, 0.02) 12px,
+      rgba(255, 255, 255, 0.02) 13px,
+      transparent 13px,
+      transparent 20px
+    ),
+    linear-gradient(90deg, rgba(255, 58, 58, 0.06) 0%, rgba(255, 58, 58, 0.03) 20%, transparent 40%, transparent 100%);
+}
+
+.row-hover-line--right::after {
+  left: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 58, 58, 0.2) 5%,
+    rgba(255, 58, 58, 0.4) 15%,
+    transparent 22%,
+    rgba(255, 58, 58, 0.35) 35%,
+    rgba(255, 58, 58, 0.1) 42%,
+    transparent 48%,
+    rgba(255, 58, 58, 0.5) 58%,
+    transparent 65%,
+    rgba(255, 58, 58, 0.25) 75%,
+    rgba(255, 58, 58, 0.4) 82%,
+    transparent 88%,
+    rgba(255, 58, 58, 0.15) 95%,
+    transparent 100%
+  );
+  box-shadow: 4px 0 0 0 rgba(255, 58, 58, 0.04), 8px 0 0 0 rgba(255, 58, 58, 0.02);
+  animation: grunge-flicker 0.6s steps(3) infinite reverse;
+}
+
+/* Active state */
+.row-hover-line.active {
+  opacity: 1;
+}
+
+/* Extra scratchy decorations via box-shadow on the lines */
+.row-hover-line--left.active::before {
+  box-shadow:
+    inset -8px 0 12px -6px rgba(255, 58, 58, 0.04),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.03);
+}
+
+.row-hover-line--right.active::before {
+  box-shadow:
+    inset 8px 0 12px -6px rgba(255, 58, 58, 0.04),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.03);
+}
+
+@keyframes grunge-flicker {
+  0%   { opacity: 1; }
+  25%  { opacity: 0.6; }
+  50%  { opacity: 1; }
+  75%  { opacity: 0.4; }
+  100% { opacity: 0.9; }
+}
+
+/* Hide on small screens where there's no side space */
+@media (max-width: 1280px) {
+  .row-hover-line {
+    display: none;
+  }
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
