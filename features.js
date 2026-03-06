@@ -671,17 +671,17 @@
             if (!spotlightOpen) return;
             const results = spotlightEl.querySelector('.spotlight-results');
             const items = results.querySelectorAll('.spotlight-result');
-            if (e.key === 'Escape') { e.preventDefault(); closeSpotlight(); return; }
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSpotlight(); return; }
             if (e.key === 'ArrowDown') {
-                e.preventDefault();
+                e.preventDefault(); e.stopPropagation();
                 spotlightIdx = Math.min(spotlightIdx + 1, items.length - 1);
                 updateSpotlightActive(items);
             } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
+                e.preventDefault(); e.stopPropagation();
                 spotlightIdx = Math.max(spotlightIdx - 1, 0);
                 updateSpotlightActive(items);
             } else if (e.key === 'Enter') {
-                e.preventDefault();
+                e.preventDefault(); e.stopPropagation();
                 if (items[spotlightIdx]) items[spotlightIdx].click();
             }
         }
@@ -697,18 +697,28 @@
             if (item.url) window.location.href = item.url;
         }
 
-        // Keyboard shortcut: Ctrl/Cmd+K, Ctrl/Cmd+F, or /
+        // Document-level keyboard handler — catches keys even when
+        // focus is not on the spotlight input (e.g. user clicked the
+        // results area or the overlay background).
         document.addEventListener('keydown', (e) => {
+            // Open / close spotlight: Ctrl/Cmd+K or Ctrl/Cmd+F
             if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'f')) {
                 e.preventDefault();
                 if (spotlightOpen) closeSpotlight(); else openSpotlight();
                 return;
             }
+            // "/" to open spotlight (only when not typing)
             if (e.key === '/' && !spotlightOpen) {
                 const tag = e.target.tagName;
                 if (e.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
                 e.preventDefault();
                 openSpotlight();
+                return;
+            }
+            // When spotlight is open, handle nav keys at document level
+            // so they work even if the input doesn't have focus.
+            if (spotlightOpen) {
+                handleSpotlightNav(e);
             }
         });
 
