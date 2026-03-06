@@ -1411,8 +1411,9 @@
     }
 
     // ─── Load projects.json ───
+    const PROJECTS_JSON_URL = window.location.pathname.includes('/cms/') ? '../projects.json' : 'projects.json';
     async function loadProjectsData() {
-        try { const r = await fetch('projects.json'); projectsData = await r.json(); } catch {}
+        try { const r = await fetch(PROJECTS_JSON_URL); projectsData = await r.json(); } catch {}
     }
 
     // ─── Keyboard Shortcuts ───
@@ -1498,12 +1499,14 @@
         const items = [];
         const q = query.toLowerCase();
         const isAdmin = localStorage.getItem('cms_authed');
+        const isCmsPage = window.location.pathname.includes('/cms/');
+        const siteRoot = isCmsPage ? '../' : '';
 
         // Static pages
         const pages = [
-            { title: 'Projects', meta: 'Home page — all projects', url: 'index.html', type: 'page' },
-            { title: 'About / CV', meta: 'Curriculum Vitae & download', url: 'about.html', type: 'page' },
-            { title: 'Contact', meta: 'Email & LinkedIn', url: 'contact.html', type: 'page' }
+            { title: 'Projects', meta: 'Home page — all projects', url: siteRoot + 'index.html', type: 'page' },
+            { title: 'About / CV', meta: 'Curriculum Vitae & download', url: siteRoot + 'about.html', type: 'page' },
+            { title: 'Contact', meta: 'Email & LinkedIn', url: siteRoot + 'contact.html', type: 'page' }
         ];
         pages.forEach(p => {
             if (!q || p.title.toLowerCase().includes(q) || p.meta.toLowerCase().includes(q)) items.push(p);
@@ -1532,8 +1535,8 @@
                 items.push({
                     title: p.title,
                     meta: [p.engine, p.language, p.role].filter(Boolean).join(' · '),
-                    url: p.card ? `project.html?id=${p.id}` : null,
-                    img: p.minisrc || null,
+                    url: p.card ? siteRoot + `project.html?id=${p.id}` : null,
+                    img: p.minisrc ? siteRoot + p.minisrc : null,
                     type: 'project'
                 });
             }
@@ -1611,8 +1614,8 @@
 
     function setupSpotlight() {
         document.addEventListener('keydown', (e) => {
-            // Ctrl/Cmd + K to open spotlight
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            // Ctrl/Cmd + K or Ctrl/Cmd + F to open spotlight
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'f')) {
                 e.preventDefault();
                 if (spotlightOpen) closeSpotlight(); else openSpotlight();
                 return;
