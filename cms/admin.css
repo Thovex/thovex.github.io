@@ -1939,6 +1939,71 @@ span.flag-icon {
     border-top: 1px solid var(--border-subtle);
 }
 
+/* ─── Trend Chart ─── */
+.trend-chart-section {
+    margin-bottom: 2rem;
+}
+.trend-chart-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+.trend-chart-section h3 svg {
+    color: var(--color-cyan);
+    flex-shrink: 0;
+}
+.trend-legend {
+    display: inline-flex;
+    gap: 1rem;
+    margin-left: auto;
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+.trend-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.trend-legend-dot {
+    width: 8px;
+    height: 3px;
+    border-radius: 1px;
+    display: inline-block;
+}
+.trend-chart-wrap {
+    width: 100%;
+    background: rgba(0, 240, 255, 0.015);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+.trend-chart-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.trend-chart-svg .trend-dot {
+    transition: opacity 0.15s;
+}
+.trend-chart-svg:hover .trend-dot {
+    opacity: 0.8 !important;
+}
+.trend-chart-svg .trend-dot:hover {
+    opacity: 1 !important;
+    r: 5;
+}
+
 .btn-link {
     background: none;
     border: none;
