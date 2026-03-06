@@ -1532,11 +1532,14 @@
         projectsData.forEach(p => {
             const searchable = [p.title, p.description, p.language, p.engine, p.role, typeLabels[p.type] || p.type, ...(p.tags || [])].join(' ').toLowerCase();
             if (!q || searchable.includes(q)) {
+                const imgSrc = p.minisrc
+                    ? (p.minisrc.startsWith('/') || p.minisrc.startsWith('http') ? p.minisrc : siteRoot + p.minisrc)
+                    : null;
                 items.push({
                     title: p.title,
                     meta: [p.engine, p.language, p.role].filter(Boolean).join(' · '),
                     url: p.card ? siteRoot + `project.html?id=${p.id}` : null,
-                    img: p.minisrc ? siteRoot + p.minisrc : null,
+                    img: imgSrc,
                     type: 'project'
                 });
             }

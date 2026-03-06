@@ -178,7 +178,7 @@
         let hoveredCard = null;
         document.addEventListener('mouseover', (e) => {
             const card = e.target.closest('.project-card');
-            hoveredCard = card;
+            if (card) hoveredCard = card;
         });
         document.addEventListener('mouseout', (e) => {
             if (e.target.closest('.project-card') === hoveredCard) hoveredCard = null;
@@ -411,7 +411,12 @@
         tryInsert();
         const grid = document.getElementById('projectsGrid');
         if (grid) {
-            new MutationObserver(() => tryInsert()).observe(grid.parentElement, { childList: true, subtree: true });
+            const obs = new MutationObserver(() => {
+                tryInsert();
+                // Disconnect once button is successfully inserted
+                if (document.getElementById('filterBar')?.querySelector('.surprise-btn')) obs.disconnect();
+            });
+            obs.observe(grid.parentElement, { childList: true, subtree: true });
         }
         // Also retry after a delay for dynamic rendering
         setTimeout(tryInsert, 1000);
