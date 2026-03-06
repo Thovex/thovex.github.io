@@ -4,6 +4,7 @@
 //  2. Keyboard Card Navigation (J/K, arrows, Enter)
 //  3. Random Project Discovery ("Surprise Me" button)
 //  4. Spotlight Search (Ctrl+K / Ctrl+F / /)
+//  5. Konami Code Easter Egg
 // ─────────────────────────────────────────────────────────────
 
 (function () {
@@ -722,6 +723,79 @@
     }
 
     // ═══════════════════════════════════════════════════════════
+    //  Feature 5 — Konami Code Easter Egg
+    // ═══════════════════════════════════════════════════════════
+
+    function initKonamiCode() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .konami-achievement {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+                z-index: 99999; padding: 2rem 3rem; text-align: center;
+                background: rgba(10,12,18,0.97); backdrop-filter: blur(20px);
+                border: 2px solid var(--color-cyan); box-shadow: 0 0 60px rgba(0,240,255,0.15);
+                font-family: var(--font-mono); pointer-events: none;
+                animation: konami-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, konami-fade 0.6s ease 4s forwards;
+            }
+            .konami-achievement h2 { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-cyan); margin: 0 0 0.5rem 0; opacity: 0.6; }
+            .konami-achievement p { font-size: 1.1rem; font-weight: 700; color: var(--color-green); margin: 0 0 0.3rem 0; }
+            .konami-achievement .konami-sub { font-size: 0.6rem; color: var(--text-muted); margin: 0; }
+            @keyframes konami-pop { from { transform: translate(-50%,-50%) scale(0); opacity: 0; } to { transform: translate(-50%,-50%) scale(1); opacity: 1; } }
+            @keyframes konami-fade { from { opacity: 1; } to { opacity: 0; transform: translate(-50%,-50%) scale(0.9); } }
+            .konami-particle { position: fixed; z-index: 99998; pointer-events: none; width: 8px; height: 8px; border-radius: 1px; animation: konami-fall linear forwards; }
+            @keyframes konami-fall { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(100vh) rotate(720deg); } }
+        `;
+        document.head.appendChild(style);
+
+        const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+        let pos = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === KONAMI[pos]) {
+                pos++;
+                if (pos === KONAMI.length) {
+                    pos = 0;
+                    triggerKonami();
+                }
+            } else {
+                pos = e.key === KONAMI[0] ? 1 : 0;
+            }
+        });
+
+        function triggerKonami() {
+            const cs = getComputedStyle(document.documentElement);
+            const colors = [
+                cs.getPropertyValue('--color-cyan').trim() || '#00f0ff',
+                cs.getPropertyValue('--color-green').trim() || '#3aff7f',
+                cs.getPropertyValue('--color-yellow').trim() || '#ffe03a',
+                cs.getPropertyValue('--color-pink').trim() || '#ff3a6e'
+            ];
+            for (let i = 0; i < 80; i++) {
+                const p = document.createElement('div');
+                p.className = 'konami-particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = -(Math.random() * 20 + 10) + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.width = (4 + Math.random() * 8) + 'px';
+                p.style.height = (4 + Math.random() * 8) + 'px';
+                p.style.animationDuration = (2 + Math.random() * 3) + 's';
+                p.style.animationDelay = (Math.random() * 1.5) + 's';
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 6000);
+            }
+
+            const badge = document.createElement('div');
+            badge.className = 'konami-achievement';
+            badge.innerHTML = `
+                <h2>&#127918; Achievement Unlocked</h2>
+                <p>&#8593;&#8593;&#8595;&#8595;&#8592;&#8594;&#8592;&#8594; B A</p>
+                <p class="konami-sub">You found the secret code! A true gamer.</p>
+            `;
+            document.body.appendChild(badge);
+            setTimeout(() => badge.remove(), 5000);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════
     //  Init
     // ═══════════════════════════════════════════════════════════
 
@@ -741,6 +815,9 @@
 
         // Spotlight search works on ALL pages for ALL visitors
         initSpotlightSearch();
+
+        // Konami code easter egg works on ALL pages
+        initKonamiCode();
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
