@@ -12,7 +12,7 @@
         "banner": "res/projects/dtail-spaces/banner.png",
         "type": "PixelPool",
         "description": "A 3D application built with Unreal Engine 5 that lets fashion brands create virtual store environments with fixtures and products, walking customers through customizable showrooms.",
-        "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces. Users showcase collections with 360-degree product views and detailed zoom, providing a hands-on alternative to traditional 2D presentations for B2B buyers and internal merchandising teams.",
+        "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces.",
         "work": [
             {
                 "description": "Working on Refactoring large portions of the Project.",
@@ -30,9 +30,9 @@
         ],
         "socials": [
             {
+                "info": "dtail.com",
                 "icon": "res/ico_site.png",
-                "url": "https://www.dtail.com/",
-                "info": "dtail.com"
+                "url": "https://www.dtail.com/"
             }
         ],
         "screenshots": [
@@ -120,30 +120,30 @@
         ],
         "screenshots": [
             {
-                "alt": "Ember Sword open world with player characters in a fantasy landscape",
-                "src": "res/projects/ember-sword/ss_04.png"
+                "src": "res/projects/ember-sword/ss_04.png",
+                "alt": "Ember Sword open world with player characters in a fantasy landscape"
             },
             {
-                "alt": "Ember Sword combat encounter with creatures in a forest biome",
-                "src": "res/projects/ember-sword/ss_01.png"
+                "src": "res/projects/ember-sword/ss_01.png",
+                "alt": "Ember Sword combat encounter with creatures in a forest biome"
             },
             {
-                "alt": "Ember Sword player-owned land plots and town building",
-                "src": "res/projects/ember-sword/ss_02.png"
+                "src": "res/projects/ember-sword/ss_02.png",
+                "alt": "Ember Sword player-owned land plots and town building"
             },
             {
-                "alt": "Ember Sword Ultra Deep dungeon boss encounter",
-                "src": "res/projects/ember-sword/ss_03.png"
+                "src": "res/projects/ember-sword/ss_03.png",
+                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
             }
         ],
         "videos": [
             {
-                "alt": "Ember Sword open world exploration gameplay",
-                "src": "res/projects/ember-sword/vid_01.webm"
+                "src": "res/projects/ember-sword/vid_01.webm",
+                "alt": "Ember Sword open world exploration gameplay"
             },
             {
-                "alt": "Ember Sword PvP combat and ability system",
-                "src": "res/projects/ember-sword/vid_02.webm"
+                "src": "res/projects/ember-sword/vid_02.webm",
+                "alt": "Ember Sword PvP combat and ability system"
             },
             {
                 "src": "res/projects/ember-sword/vid_03.webm",
@@ -210,8 +210,8 @@
         "socials": [
             {
                 "url": "https://fortnite.gg/island?code=3579-7551-5955",
-                "info": "fortnite.gg",
-                "icon": "res/ico_site.png"
+                "icon": "res/ico_site.png",
+                "info": "fortnite.gg"
             }
         ],
         "videos": [
@@ -326,14 +326,14 @@
         ],
         "socials": [
             {
-                "icon": "res/projects/farmion/ico_01.png",
                 "url": "https://linktr.ee/baerandhoggo",
+                "icon": "res/projects/farmion/ico_01.png",
                 "info": "link.tree"
             },
             {
-                "info": "discord",
                 "url": "https://discord.gg/7X7gYf93ph",
-                "icon": "res/ico_discord.png"
+                "icon": "res/ico_discord.png",
+                "info": "discord"
             }
         ],
         "screenshots": [
@@ -350,8 +350,8 @@
                 "alt": "Farmion crop farming with watering and growth stages"
             },
             {
-                "alt": "Farmion multiplayer co-op gathering resources together",
-                "src": "res/projects/farmion/ss_02.png"
+                "src": "res/projects/farmion/ss_02.png",
+                "alt": "Farmion multiplayer co-op gathering resources together"
             },
             {
                 "src": "res/projects/farmion/ss_03.png",
@@ -388,8 +388,8 @@
         ],
         "videos": [
             {
-                "alt": "Farmion gameplay showcase with farming and co-op mechanics",
-                "src": "res/projects/farmion/vid_01.mp4"
+                "src": "res/projects/farmion/vid_01.mp4",
+                "alt": "Farmion gameplay showcase with farming and co-op mechanics"
             }
         ]
     },
@@ -435,16 +435,16 @@
         ],
         "screenshots": [
             {
-                "alt": "Radiance Engine behavior tree editor with real-time AI visualization",
-                "src": "res/projects/radiance/ss_05.png"
+                "src": "res/projects/radiance/ss_05.png",
+                "alt": "Radiance Engine behavior tree editor with real-time AI visualization"
             },
             {
                 "src": "res/projects/radiance/ss_01.png",
                 "alt": "Radiance Engine animation state machine editor interface"
             },
             {
-                "alt": "Radiance Engine item editor tool for game designers",
-                "src": "res/projects/radiance/ss_02.png"
+                "src": "res/projects/radiance/ss_02.png",
+                "alt": "Radiance Engine item editor tool for game designers"
             },
             {
                 "src": "res/projects/radiance/ss_03.png",
@@ -494,12 +494,12 @@
         ],
         "screenshots": [
             {
-                "alt": "BitFarers first-person view inside a themed dungeon corridor",
-                "src": "res/projects/bitfarers/ss_01.png"
+                "src": "res/projects/bitfarers/ss_01.png",
+                "alt": "BitFarers first-person view inside a themed dungeon corridor"
             },
             {
-                "alt": "BitFarers co-op gameplay with HUD showing health and ammo",
-                "src": "res/projects/bitfarers/ss_02.png"
+                "src": "res/projects/bitfarers/ss_02.png",
+                "alt": "BitFarers co-op gameplay with HUD showing health and ammo"
             }
         ],
         "videos": [
@@ -508,16 +508,16 @@
                 "alt": "BitFarers dungeon exploration with weapon combat"
             },
             {
-                "alt": "BitFarers multiplayer level transition between themed zones",
-                "src": "res/projects/bitfarers/vid_02.mp4"
+                "src": "res/projects/bitfarers/vid_02.mp4",
+                "alt": "BitFarers multiplayer level transition between themed zones"
             },
             {
-                "alt": "BitFarers loot and destructible objects gameplay",
-                "src": "res/projects/bitfarers/vid_03.mp4"
+                "src": "res/projects/bitfarers/vid_03.mp4",
+                "alt": "BitFarers loot and destructible objects gameplay"
             },
             {
-                "alt": "BitFarers lobby and character upgrade system",
-                "src": "res/projects/bitfarers/vid_04.mp4"
+                "src": "res/projects/bitfarers/vid_04.mp4",
+                "alt": "BitFarers lobby and character upgrade system"
             }
         ]
     },
@@ -555,22 +555,22 @@
         ],
         "screenshots": [
             {
-                "alt": "IdleCards card battle screen with AI opponent and board state",
-                "src": "res/projects/idle-cards/ss_02.png"
+                "src": "res/projects/idle-cards/ss_02.png",
+                "alt": "IdleCards card battle screen with AI opponent and board state"
             },
             {
-                "alt": "IdleCards collection and upgrade interface with card stats",
-                "src": "res/projects/idle-cards/ss_03.png"
+                "src": "res/projects/idle-cards/ss_03.png",
+                "alt": "IdleCards collection and upgrade interface with card stats"
             },
             {
-                "alt": "IdleCards idle progression buildings and resource generation",
-                "src": "res/projects/idle-cards/ss_01.png"
+                "src": "res/projects/idle-cards/ss_01.png",
+                "alt": "IdleCards idle progression buildings and resource generation"
             }
         ],
         "videos": [
             {
-                "alt": "IdleCards turn-based card combat against AI",
-                "src": "res/projects/idle-cards/vid_01.mp4"
+                "src": "res/projects/idle-cards/vid_01.mp4",
+                "alt": "IdleCards turn-based card combat against AI"
             },
             {
                 "src": "res/projects/idle-cards/vid_02.mp4",
@@ -670,12 +670,12 @@
                 "alt": "Finn and Dusty napping together on the couch"
             },
             {
-                "alt": "Office setup with feline quality assurance team present",
-                "src": "res/projects/cat/ss_05.png"
+                "src": "res/projects/cat/ss_05.png",
+                "alt": "Office setup with feline quality assurance team present"
             },
             {
-                "alt": "Close-up portrait of a Ragdoll cat with blue eyes",
-                "src": "res/projects/cat/ss_02.png"
+                "src": "res/projects/cat/ss_02.png",
+                "alt": "Close-up portrait of a Ragdoll cat with blue eyes"
             }
         ]
     },
