@@ -777,6 +777,30 @@
                     createTagEditor(tagsC, pid, curTags);
                 }
 
+                // Datetime (editable text)
+                const dateEl = card.querySelector('.project-card-date');
+                if (dateEl) makeEditable(dateEl, pid, 'datetime');
+
+                // Minisrc (card thumbnail) — editable via inline input
+                const imgArea = card.querySelector('.project-card-image');
+                if (imgArea && !imgArea.querySelector('.cms-media-input-wrap')) {
+                    const proj = projectsData.find(p => p.id === pid);
+                    const wrap = document.createElement('div');
+                    wrap.className = 'cms-media-input-wrap';
+                    wrap.style.cssText = 'margin-top:0.25rem;';
+                    wrap.innerHTML = `<input type="text" placeholder="Card image path..." value="${proj?.minisrc || ''}" /><button type="button">Set</button>`;
+                    const inp = wrap.querySelector('input'), btn = wrap.querySelector('button');
+                    btn.addEventListener('click', () => {
+                        const src = inp.value.trim();
+                        if (!src) return;
+                        setPending(pid, 'minisrc', src);
+                        const img = imgArea.querySelector('img');
+                        if (img) img.src = src;
+                    });
+                    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') btn.click(); });
+                    imgArea.appendChild(wrap);
+                }
+
             });
         }
 
@@ -826,6 +850,24 @@
             const socialsDiv = heroContent.querySelector('.project-socials');
             const proj = projectsData.find(p => p.id === projectId);
             createSocialEditor(socialsDiv ? socialsDiv.parentNode : heroContent, projectId, proj?.socials || []);
+
+            // Banner image — editable via inline input
+            const heroBg = document.getElementById('heroBg');
+            if (heroBg && !heroBg.querySelector('.cms-media-input-wrap')) {
+                const wrap = document.createElement('div');
+                wrap.className = 'cms-media-input-wrap';
+                wrap.innerHTML = `<input type="text" placeholder="Banner image path..." value="${proj?.banner || ''}" /><button type="button">Set</button>`;
+                const inp = wrap.querySelector('input'), btn = wrap.querySelector('button');
+                btn.addEventListener('click', () => {
+                    const src = inp.value.trim();
+                    if (!src) return;
+                    setPending(projectId, 'banner', src);
+                    const img = heroBg.querySelector('img');
+                    if (img) img.src = src;
+                });
+                inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') btn.click(); });
+                heroBg.appendChild(wrap);
+            }
         }
 
         function processWork() {
@@ -871,6 +913,14 @@
                 if (!proj) return;
                 makeEditable(tEl, proj.id, 'title');
                 if (dEl) makeEditable(dEl, proj.id, 'description');
+
+                // Datetime (archive year)
+                const yearEl = item.querySelector('.archive-year');
+                if (yearEl) makeEditable(yearEl, proj.id, 'datetime');
+
+                // Archive tech metadata (engine · language)
+                const techEl = item.querySelector('.archive-tech');
+                if (techEl) makeEditable(techEl, proj.id, '_archiveTechDisplay');
             });
         }
         new MutationObserver(() => process()).observe(al, { childList: true });
@@ -1121,6 +1171,32 @@
         try { const r = await fetch('projects.json'); projectsData = await r.json(); } catch {}
     }
 
+    // ─── Keyboard Shortcuts ───
+    function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Don't fire shortcuts when typing in an input/textarea/contenteditable
+            const tag = e.target.tagName;
+            const isEditing = e.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+
+            // Ctrl/Cmd + E — Toggle edit mode
+            if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                e.preventDefault();
+                toggleEditMode();
+            }
+            // Ctrl/Cmd + S — Save changes (only in edit mode)
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                if (pendingChanges.size > 0) saveChanges();
+                else showToast('No changes to save', 'info');
+            }
+            // Escape — Discard changes (only when not editing a field)
+            if (e.key === 'Escape' && !isEditing && editMode && pendingChanges.size > 0) {
+                discardChanges();
+                showToast('Changes discarded', 'warning');
+            }
+        });
+    }
+
     // ─── Activate ───
     function activate() {
         injectStyles();
@@ -1129,6 +1205,7 @@
         interceptCardClicks();
         setupCardEditing();
         setupDetailEditing();
+        setupKeyboardShortcuts();
 
         if (!document.querySelector('.cms-nav-btn')) {
             const retry = setInterval(() => {

@@ -345,6 +345,14 @@ async function fetchAnalytics(propertyId) {
                     metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
                     orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
                     limit: 10
+                }),
+                // Daily visitors + page views for the trend chart
+                runGAReport(accessToken, propertyId, {
+                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    dimensions: [{ name: 'date' }],
+                    metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
+                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
+                    limit: 31
                 })
             );
         }
@@ -361,7 +369,8 @@ async function fetchAnalytics(propertyId) {
                 overview: parseOverview(results[1]),
                 pages: parseTable(results[2]),
                 referrers: parseTable(results[3]),
-                countries: parseTable(results[4])
+                countries: parseTable(results[4]),
+                dailyTrend: parseDailyTrend(results[5])
             };
             sessionStorage.setItem(CACHE_KEY, JSON.stringify({
                 propertyId, timestamp: Date.now(), data
@@ -563,14 +572,114 @@ function parseTable(res) {
     }));
 }
 
+function parseDailyTrend(res) {
+    if (!res || !res.rows) return [];
+    return res.rows.map(row => {
+        const dateStr = row.dimensionValues[0].value; // YYYYMMDD
+        return {
+            date: dateStr,
+            visitors: parseInt(row.metricValues[0].value) || 0,
+            pageviews: parseInt(row.metricValues[1].value) || 0
+        };
+    }).sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// ─── Build Trend Chart SVG ───
+function buildTrendChart(dailyTrend) {
+    if (!dailyTrend || dailyTrend.length === 0) return '';
+
+    const W = 720, H = 200, PAD_L = 40, PAD_R = 15, PAD_T = 20, PAD_B = 40;
+    const chartW = W - PAD_L - PAD_R, chartH = H - PAD_T - PAD_B;
+
+    const maxVisitors = Math.max(...dailyTrend.map(d => d.visitors), 1);
+    const maxPV = Math.max(...dailyTrend.map(d => d.pageviews), 1);
+    const maxY = Math.max(maxVisitors, maxPV);
+    const n = dailyTrend.length;
+
+    function x(i) { return PAD_L + (i / Math.max(n - 1, 1)) * chartW; }
+    function y(val) { return PAD_T + chartH - (val / maxY) * chartH; }
+
+    // Build path for visitors
+    const vPoints = dailyTrend.map((d, i) => `${x(i).toFixed(1)},${y(d.visitors).toFixed(1)}`);
+    const vLine = `M${vPoints.join(' L')}`;
+    // Area fill under visitors line
+    const vArea = `${vLine} L${x(n - 1).toFixed(1)},${(PAD_T + chartH).toFixed(1)} L${x(0).toFixed(1)},${(PAD_T + chartH).toFixed(1)} Z`;
+
+    // Build path for page views
+    const pPoints = dailyTrend.map((d, i) => `${x(i).toFixed(1)},${y(d.pageviews).toFixed(1)}`);
+    const pLine = `M${pPoints.join(' L')}`;
+
+    // Y-axis labels
+    const ySteps = 4;
+    let yLabels = '';
+    let yGrid = '';
+    for (let i = 0; i <= ySteps; i++) {
+        const val = Math.round((maxY / ySteps) * i);
+        const yPos = y(val);
+        yLabels += `<text x="${PAD_L - 8}" y="${yPos + 3}" text-anchor="end" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${formatNumber(val)}</text>`;
+        if (i > 0) yGrid += `<line x1="${PAD_L}" y1="${yPos}" x2="${W - PAD_R}" y2="${yPos}" stroke="var(--border-subtle)" stroke-dasharray="3,3" opacity="0.4"/>`;
+    }
+
+    // X-axis labels (every ~5 days)
+    let xLabels = '';
+    const step = Math.max(1, Math.floor(n / 6));
+    for (let i = 0; i < n; i += step) {
+        const d = dailyTrend[i].date;
+        const label = `${d.substring(4, 6)}/${d.substring(6, 8)}`;
+        xLabels += `<text x="${x(i)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${label}</text>`;
+    }
+    // Always show last date
+    if (n > 1) {
+        const d = dailyTrend[n - 1].date;
+        const label = `${d.substring(4, 6)}/${d.substring(6, 8)}`;
+        xLabels += `<text x="${x(n - 1)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${label}</text>`;
+    }
+
+    // Data point dots for visitors (hover targets)
+    let dots = '';
+    dailyTrend.forEach((d, i) => {
+        const dateStr = `${d.date.substring(4, 6)}/${d.date.substring(6, 8)}`;
+        dots += `<circle cx="${x(i).toFixed(1)}" cy="${y(d.visitors).toFixed(1)}" r="3" fill="var(--color-cyan)" opacity="0" class="trend-dot">
+            <title>${dateStr}: ${d.visitors} visitors, ${d.pageviews} views</title>
+        </circle>`;
+    });
+
+    return `
+        <div class="stats-table-section trend-chart-section" data-reveal>
+            <h3>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Visitor Trend
+                <span class="trend-legend">
+                    <span class="trend-legend-item"><span class="trend-legend-dot" style="background:var(--color-cyan)"></span>Visitors</span>
+                    <span class="trend-legend-item"><span class="trend-legend-dot" style="background:var(--color-green)"></span>Page Views</span>
+                </span>
+            </h3>
+            <div class="trend-chart-wrap">
+                <svg viewBox="0 0 ${W} ${H}" class="trend-chart-svg" preserveAspectRatio="xMidYMid meet">
+                    ${yGrid}
+                    <line x1="${PAD_L}" y1="${PAD_T + chartH}" x2="${W - PAD_R}" y2="${PAD_T + chartH}" stroke="var(--border-subtle)" opacity="0.6"/>
+                    <path d="${vArea}" fill="rgba(0,240,255,0.06)"/>
+                    <path d="${pLine}" fill="none" stroke="var(--color-green)" stroke-width="1.5" opacity="0.6" stroke-linejoin="round"/>
+                    <path d="${vLine}" fill="none" stroke="var(--color-cyan)" stroke-width="2" stroke-linejoin="round"/>
+                    ${dots}
+                    ${yLabels}
+                    ${xLabels}
+                </svg>
+            </div>
+        </div>
+    `;
+}
+
 // ─── Render Stats ───
 function renderStats(data) {
     const container = document.getElementById('statsContent');
     if (!container) return;
 
-    const { overview, pages, referrers, countries } = data;
+    const { overview, pages, referrers, countries, dailyTrend } = data;
     const duration = formatDuration(overview.avgDuration);
     const bounce = (overview.bounceRate * 100).toFixed(1);
+
+    const trendChartHTML = buildTrendChart(dailyTrend);
 
     container.innerHTML = `
         <div class="stats-grid">
@@ -600,6 +709,8 @@ function renderStats(data) {
                 <div class="stat-sub">Single page visits</div>
             </div>
         </div>
+
+        ${trendChartHTML}
 
         <div class="stats-tables">
             <div class="stats-table-section" data-reveal>

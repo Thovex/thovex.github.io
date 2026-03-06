@@ -7,6 +7,11 @@
 
     if (GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') return;
 
+    // Exclude CMS admin user from analytics to keep data clean
+    try {
+        if (localStorage.getItem('cms_authed')) return;
+    } catch (e) { /* localStorage unavailable — track normally */ }
+
     var script = document.createElement('script');
     script.async = true;
     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
