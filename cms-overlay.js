@@ -1515,7 +1515,7 @@
         }
 
         // Projects
-        const typeLabels = { 'BSS': 'Bright Star Studios', 'Zloppy-Games': 'Zloppy Games', 'BH': 'Baer & Hoggo', 'HKU': 'HKU', 'Hobby': 'Hobby', 'PixelPool': 'PixelPool' };
+        const typeLabels = TYPE_LABELS;
         projectsData.forEach(p => {
             const searchable = [p.title, p.description, p.language, p.engine, p.role, typeLabels[p.type] || p.type, ...(p.tags || [])].join(' ').toLowerCase();
             if (!q || searchable.includes(q)) {
@@ -1542,11 +1542,19 @@
             return;
         }
 
+        const SPOTLIGHT_ICONS = {
+            project: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
+            action: '<polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/>',
+            page: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'
+        };
+
         spotlightIdx = Math.min(spotlightIdx, items.length - 1);
         results.innerHTML = items.map((item, i) => `
             <div class="spotlight-result${i === spotlightIdx ? ' active' : ''}" data-idx="${i}">
                 <div class="spotlight-result-icon">
-                    ${item.img ? `<img src="${item.img}" alt="" onerror="this.style.display='none'">` : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${item.type === 'project' ? '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>' : item.type === 'action' ? '<polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/>' : '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'}</svg>`}
+                    ${item.img
+                        ? `<img src="${item.img}" alt="" onerror="this.style.display='none'">`
+                        : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${SPOTLIGHT_ICONS[item.type] || SPOTLIGHT_ICONS.page}</svg>`}
                 </div>
                 <div class="spotlight-result-text">
                     <div class="spotlight-result-title">${item.title}</div>
@@ -1627,8 +1635,14 @@
     }
 
     function triggerKonami() {
-        // Spawn confetti particles
-        const colors = ['#00f0ff', '#3aff7f', '#ffe03a', '#ff3a6e', '#a78bfa', '#f97316'];
+        // Spawn confetti particles using theme colors
+        const cs = getComputedStyle(document.documentElement);
+        const colors = [
+            cs.getPropertyValue('--color-cyan').trim() || '#00f0ff',
+            cs.getPropertyValue('--color-green').trim() || '#3aff7f',
+            cs.getPropertyValue('--color-yellow').trim() || '#ffe03a',
+            cs.getPropertyValue('--color-pink').trim() || '#ff3a6e'
+        ];
         for (let i = 0; i < 80; i++) {
             const p = document.createElement('div');
             p.className = 'konami-particle';
