@@ -129,16 +129,30 @@
             .cms-add-inline.green { color: var(--color-green); border-color: rgba(58,255,127,0.25); }
             .cms-add-inline.green:hover { background: rgba(58,255,127,0.08); border-color: rgba(58,255,127,0.5); }
 
-            .cms-remove-work {
+            .cms-remove-work, .cms-remove-media {
                 position: absolute; top: 6px; right: 6px;
                 width: 20px; height: 20px;
                 display: none; align-items: center; justify-content: center;
                 background: rgba(0,0,0,0.6); border: 1px solid rgba(255,58,58,0.3);
                 color: var(--color-pink); cursor: pointer; transition: all 0.15s; z-index: 5;
             }
-            body.cms-edit-mode .cms-remove-work { display: flex; }
-            .cms-remove-work:hover { background: rgba(255,58,58,0.15); border-color: var(--color-pink); }
+            body.cms-edit-mode .cms-remove-work, body.cms-edit-mode .cms-remove-media { display: flex; }
+            .cms-remove-work:hover, .cms-remove-media:hover { background: rgba(255,58,58,0.15); border-color: var(--color-pink); }
             .work-card { position: relative; }
+
+            /* ─── Media item editing ─── */
+            body.cms-edit-mode .media-item { position: relative; }
+            .cms-media-drag-handle {
+                display: none; position: absolute; bottom: 6px; right: 6px; z-index: 10;
+                width: 24px; height: 24px; align-items: center; justify-content: center;
+                background: rgba(0,0,0,0.7); border: 1px solid rgba(0,240,255,0.3);
+                color: var(--color-cyan); cursor: grab; backdrop-filter: blur(4px); transition: all 0.15s;
+            }
+            body.cms-edit-mode .cms-media-drag-handle { display: flex; }
+            .cms-media-drag-handle:hover { background: rgba(0,240,255,0.12); border-color: var(--color-cyan); }
+            .cms-media-drag-handle:active { cursor: grabbing; }
+            .media-item.cms-dragging { opacity: 0.4; transform: scale(0.95); }
+            .media-item.cms-drag-over { outline: 2px solid var(--color-cyan); outline-offset: 4px; }
 
             /* ─── CMS select dropdowns ─── */
             .cms-select {
@@ -259,6 +273,104 @@
             }
             @keyframes cms-toast-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
             @keyframes cms-toast-out { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+            /* ─── Spotlight Search ─── */
+            .spotlight-overlay {
+                position: fixed; inset: 0; z-index: 99990;
+                background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
+                display: flex; align-items: flex-start; justify-content: center;
+                padding-top: min(20vh, 160px);
+                opacity: 0; visibility: hidden; transition: opacity 0.15s, visibility 0.15s;
+            }
+            .spotlight-overlay.active { opacity: 1; visibility: visible; }
+            .spotlight-box {
+                width: min(580px, 92vw); background: rgba(10,12,18,0.98);
+                border: 1px solid rgba(0,240,255,0.25); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,240,255,0.06);
+                backdrop-filter: blur(20px); overflow: hidden;
+                transform: translateY(-12px) scale(0.97); transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+            }
+            .spotlight-overlay.active .spotlight-box { transform: translateY(0) scale(1); }
+            .spotlight-input-wrap {
+                display: flex; align-items: center; gap: 0.6rem;
+                padding: 0.9rem 1rem; border-bottom: 1px solid rgba(0,240,255,0.12);
+            }
+            .spotlight-input-wrap svg { color: var(--color-cyan); flex-shrink: 0; opacity: 0.6; }
+            .spotlight-input {
+                flex: 1; background: none; border: none; outline: none;
+                font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-primary);
+            }
+            .spotlight-input::placeholder { color: var(--text-muted); }
+            .spotlight-hint {
+                font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-muted);
+                background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.15);
+                padding: 0.15rem 0.4rem; white-space: nowrap;
+            }
+            .spotlight-results {
+                max-height: min(50vh, 400px); overflow-y: auto; padding: 0.25rem 0;
+            }
+            .spotlight-results::-webkit-scrollbar { width: 4px; }
+            .spotlight-results::-webkit-scrollbar-track { background: transparent; }
+            .spotlight-results::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.15); border-radius: 2px; }
+            .spotlight-result {
+                display: flex; align-items: center; gap: 0.75rem;
+                padding: 0.6rem 1rem; cursor: pointer; transition: background 0.1s;
+            }
+            .spotlight-result:hover, .spotlight-result.active { background: rgba(0,240,255,0.06); }
+            .spotlight-result.active { border-left: 2px solid var(--color-cyan); }
+            .spotlight-result-icon {
+                width: 36px; height: 36px; flex-shrink: 0; overflow: hidden;
+                border: 1px solid rgba(0,240,255,0.12); display: flex; align-items: center; justify-content: center;
+                background: rgba(0,240,255,0.03);
+            }
+            .spotlight-result-icon img { width: 100%; height: 100%; object-fit: cover; }
+            .spotlight-result-icon svg { color: var(--color-cyan); opacity: 0.5; }
+            .spotlight-result-text { flex: 1; min-width: 0; }
+            .spotlight-result-title {
+                font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600;
+                color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            }
+            .spotlight-result-meta {
+                font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-muted);
+                white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem;
+            }
+            .spotlight-result-badge {
+                font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600;
+                text-transform: uppercase; letter-spacing: 0.06em;
+                padding: 0.15rem 0.4rem; flex-shrink: 0;
+            }
+            .spotlight-result-badge.project { color: var(--color-cyan); background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.15); }
+            .spotlight-result-badge.action { color: var(--color-green); background: rgba(58,255,127,0.06); border: 1px solid rgba(58,255,127,0.15); }
+            .spotlight-result-badge.page { color: var(--color-yellow); background: rgba(255,224,58,0.06); border: 1px solid rgba(255,224,58,0.15); }
+            .spotlight-empty {
+                padding: 2rem 1rem; text-align: center;
+                font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);
+            }
+            .spotlight-footer {
+                padding: 0.4rem 1rem; border-top: 1px solid rgba(0,240,255,0.08);
+                font-family: var(--font-mono); font-size: 0.5rem; color: var(--text-muted);
+                display: flex; gap: 1rem;
+            }
+            .spotlight-footer kbd {
+                background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.12);
+                padding: 0.05rem 0.3rem; font-family: var(--font-mono);
+            }
+
+            /* ─── Konami Code Easter Egg ─── */
+            .konami-achievement {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+                z-index: 99999; padding: 2rem 3rem; text-align: center;
+                background: rgba(10,12,18,0.97); backdrop-filter: blur(20px);
+                border: 2px solid var(--color-cyan); box-shadow: 0 0 60px rgba(0,240,255,0.15);
+                font-family: var(--font-mono); pointer-events: none;
+                animation: konami-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, konami-fade 0.6s ease 4s forwards;
+            }
+            .konami-achievement h2 { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-cyan); margin: 0 0 0.5rem 0; opacity: 0.6; }
+            .konami-achievement p { font-size: 1.1rem; font-weight: 700; color: var(--color-green); margin: 0 0 0.3rem 0; }
+            .konami-achievement .konami-sub { font-size: 0.6rem; color: var(--text-muted); margin: 0; }
+            @keyframes konami-pop { from { transform: translate(-50%,-50%) scale(0); opacity: 0; } to { transform: translate(-50%,-50%) scale(1); opacity: 1; } }
+            @keyframes konami-fade { from { opacity: 1; } to { opacity: 0; transform: translate(-50%,-50%) scale(0.9); } }
+            .konami-particle { position: fixed; z-index: 99998; pointer-events: none; width: 8px; height: 8px; border-radius: 1px; animation: konami-fall linear forwards; }
+            @keyframes konami-fall { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(100vh) rotate(720deg); } }
         `;
         document.head.appendChild(style);
     }
@@ -654,16 +766,13 @@
             const src = input.value.trim();
             if (!src) return;
             const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(src) || src.includes('youtube.com') || src.includes('youtu.be');
-            const field = isVideo ? '_addVideo' : '_addScreenshot';
-            if (!pendingChanges.has(projectId)) pendingChanges.set(projectId, {});
-            const pending = pendingChanges.get(projectId);
-            if (!pending[field]) pending[field] = [];
-            pending[field].push(src);
 
             const mediaGrid = document.getElementById('mediaGrid');
             if (mediaGrid) {
                 const item = document.createElement('div');
                 item.className = 'media-item'; item.dataset.cmsNew = '1';
+                item.dataset.cmsMediaType = isVideo ? 'video' : 'screenshot';
+                item.dataset.cmsMediaSrc = src;
                 item.setAttribute('data-reveal', ''); item.classList.add('revealed');
                 if (isVideo) {
                     const yt = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
@@ -675,12 +784,123 @@
                 }
                 item.style.outline = '1px dashed rgba(255,224,58,0.5)'; item.style.outlineOffset = '4px';
                 mediaGrid.appendChild(item);
+                attachMediaItemEditing(item, projectId);
             }
+            rebuildMediaArrays(projectId);
             input.value = '';
             updateToolbar();
         });
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') addBtn.click(); });
         inner.appendChild(wrap);
+    }
+
+    // ─── Detect media type from a media-item element ───
+    function detectMediaType(item) {
+        if (item.dataset.cmsMediaType) return item.dataset.cmsMediaType;
+        if (item.querySelector('iframe') || item.querySelector('video')) return 'video';
+        return 'screenshot';
+    }
+
+    // ─── Get the source URL from a media-item element ───
+    function detectMediaSrc(item) {
+        if (item.dataset.cmsMediaSrc) return item.dataset.cmsMediaSrc;
+        const img = item.querySelector('img');
+        if (img) return img.getAttribute('src') || '';
+        const video = item.querySelector('video');
+        if (video) return video.getAttribute('src') || '';
+        const iframe = item.querySelector('iframe');
+        if (iframe) {
+            const iframeSrc = iframe.getAttribute('src') || '';
+            const m = iframeSrc.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+            return m ? `https://www.youtube.com/watch?v=${m[1]}` : iframeSrc;
+        }
+        return '';
+    }
+
+    // ─── Get alt text from a media-item image ───
+    function detectMediaAlt(item) {
+        const img = item.querySelector('img');
+        return img ? (img.getAttribute('alt') || '') : '';
+    }
+
+    // ─── Rebuild full screenshots + videos arrays from the current DOM ───
+    function rebuildMediaArrays(projectId) {
+        const mediaGrid = document.getElementById('mediaGrid');
+        if (!mediaGrid) return;
+        const screenshots = [];
+        const videos = [];
+        mediaGrid.querySelectorAll('.media-item').forEach(item => {
+            const type = detectMediaType(item);
+            const src = detectMediaSrc(item);
+            if (!src) return;
+            if (type === 'video') {
+                videos.push({ src });
+            } else {
+                screenshots.push({ src, alt: detectMediaAlt(item) });
+            }
+        });
+        setPending(projectId, 'screenshots', screenshots);
+        setPending(projectId, 'videos', videos);
+    }
+
+    // ─── Attach remove + drag to a single media-item ───
+    let draggedMediaItem = null;
+
+    function attachMediaItemEditing(item, projectId) {
+        if (item.dataset.cmsMediaEditing) return;
+        item.dataset.cmsMediaEditing = '1';
+
+        // Remove button
+        const rm = document.createElement('button');
+        rm.className = 'cms-remove-media'; rm.innerHTML = ICONS.x; rm.title = 'Remove media';
+        rm.addEventListener('mousedown', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            item.remove();
+            rebuildMediaArrays(projectId);
+        });
+        item.appendChild(rm);
+
+        // Drag handle
+        const handle = document.createElement('div');
+        handle.className = 'cms-media-drag-handle'; handle.innerHTML = ICONS.grip; handle.title = 'Drag to reorder';
+        item.appendChild(handle);
+
+        const grid = item.closest('.media-grid') || item.parentElement;
+
+        handle.addEventListener('mousedown', () => { item.setAttribute('draggable', 'true'); });
+        item.addEventListener('dragstart', (e) => {
+            if (!editMode) { e.preventDefault(); return; }
+            draggedMediaItem = item; item.classList.add('cms-dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        item.addEventListener('dragend', () => {
+            item.classList.remove('cms-dragging'); item.removeAttribute('draggable');
+            if (grid) grid.querySelectorAll('.cms-drag-over').forEach(c => c.classList.remove('cms-drag-over'));
+            draggedMediaItem = null;
+        });
+        item.addEventListener('dragover', (e) => {
+            if (!draggedMediaItem || draggedMediaItem === item) return;
+            e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+            item.classList.add('cms-drag-over');
+        });
+        item.addEventListener('dragleave', () => item.classList.remove('cms-drag-over'));
+        item.addEventListener('drop', (e) => {
+            e.preventDefault(); item.classList.remove('cms-drag-over');
+            if (!draggedMediaItem || draggedMediaItem === item) return;
+            const items = [...grid.querySelectorAll('.media-item')];
+            const from = items.indexOf(draggedMediaItem), to = items.indexOf(item);
+            if (from < to) item.after(draggedMediaItem); else item.before(draggedMediaItem);
+            rebuildMediaArrays(projectId);
+        });
+    }
+
+    // ─── Setup media editing (remove + drag) on all items in the grid ───
+    function setupMediaEditing(projectId) {
+        const mediaGrid = document.getElementById('mediaGrid');
+        if (!mediaGrid) return;
+        mediaGrid.querySelectorAll('.media-item').forEach(item => {
+            attachMediaItemEditing(item, projectId);
+        });
     }
 
     // ─── New Project button ───
@@ -891,6 +1111,7 @@
             if (!ms || ms.dataset.cmsMediaSetup) return;
             ms.dataset.cmsMediaSetup = '1';
             addMediaUI(ms, projectId);
+            setupMediaEditing(projectId);
         }
 
         // Need projectsData and CMS settings for dropdowns
@@ -957,11 +1178,17 @@
 
                 for (const [field, value] of Object.entries(fields)) {
                     if (field === '_addScreenshot') {
-                        if (!data.screenshots) data.screenshots = [];
-                        value.forEach(src => data.screenshots.push({ src, alt: '' }));
+                        // Only apply _add if screenshots isn't being replaced entirely
+                        if (!('screenshots' in fields)) {
+                            if (!data.screenshots) data.screenshots = [];
+                            value.forEach(src => data.screenshots.push({ src, alt: '' }));
+                        }
                     } else if (field === '_addVideo') {
-                        if (!data.videos) data.videos = [];
-                        value.forEach(src => data.videos.push({ src }));
+                        // Only apply _add if videos isn't being replaced entirely
+                        if (!('videos' in fields)) {
+                            if (!data.videos) data.videos = [];
+                            value.forEach(src => data.videos.push({ src }));
+                        }
                     } else if (field.startsWith('_removeWork.')) {
                         removeIndices.push(parseInt(field.split('.')[1]));
                     } else if (field === 'type' || field === 'tags' || field === 'socials') {
@@ -1113,6 +1340,9 @@
 
     // ─── Discard ───
     function discardChanges() {
+        // Check if media was reordered or removed (requires page reload to restore)
+        const hasMediaChanges = [...pendingChanges.values()].some(f => 'screenshots' in f || 'videos' in f);
+
         document.querySelectorAll('[data-cms-editable].cms-dirty').forEach(el => {
             el.textContent = el.dataset.cmsOriginal; el.classList.remove('cms-dirty');
         });
@@ -1123,6 +1353,8 @@
         document.querySelectorAll('.cms-select').forEach(s => { s.value = s.dataset.cmsOriginal; });
         pendingChanges.clear();
         updateToolbar();
+
+        if (hasMediaChanges) location.reload();
     }
 
     // ─── Toggle Edit Mode ───
@@ -1200,6 +1432,229 @@
         });
     }
 
+    // ─── Spotlight Search ───
+    let spotlightEl = null;
+    let spotlightOpen = false;
+    let spotlightIdx = 0;
+
+    function createSpotlight() {
+        if (spotlightEl) return;
+        const overlay = document.createElement('div');
+        overlay.className = 'spotlight-overlay';
+        overlay.innerHTML = `
+            <div class="spotlight-box">
+                <div class="spotlight-input-wrap">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input class="spotlight-input" type="text" placeholder="Search projects, pages, actions..." autocomplete="off" spellcheck="false">
+                    <span class="spotlight-hint">esc</span>
+                </div>
+                <div class="spotlight-results"></div>
+                <div class="spotlight-footer">
+                    <span><kbd>↑↓</kbd> navigate</span>
+                    <span><kbd>↵</kbd> open</span>
+                    <span><kbd>esc</kbd> close</span>
+                </div>
+            </div>
+        `;
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSpotlight(); });
+        document.body.appendChild(overlay);
+        spotlightEl = overlay;
+
+        const input = overlay.querySelector('.spotlight-input');
+        input.addEventListener('input', () => renderSpotlightResults(input.value.trim()));
+        input.addEventListener('keydown', handleSpotlightNav);
+    }
+
+    function openSpotlight() {
+        createSpotlight();
+        spotlightOpen = true;
+        spotlightEl.classList.add('active');
+        const input = spotlightEl.querySelector('.spotlight-input');
+        input.value = '';
+        spotlightIdx = 0;
+        // Ensure project data is loaded for search results
+        const ready = projectsData.length > 0 ? Promise.resolve() : loadProjectsData();
+        ready.then(() => renderSpotlightResults(''));
+        requestAnimationFrame(() => input.focus());
+    }
+
+    function closeSpotlight() {
+        if (!spotlightEl) return;
+        spotlightOpen = false;
+        spotlightEl.classList.remove('active');
+    }
+
+    function getSpotlightItems(query) {
+        const items = [];
+        const q = query.toLowerCase();
+        const isAdmin = localStorage.getItem('cms_authed');
+
+        // Static pages
+        const pages = [
+            { title: 'Projects', meta: 'Home page — all projects', url: 'index.html', type: 'page' },
+            { title: 'About / CV', meta: 'Curriculum Vitae & download', url: 'about.html', type: 'page' },
+            { title: 'Contact', meta: 'Email & LinkedIn', url: 'contact.html', type: 'page' }
+        ];
+        pages.forEach(p => {
+            if (!q || p.title.toLowerCase().includes(q) || p.meta.toLowerCase().includes(q)) items.push(p);
+        });
+
+        // Admin actions (only if CMS user)
+        if (isAdmin) {
+            const actions = [
+                { title: 'Open CMS Dashboard', meta: 'Manage projects & settings', action: () => { window.location.href = CMS_URL; }, type: 'action' },
+                { title: 'Toggle Edit Mode', meta: 'Ctrl+E — inline editing', action: () => { toggleEditMode(); }, type: 'action' },
+            ];
+            if (pendingChanges.size > 0) {
+                actions.push({ title: 'Save Changes', meta: `${pendingChanges.size} pending`, action: () => { saveChanges(); }, type: 'action' });
+                actions.push({ title: 'Discard Changes', meta: 'Revert all edits', action: () => { discardChanges(); }, type: 'action' });
+            }
+            actions.forEach(a => {
+                if (!q || a.title.toLowerCase().includes(q) || a.meta.toLowerCase().includes(q)) items.push(a);
+            });
+        }
+
+        // Projects
+        const typeLabels = { 'BSS': 'Bright Star Studios', 'Zloppy-Games': 'Zloppy Games', 'BH': 'Baer & Hoggo', 'HKU': 'HKU', 'Hobby': 'Hobby', 'PixelPool': 'PixelPool' };
+        projectsData.forEach(p => {
+            const searchable = [p.title, p.description, p.language, p.engine, p.role, typeLabels[p.type] || p.type, ...(p.tags || [])].join(' ').toLowerCase();
+            if (!q || searchable.includes(q)) {
+                items.push({
+                    title: p.title,
+                    meta: [p.engine, p.language, p.role].filter(Boolean).join(' · '),
+                    url: p.card ? `project.html?id=${p.id}` : null,
+                    img: p.minisrc || null,
+                    type: 'project'
+                });
+            }
+        });
+
+        return items;
+    }
+
+    function renderSpotlightResults(query) {
+        const results = spotlightEl.querySelector('.spotlight-results');
+        const items = getSpotlightItems(query);
+
+        if (items.length === 0) {
+            results.innerHTML = `<div class="spotlight-empty">No results for "${query}"</div>`;
+            spotlightIdx = 0;
+            return;
+        }
+
+        spotlightIdx = Math.min(spotlightIdx, items.length - 1);
+        results.innerHTML = items.map((item, i) => `
+            <div class="spotlight-result${i === spotlightIdx ? ' active' : ''}" data-idx="${i}">
+                <div class="spotlight-result-icon">
+                    ${item.img ? `<img src="${item.img}" alt="" onerror="this.style.display='none'">` : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${item.type === 'project' ? '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>' : item.type === 'action' ? '<polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/>' : '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'}</svg>`}
+                </div>
+                <div class="spotlight-result-text">
+                    <div class="spotlight-result-title">${item.title}</div>
+                    <div class="spotlight-result-meta">${item.meta}</div>
+                </div>
+                <span class="spotlight-result-badge ${item.type}">${item.type}</span>
+            </div>
+        `).join('');
+
+        results.querySelectorAll('.spotlight-result').forEach(el => {
+            el.addEventListener('click', () => executeSpotlightItem(items[parseInt(el.dataset.idx)]));
+        });
+    }
+
+    function handleSpotlightNav(e) {
+        if (!spotlightOpen) return;
+        const results = spotlightEl.querySelector('.spotlight-results');
+        const items = results.querySelectorAll('.spotlight-result');
+        if (e.key === 'Escape') { e.preventDefault(); closeSpotlight(); return; }
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            spotlightIdx = Math.min(spotlightIdx + 1, items.length - 1);
+            updateSpotlightActive(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            spotlightIdx = Math.max(spotlightIdx - 1, 0);
+            updateSpotlightActive(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (items[spotlightIdx]) items[spotlightIdx].click();
+        }
+    }
+
+    function updateSpotlightActive(items) {
+        items.forEach((el, i) => el.classList.toggle('active', i === spotlightIdx));
+        if (items[spotlightIdx]) items[spotlightIdx].scrollIntoView({ block: 'nearest' });
+    }
+
+    function executeSpotlightItem(item) {
+        closeSpotlight();
+        if (item.action) { item.action(); return; }
+        if (item.url) window.location.href = item.url;
+    }
+
+    function setupSpotlight() {
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K to open spotlight
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (spotlightOpen) closeSpotlight(); else openSpotlight();
+                return;
+            }
+            // / to open spotlight (only when not typing)
+            if (e.key === '/' && !spotlightOpen) {
+                const tag = e.target.tagName;
+                if (e.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+                e.preventDefault();
+                openSpotlight();
+            }
+        });
+    }
+
+    // ─── Konami Code Easter Egg ───
+    function setupKonamiCode() {
+        const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+        let pos = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === KONAMI[pos]) {
+                pos++;
+                if (pos === KONAMI.length) {
+                    pos = 0;
+                    triggerKonami();
+                }
+            } else {
+                pos = e.key === KONAMI[0] ? 1 : 0;
+            }
+        });
+    }
+
+    function triggerKonami() {
+        // Spawn confetti particles
+        const colors = ['#00f0ff', '#3aff7f', '#ffe03a', '#ff3a6e', '#a78bfa', '#f97316'];
+        for (let i = 0; i < 80; i++) {
+            const p = document.createElement('div');
+            p.className = 'konami-particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = -(Math.random() * 20 + 10) + 'px';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.width = (4 + Math.random() * 8) + 'px';
+            p.style.height = (4 + Math.random() * 8) + 'px';
+            p.style.animationDuration = (2 + Math.random() * 3) + 's';
+            p.style.animationDelay = (Math.random() * 1.5) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 6000);
+        }
+
+        // Achievement popup
+        const badge = document.createElement('div');
+        badge.className = 'konami-achievement';
+        badge.innerHTML = `
+            <h2>&#127918; Achievement Unlocked</h2>
+            <p>&#8593;&#8593;&#8595;&#8595;&#8592;&#8594;&#8592;&#8594; B A</p>
+            <p class="konami-sub">You found the secret code! A true gamer.</p>
+        `;
+        document.body.appendChild(badge);
+        setTimeout(() => badge.remove(), 5000);
+    }
+
     // ─── Activate ───
     function activate() {
         injectStyles();
@@ -1209,6 +1664,8 @@
         setupCardEditing();
         setupDetailEditing();
         setupKeyboardShortcuts();
+        setupSpotlight();
+        setupKonamiCode();
 
         if (!document.querySelector('.cms-nav-btn')) {
             const retry = setInterval(() => {
