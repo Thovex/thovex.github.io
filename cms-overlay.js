@@ -31,7 +31,9 @@
     let firebaseReady = false;
     let editMode = false;
 
-    // CMS Settings (loaded from Firestore)
+    // CMS Settings (loaded from Firestore, with hardcoded defaults as fallback)
+    const DEFAULT_LANGUAGES = ['C++', 'C#', 'C', 'Java', 'JavaScript', 'TypeScript', 'Python', 'GDScript', 'Lua', 'Rust', 'Go', 'Blueprint', 'Verse'];
+    const DEFAULT_ENGINES = ['Unreal', 'Unity', 'Radiance', 'UEFN', 'Godot', 'Custom'];
     let cmsLanguages = [];
     let cmsEngines = [];
     let cmsTypes = [];
@@ -572,8 +574,9 @@
     function createLanguageSelect(container, projectId, currentValue) {
         return createFieldSelect(container, projectId, 'language', currentValue, () => {
             if (cmsLanguages.length > 0) return cmsLanguages.map(l => ({ value: l, label: l }));
-            const langs = [...new Set(projectsData.map(p => p.language).filter(Boolean))].sort();
-            return langs.map(l => ({ value: l, label: l }));
+            const fromData = [...new Set(projectsData.map(p => p.language).filter(Boolean))];
+            const merged = [...new Set([...fromData, ...DEFAULT_LANGUAGES])].sort();
+            return merged.map(l => ({ value: l, label: l }));
         });
     }
 
@@ -589,8 +592,9 @@
     function createEngineSelect(container, projectId, currentValue) {
         return createFieldSelect(container, projectId, 'engine', currentValue, () => {
             if (cmsEngines.length > 0) return cmsEngines.map(e => ({ value: e, label: e }));
-            const engines = [...new Set(projectsData.map(p => p.engine).filter(Boolean))].sort();
-            return engines.map(e => ({ value: e, label: e }));
+            const fromData = [...new Set(projectsData.map(p => p.engine).filter(Boolean))];
+            const merged = [...new Set([...fromData, ...DEFAULT_ENGINES])].sort();
+            return merged.map(e => ({ value: e, label: e }));
         });
     }
 
@@ -1030,8 +1034,14 @@
             });
         }
 
-        new MutationObserver(() => process()).observe(grid, { childList: true });
-        Promise.all([loadProjectsData(), loadCmsSettings()]).then(() => { process(); setupDragDrop(); addNewProjectButton(); setupArchiveEditing(); });
+        Promise.all([loadProjectsData(), loadCmsSettings()]).then(() => {
+            process();
+            setupDragDrop();
+            addNewProjectButton();
+            setupArchiveEditing();
+            // Only observe after data is loaded so selects have full options
+            new MutationObserver(() => process()).observe(grid, { childList: true });
+        });
     }
 
     // ─── Setup Detail Page Editing ───
