@@ -458,9 +458,11 @@
 
     // ─── Language dropdown ───
     function createLanguageSelect(container, projectId, currentValue) {
-        return createFieldSelect(container, projectId, 'language', currentValue, () =>
-            cmsLanguages.map(l => ({ value: l, label: l }))
-        );
+        return createFieldSelect(container, projectId, 'language', currentValue, () => {
+            if (cmsLanguages.length > 0) return cmsLanguages.map(l => ({ value: l, label: l }));
+            const langs = [...new Set(projectsData.map(p => p.language).filter(Boolean))].sort();
+            return langs.map(l => ({ value: l, label: l }));
+        });
     }
 
     // ─── Role dropdown (populated from existing project roles) ───
@@ -473,9 +475,11 @@
 
     // ─── Engine dropdown ───
     function createEngineSelect(container, projectId, currentValue) {
-        return createFieldSelect(container, projectId, 'engine', currentValue, () =>
-            cmsEngines.map(e => ({ value: e, label: e }))
-        );
+        return createFieldSelect(container, projectId, 'engine', currentValue, () => {
+            if (cmsEngines.length > 0) return cmsEngines.map(e => ({ value: e, label: e }));
+            const engines = [...new Set(projectsData.map(p => p.engine).filter(Boolean))].sort();
+            return engines.map(e => ({ value: e, label: e }));
+        });
     }
 
     // ─── Period input ───
