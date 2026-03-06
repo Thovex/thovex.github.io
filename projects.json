@@ -15,12 +15,12 @@
         "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces.",
         "work": [
             {
-                "description": "Working on Refactoring large portions of the Project.",
-                "title": "Refactoring"
+                "title": "Refactoring",
+                "description": "Working on Refactoring large portions of the Project."
             },
             {
-                "description": "Developing new features for the application (NDA).",
-                "title": "Feature Development"
+                "title": "Feature Development",
+                "description": "Developing new features for the application (NDA)."
             }
         ],
         "tags": [
@@ -41,16 +41,16 @@
                 "src": "res/projects/dtail-spaces/ss_01.png"
             },
             {
-                "alt": "Dtail Spaces fashion brand environment overview",
-                "src": "res/projects/dtail-spaces/ss_02.jpg"
+                "src": "res/projects/dtail-spaces/ss_02.jpg",
+                "alt": "Dtail Spaces fashion brand environment overview"
             },
             {
                 "alt": "Dtail Spaces product placement and customization interface",
                 "src": "res/projects/dtail-spaces/ss_03.png"
             },
             {
-                "alt": "Dtail Spaces data visualization dashboard",
-                "src": "res/projects/dtail-spaces/ss_04.png"
+                "src": "res/projects/dtail-spaces/ss_04.png",
+                "alt": "Dtail Spaces data visualization dashboard"
             }
         ]
     },
@@ -67,7 +67,7 @@
         "banner": "res/projects/ember-sword/banner.png",
         "type": "BSS",
         "description": "An open-world sandbox MMORPG by Bright Star Studios.",
-        "longdescription": "Ember Sword is a cross-platform free-to-play fantasy MMORPG. Players can own, control, and evolve their land while trading assets with other players. The game runs on the Radiance Engine, a custom engine built by Bright Star Studios.",
+        "longdescription": "Ember Sword is a browser based MMORPG. Players can explore a large variety of environments, towns, craft and do combat with unique NPCs and bosses with combat inspired by the popular VRising or run a global emporium with running Trade packs across the world.",
         "work": [
             {
                 "title": "Exploration",
@@ -124,22 +124,22 @@
                 "alt": "Ember Sword open world with player characters in a fantasy landscape"
             },
             {
-                "src": "res/projects/ember-sword/ss_01.png",
-                "alt": "Ember Sword combat encounter with creatures in a forest biome"
+                "alt": "Ember Sword combat encounter with creatures in a forest biome",
+                "src": "res/projects/ember-sword/ss_01.png"
             },
             {
                 "src": "res/projects/ember-sword/ss_02.png",
                 "alt": "Ember Sword player-owned land plots and town building"
             },
             {
-                "src": "res/projects/ember-sword/ss_03.png",
-                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
+                "alt": "Ember Sword Ultra Deep dungeon boss encounter",
+                "src": "res/projects/ember-sword/ss_03.png"
             }
         ],
         "videos": [
             {
-                "src": "res/projects/ember-sword/vid_01.webm",
-                "alt": "Ember Sword open world exploration gameplay"
+                "alt": "Ember Sword open world exploration gameplay",
+                "src": "res/projects/ember-sword/vid_01.webm"
             },
             {
                 "src": "res/projects/ember-sword/vid_02.webm",
@@ -150,8 +150,8 @@
                 "alt": "Ember Sword creature behaviors and AI in action"
             },
             {
-                "src": "res/projects/ember-sword/vid_04.webm",
-                "alt": "Ember Sword trade pack system and gathering"
+                "alt": "Ember Sword trade pack system and gathering",
+                "src": "res/projects/ember-sword/vid_04.webm"
             }
         ]
     },
@@ -209,9 +209,9 @@
         ],
         "socials": [
             {
-                "url": "https://fortnite.gg/island?code=3579-7551-5955",
+                "info": "fortnite.gg",
                 "icon": "res/ico_site.png",
-                "info": "fortnite.gg"
+                "url": "https://fortnite.gg/island?code=3579-7551-5955"
             }
         ],
         "videos": [
@@ -332,58 +332,58 @@
             },
             {
                 "url": "https://discord.gg/7X7gYf93ph",
-                "icon": "res/ico_discord.png",
-                "info": "discord"
+                "info": "discord",
+                "icon": "res/ico_discord.png"
             }
         ],
         "screenshots": [
             {
-                "src": "res/projects/farmion/ss_11.png",
-                "alt": "Farmion magical mansion overview with surrounding farm plots"
+                "alt": "Farmion magical mansion overview with surrounding farm plots",
+                "src": "res/projects/farmion/ss_11.png"
             },
             {
-                "src": "res/projects/farmion/ss_12.png",
-                "alt": "Farmion Steam store page capsule art"
+                "alt": "Farmion Steam store page capsule art",
+                "src": "res/projects/farmion/ss_12.png"
             },
             {
-                "src": "res/projects/farmion/ss_01.png",
-                "alt": "Farmion crop farming with watering and growth stages"
+                "alt": "Farmion crop farming with watering and growth stages",
+                "src": "res/projects/farmion/ss_01.png"
             },
             {
-                "src": "res/projects/farmion/ss_02.png",
-                "alt": "Farmion multiplayer co-op gathering resources together"
+                "alt": "Farmion multiplayer co-op gathering resources together",
+                "src": "res/projects/farmion/ss_02.png"
             },
             {
                 "src": "res/projects/farmion/ss_03.png",
                 "alt": "Farmion animal barn with livestock management"
             },
             {
-                "src": "res/projects/farmion/ss_04.png",
-                "alt": "Farmion player throwing objects with physics system"
+                "alt": "Farmion player throwing objects with physics system",
+                "src": "res/projects/farmion/ss_04.png"
             },
             {
-                "src": "res/projects/farmion/ss_05.png",
-                "alt": "Farmion cheese aging and crafting system"
+                "alt": "Farmion cheese aging and crafting system",
+                "src": "res/projects/farmion/ss_05.png"
             },
             {
                 "src": "res/projects/farmion/ss_06.png",
                 "alt": "Farmion upgrade shop with purchasable structures"
             },
             {
-                "src": "res/projects/farmion/ss_07.png",
-                "alt": "Farmion house customization interior decorating"
+                "alt": "Farmion house customization interior decorating",
+                "src": "res/projects/farmion/ss_07.png"
             },
             {
-                "src": "res/projects/farmion/ss_08.png",
-                "alt": "Farmion day-night cycle transition with danger warning"
+                "alt": "Farmion day-night cycle transition with danger warning",
+                "src": "res/projects/farmion/ss_08.png"
             },
             {
-                "src": "res/projects/farmion/ss_09.png",
-                "alt": "Farmion cart transportation hauling multiple items"
+                "alt": "Farmion cart transportation hauling multiple items",
+                "src": "res/projects/farmion/ss_09.png"
             },
             {
-                "src": "res/projects/farmion/ss_10.png",
-                "alt": "Farmion Giant Statue buff system with item sacrifice"
+                "alt": "Farmion Giant Statue buff system with item sacrifice",
+                "src": "res/projects/farmion/ss_10.png"
             }
         ],
         "videos": [
@@ -439,20 +439,20 @@
                 "alt": "Radiance Engine behavior tree editor with real-time AI visualization"
             },
             {
-                "src": "res/projects/radiance/ss_01.png",
-                "alt": "Radiance Engine animation state machine editor interface"
+                "alt": "Radiance Engine animation state machine editor interface",
+                "src": "res/projects/radiance/ss_01.png"
             },
             {
                 "src": "res/projects/radiance/ss_02.png",
                 "alt": "Radiance Engine item editor tool for game designers"
             },
             {
-                "src": "res/projects/radiance/ss_03.png",
-                "alt": "Radiance Engine crafting recipe editor with ingredient management"
+                "alt": "Radiance Engine crafting recipe editor with ingredient management",
+                "src": "res/projects/radiance/ss_03.png"
             },
             {
-                "src": "res/projects/radiance/ss_04.png",
-                "alt": "Radiance Engine Unity-to-Radiance level sync pipeline"
+                "alt": "Radiance Engine Unity-to-Radiance level sync pipeline",
+                "src": "res/projects/radiance/ss_04.png"
             }
         ]
     },
@@ -498,22 +498,22 @@
                 "alt": "BitFarers first-person view inside a themed dungeon corridor"
             },
             {
-                "src": "res/projects/bitfarers/ss_02.png",
-                "alt": "BitFarers co-op gameplay with HUD showing health and ammo"
+                "alt": "BitFarers co-op gameplay with HUD showing health and ammo",
+                "src": "res/projects/bitfarers/ss_02.png"
             }
         ],
         "videos": [
             {
-                "src": "res/projects/bitfarers/vid_01.mp4",
-                "alt": "BitFarers dungeon exploration with weapon combat"
+                "alt": "BitFarers dungeon exploration with weapon combat",
+                "src": "res/projects/bitfarers/vid_01.mp4"
             },
             {
                 "src": "res/projects/bitfarers/vid_02.mp4",
                 "alt": "BitFarers multiplayer level transition between themed zones"
             },
             {
-                "src": "res/projects/bitfarers/vid_03.mp4",
-                "alt": "BitFarers loot and destructible objects gameplay"
+                "alt": "BitFarers loot and destructible objects gameplay",
+                "src": "res/projects/bitfarers/vid_03.mp4"
             },
             {
                 "src": "res/projects/bitfarers/vid_04.mp4",
@@ -559,8 +559,8 @@
                 "alt": "IdleCards card battle screen with AI opponent and board state"
             },
             {
-                "src": "res/projects/idle-cards/ss_03.png",
-                "alt": "IdleCards collection and upgrade interface with card stats"
+                "alt": "IdleCards collection and upgrade interface with card stats",
+                "src": "res/projects/idle-cards/ss_03.png"
             },
             {
                 "src": "res/projects/idle-cards/ss_01.png",
@@ -569,12 +569,12 @@
         ],
         "videos": [
             {
-                "src": "res/projects/idle-cards/vid_01.mp4",
-                "alt": "IdleCards turn-based card combat against AI"
+                "alt": "IdleCards turn-based card combat against AI",
+                "src": "res/projects/idle-cards/vid_01.mp4"
             },
             {
-                "src": "res/projects/idle-cards/vid_02.mp4",
-                "alt": "IdleCards idle progression and building management"
+                "alt": "IdleCards idle progression and building management",
+                "src": "res/projects/idle-cards/vid_02.mp4"
             }
         ]
     },
@@ -662,12 +662,12 @@
                 "alt": "Finn the white Ragdoll cat lounging on a desk"
             },
             {
-                "src": "res/projects/cat/ss_03.png",
-                "alt": "Dusty the grey Ragdoll cat supervising code reviews"
+                "alt": "Dusty the grey Ragdoll cat supervising code reviews",
+                "src": "res/projects/cat/ss_03.png"
             },
             {
-                "src": "res/projects/cat/ss_04.png",
-                "alt": "Finn and Dusty napping together on the couch"
+                "alt": "Finn and Dusty napping together on the couch",
+                "src": "res/projects/cat/ss_04.png"
             },
             {
                 "src": "res/projects/cat/ss_05.png",
