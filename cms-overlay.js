@@ -280,6 +280,7 @@
     // ─── Floating Toolbar ───
     function createToolbar() {
         if (document.querySelector('.cms-toolbar')) return;
+        const homeURL = window.location.pathname.includes('/cms/') ? '../index.html' : 'index.html';
         const bar = document.createElement('div');
         bar.className = 'cms-toolbar';
         bar.innerHTML = `
@@ -288,6 +289,7 @@
             <button class="cms-toolbar-btn save" data-action="save">Save</button>
             <button class="cms-toolbar-btn discard" data-action="discard">Discard</button>
             <div class="cms-toolbar-divider"></div>
+            <a href="${homeURL}" class="cms-toolbar-btn cms-link">⌂ Home</a>
             <a href="${CMS_URL}" class="cms-toolbar-btn cms-link">${ICONS.terminal} CMS</a>
         `;
         document.body.appendChild(bar);
@@ -917,10 +919,6 @@
                 // Datetime (archive year)
                 const yearEl = item.querySelector('.archive-year');
                 if (yearEl) makeEditable(yearEl, proj.id, 'datetime');
-
-                // Archive tech metadata (engine · language)
-                const techEl = item.querySelector('.archive-tech');
-                if (techEl) makeEditable(techEl, proj.id, '_archiveTechDisplay');
             });
         }
         new MutationObserver(() => process()).observe(al, { childList: true });
@@ -1175,8 +1173,8 @@
     function setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
             // Don't fire shortcuts when typing in an input/textarea/contenteditable
-            const tag = e.target.tagName;
-            const isEditing = e.target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+            const targetTag = e.target.tagName;
+            const isEditingField = e.target.isContentEditable || targetTag === 'INPUT' || targetTag === 'TEXTAREA' || targetTag === 'SELECT';
 
             // Ctrl/Cmd + E — Toggle edit mode
             if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
@@ -1190,7 +1188,8 @@
                 else showToast('No changes to save', 'info');
             }
             // Escape — Discard changes (only when not editing a field)
-            if (e.key === 'Escape' && !isEditing && editMode && pendingChanges.size > 0) {
+            const shouldDiscardOnEscape = e.key === 'Escape' && !isEditingField && editMode && pendingChanges.size > 0;
+            if (shouldDiscardOnEscape) {
                 discardChanges();
                 showToast('Changes discarded', 'warning');
             }

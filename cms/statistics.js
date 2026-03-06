@@ -351,8 +351,7 @@ async function fetchAnalytics(propertyId) {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
                     dimensions: [{ name: 'date' }],
                     metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
-                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
-                    limit: 31
+                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
                 })
             );
         }
@@ -620,25 +619,25 @@ function buildTrendChart(dailyTrend) {
         if (i > 0) yGrid += `<line x1="${PAD_L}" y1="${yPos}" x2="${W - PAD_R}" y2="${yPos}" stroke="var(--border-subtle)" stroke-dasharray="3,3" opacity="0.4"/>`;
     }
 
+    function fmtDateLabel(yyyymmdd) {
+        return `${yyyymmdd.substring(4, 6)}/${yyyymmdd.substring(6, 8)}`;
+    }
+
     // X-axis labels (every ~5 days)
     let xLabels = '';
     const step = Math.max(1, Math.floor(n / 6));
     for (let i = 0; i < n; i += step) {
-        const d = dailyTrend[i].date;
-        const label = `${d.substring(4, 6)}/${d.substring(6, 8)}`;
-        xLabels += `<text x="${x(i)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${label}</text>`;
+        xLabels += `<text x="${x(i)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${fmtDateLabel(dailyTrend[i].date)}</text>`;
     }
     // Always show last date
     if (n > 1) {
-        const d = dailyTrend[n - 1].date;
-        const label = `${d.substring(4, 6)}/${d.substring(6, 8)}`;
-        xLabels += `<text x="${x(n - 1)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${label}</text>`;
+        xLabels += `<text x="${x(n - 1)}" y="${PAD_T + chartH + 20}" text-anchor="middle" fill="var(--text-muted)" font-size="9" font-family="var(--font-mono)">${fmtDateLabel(dailyTrend[n - 1].date)}</text>`;
     }
 
     // Data point dots for visitors (hover targets)
     let dots = '';
     dailyTrend.forEach((d, i) => {
-        const dateStr = `${d.date.substring(4, 6)}/${d.date.substring(6, 8)}`;
+        const dateStr = fmtDateLabel(d.date);
         dots += `<circle cx="${x(i).toFixed(1)}" cy="${y(d.visitors).toFixed(1)}" r="3" fill="var(--color-cyan)" opacity="0" class="trend-dot">
             <title>${dateStr}: ${d.visitors} visitors, ${d.pageviews} views</title>
         </circle>`;
