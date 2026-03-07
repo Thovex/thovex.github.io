@@ -1,0 +1,111 @@
+.cheat-panel {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  z-index: 9999;
+}
+
+.cheat-panel.closed {
+  opacity: 0.4;
+}
+
+.cheat-panel.closed:hover {
+  opacity: 1;
+}
+
+.cheat-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-bright);
+  background: var(--bg-panel);
+  color: var(--accent-yellow);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.cheat-toggle:hover {
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.2);
+}
+
+.cheat-content {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  background: var(--bg-panel);
+  border: 1px solid var(--accent-yellow);
+  border-radius: 6px;
+  padding: 0.6rem;
+  min-width: 220px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cheat-title {
+  font-size: 0.65rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+
+.cheat-section {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.cheat-label {
+  font-size: 0.55rem;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  min-width: 50px;
+  letter-spacing: 1px;
+}
+
+.cheat-section button {
+  font-size: 0.6rem;
+  padding: 0.2rem 0.45rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 3px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.1s;
+}
+
+.cheat-section button:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-yellow);
+  color: var(--accent-yellow);
+}
+
+.cheat-section button:active {
+  transform: scale(0.95);
+}
+
+.cheat-divider {
+  border-top: 1px solid var(--border-bright);
+  margin: 0.4rem 0;
+  opacity: 0.3;
+}
+
+.cheat-subtitle {
+  font-size: 0.55rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  opacity: 0.7;
+}

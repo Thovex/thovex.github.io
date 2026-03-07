@@ -1,0 +1,47 @@
+{
+  "_comment": "Ascendancy paths. Unlocked after first void collapse. Path mastery increments per void collapse.",
+  "paths": [
+    {
+      "id": "architect",
+      "name": "The Architect",
+      "modifiers": {
+        "productionMult": 1.2,
+        "generatorCostMult": 0.5,
+        "dataRateMult": 1.0,
+        "researchSpeedMult": 1.0,
+        "clickMult": 1.0,
+        "offlineEfficiency": 0
+      }
+    },
+    {
+      "id": "channeler",
+      "name": "The Channeler",
+      "modifiers": {
+        "productionMult": 1.0,
+        "generatorCostMult": 1.0,
+        "dataRateMult": 1.0,
+        "researchSpeedMult": 1.0,
+        "clickMult": 5.0,
+        "offlineEfficiency": 0
+      }
+    },
+    {
+      "id": "observer",
+      "name": "The Observer",
+      "modifiers": {
+        "productionMult": 3.0,
+        "generatorCostMult": 1.0,
+        "dataRateMult": 2.0,
+        "researchSpeedMult": 1.5,
+        "clickMult": 0.1,
+        "offlineEfficiency": 0.75
+      }
+    }
+  ],
+  "masteryTiers": [
+    { "name": "Grandmaster", "threshold": 15, "bonus": 1.0 },
+    { "name": "Master", "threshold": 7, "bonus": 0.5 },
+    { "name": "Adept", "threshold": 3, "bonus": 0.25 },
+    { "name": "Novice", "threshold": 1, "bonus": 0 }
+  ]
+}

@@ -1,0 +1,385 @@
+.singularity-panel {
+  padding: 12px;
+}
+
+.singularity-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 16px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.singularity-locked .lock-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.singularity-locked .lock-icon .icon-lock {
+  width: 28px;
+  height: 28px;
+  opacity: 0.5;
+}
+
+.singularity-locked .lock-icon .icon-lock::before {
+  left: 5px;
+  width: 18px;
+  height: 12px;
+  border-width: 3px;
+  border-radius: 9px 9px 0 0;
+}
+
+.singularity-locked .lock-icon .icon-lock::after {
+  left: 3px;
+  width: 22px;
+  height: 16px;
+}
+
+.singularity-locked .lock-hint {
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+.singularity-tease {
+  color: #ffaa00;
+  font-style: italic;
+  animation: singularity-pulse 3s ease-in-out infinite;
+}
+
+@keyframes singularity-pulse {
+  0%, 100% { opacity: 0.3; text-shadow: none; }
+  50% { opacity: 1; text-shadow: 0 0 8px rgba(255, 170, 0, 0.5); }
+}
+
+.singularity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.singularity-currency,
+.singularity-gain,
+.singularity-title-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 170, 0, 0.3);
+  border-radius: 2px;
+  background: rgba(255, 170, 0, 0.05);
+}
+
+.singularity-label {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.singularity-value {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ffaa00;
+  font-family: 'JetBrains Mono', monospace;
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+}
+
+.singularity-title-label {
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+.singularity-title-value {
+  font-size: 1em;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.singularity-gain-value {
+  font-size: 1.1em;
+  color: #ffcc44;
+}
+
+.singularity-btn {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ffaa00;
+  border-radius: 2px;
+  background: rgba(255, 170, 0, 0.15);
+  color: inherit;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.singularity-btn.available:hover {
+  background: rgba(255, 170, 0, 0.3);
+  box-shadow: 0 0 24px rgba(255, 170, 0, 0.4);
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.5);
+}
+
+.singularity-btn.unavailable {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.singularity-explain {
+  font-size: 0.8em;
+  opacity: 0.6;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.singularity-branch {
+  margin-top: 0.75rem;
+}
+
+/* ─── Tier / Branch headers ─── */
+.sgu-tier-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.sgu-tier-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffaa00, transparent);
+}
+
+.sgu-tier-label {
+  font-size: 0.8rem;
+  color: #ffaa00;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(255, 170, 0, 0.5);
+  white-space: nowrap;
+}
+
+.sgu-tier-label.branch-temporal { color: #44bbff; text-shadow: 0 0 6px rgba(68, 187, 255, 0.5); }
+.sgu-tier-label.branch-dimensional { color: #b44aff; text-shadow: 0 0 6px rgba(180, 74, 255, 0.5); }
+.sgu-tier-label.branch-meta { color: #ffaa00; text-shadow: 0 0 6px rgba(255, 170, 0, 0.5); }
+
+/* ─── Tile Grid ─── */
+.sgu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.3rem 0;
+}
+
+/* ─── Node Tile ─── */
+.sgu-node {
+  width: 160px;
+  height: 170px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5rem 0.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid #ffaa00;
+  border-radius: 3px;
+  cursor: default;
+  transition: all 0.2s ease;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+/* Branch color left border */
+.sgu-node.branch-temporal { border-left: 3px solid #44bbff; }
+.sgu-node.branch-dimensional { border-left: 3px solid #b44aff; }
+.sgu-node.branch-meta { border-left: 3px solid #ffaa00; }
+
+.sgu-node.completed {
+  border-color: var(--card-border-afford);
+  background: rgba(61, 220, 132, 0.04);
+}
+
+.sgu-node.completed .sgu-node-name,
+.sgu-node.completed .sgu-node-effect {
+  opacity: 0.7;
+}
+
+.sgu-node.available {
+  cursor: pointer;
+}
+
+.sgu-node.available.branch-temporal { border-color: #44bbff; border-left: 3px solid #44bbff; }
+.sgu-node.available.branch-dimensional { border-color: #b44aff; border-left: 3px solid #b44aff; }
+.sgu-node.available.branch-meta { border-color: #ffaa00; border-left: 3px solid #ffaa00; }
+
+.sgu-node.available:hover {
+  box-shadow: 0 0 14px rgba(255, 170, 0, 0.4);
+  transform: translateY(-2px);
+  z-index: 5;
+}
+
+.sgu-node.available.branch-temporal:hover { box-shadow: 0 0 14px rgba(68, 187, 255, 0.4); }
+.sgu-node.available.branch-dimensional:hover { box-shadow: 0 0 14px rgba(180, 74, 255, 0.4); }
+.sgu-node.available.branch-meta:hover { box-shadow: 0 0 14px rgba(255, 170, 0, 0.4); }
+
+.sgu-node.unavailable {
+  opacity: 0.6;
+}
+
+.sgu-node-done {
+  /* removed — using shared .icon-check instead */
+}
+
+.sgu-node-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ffcc44;
+  letter-spacing: 0.5px;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  line-height: 1.25;
+  max-height: 2.5em;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.sgu-node-effect {
+  font-size: 0.65rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  line-height: 1.25;
+  text-shadow: 0 0 3px rgba(255, 170, 34, 0.15);
+}
+
+.sgu-node-level {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.sgu-node-cost {
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.sgu-node-cost.affordable { color: var(--accent-green); }
+.sgu-node-cost.expensive { color: var(--accent-red); }
+
+.sgu-node-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  background: var(--bg-panel);
+  border: 1px solid #ffaa00;
+  border-radius: 2px;
+  color: #ffcc44;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  font-weight: 700;
+  min-width: 3rem;
+}
+
+.sgu-node-btn:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: #ffaa00;
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
+  text-shadow: 0 0 4px #ffaa00;
+}
+
+.sgu-node-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sgu-node-btn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* ─── Tooltip ─── */
+.sgu-tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(2, 5, 8, 0.97);
+  border: 1px solid #ffaa00;
+  border-radius: 3px;
+  padding: 0.6rem 0.75rem;
+  width: max-content;
+  max-width: 280px;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 0 16px rgba(255, 170, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
+
+.sgu-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: #ffaa00;
+}
+
+.sgu-node:hover .sgu-tooltip {
+  display: block;
+}
+
+.sgu-tooltip-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffcc44;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.sgu-tooltip-effect {
+  font-size: 0.75rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  text-shadow: 0 0 4px rgba(255, 170, 34, 0.2);
+}
+
+.sgu-tooltip-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+}
+
+.sgu-tooltip-cost {
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.sgu-tooltip-level {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.singularity-count {
+  font-size: 0.8em;
+  opacity: 0.6;
+}

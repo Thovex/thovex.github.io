@@ -1,0 +1,11 @@
+{
+  "_comment": "Milestone system. When you own threshold+ of a generator, the multiplier is applied (cumulative).",
+  "milestones": [
+    { "threshold": 16, "label": "16", "productionMultiplier": 1.5 },
+    { "threshold": 32, "label": "32", "productionMultiplier": 2 },
+    { "threshold": 64, "label": "64", "productionMultiplier": 3 },
+    { "threshold": 128, "label": "128", "productionMultiplier": 5 },
+    { "threshold": 256, "label": "256", "productionMultiplier": 8 },
+    { "threshold": 512, "label": "512", "productionMultiplier": 15 }
+  ]
+}

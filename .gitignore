@@ -5,3 +5,8 @@
 # OS
 .DS_Store
 Thumbs.db
+
+# App build artifacts
+apps/*/node_modules/
+apps/*/dist/
+_site/

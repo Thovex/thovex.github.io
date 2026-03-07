@@ -1,0 +1,109 @@
+.offline-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: overlayFadeIn 0.3s ease;
+}
+
+.offline-popup {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-bright);
+  border-radius: 6px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 60px var(--glow-blue);
+  position: relative;
+}
+
+.offline-popup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+  border-radius: 6px 6px 0 0;
+}
+
+.offline-popup h2 {
+  font-size: 1.1rem;
+  color: var(--accent-blue);
+  margin: 0 0 0.2rem;
+  letter-spacing: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.offline-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.offline-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.offline-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.offline-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.offline-value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+}
+
+.offline-value.flux { color: var(--accent-blue); text-shadow: 0 0 8px var(--glow-blue); }
+.offline-value.data { color: var(--accent-green); text-shadow: 0 0 8px var(--glow-green); }
+
+.offline-dismiss {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.8rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  color: var(--accent-blue);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.offline-dismiss:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 15px var(--glow-blue);
+  transform: translateY(-1px);
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

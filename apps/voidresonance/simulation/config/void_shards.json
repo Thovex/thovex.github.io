@@ -1,0 +1,18 @@
+{
+  "_comment": "Void Shard (2nd prestige). Gain formula: floor(sqrt(totalEchoes / 100)). Requires 100+ totalEchoes. Collapse threshold: 500 echoes, tease at 250.",
+  "collapseEchoThreshold": 500,
+  "teaseThreshold": 250,
+  "shardGainFormula": "floor(sqrt(totalEchoes / 100))",
+  "upgrades": [
+    { "id": "vs_memory", "name": "Void Memory", "cost": 1, "maxLevel": 10, "effect": { "type": "startingFlux", "value": 500 } },
+    { "id": "vs_echogain", "name": "Echo Amplifier", "cost": 2, "maxLevel": 5, "effect": { "type": "echoMultiplier", "value": 1.8 } },
+    { "id": "vs_research", "name": "Accelerated Research", "cost": 2, "maxLevel": 5, "effect": { "type": "researchSpeed", "value": 0.25 } },
+    { "id": "vs_startgens", "name": "Generator Legacy", "cost": 3, "maxLevel": 3, "effect": { "type": "startingGenerators", "value": 3 } },
+    { "id": "vs_production", "name": "Void Insight", "cost": 3, "maxLevel": 5, "effect": { "type": "productionMultiplier", "value": 0.25 } },
+    { "id": "vs_rift", "name": "Rift Mastery", "cost": 4, "maxLevel": 3, "effect": { "type": "riftFrequency", "value": 0.2 } },
+    { "id": "vs_shardgain", "name": "Shard Resonance", "cost": 5, "maxLevel": 10, "effect": { "type": "shardGainBonus", "value": 0.15 } },
+    { "id": "vs_autoecho", "name": "Reality Glimpse", "cost": 10, "maxLevel": 1, "effect": { "type": "unlockFeature", "value": 1 } },
+    { "id": "vs_keepresearch", "name": "Dimensional Anchor", "cost": 15, "maxLevel": 1, "effect": { "type": "unlockFeature", "value": 2 } },
+    { "id": "vs_keepupgrade", "name": "Eternal Echo", "cost": 20, "maxLevel": 1, "effect": { "type": "unlockFeature", "value": 3 } }
+  ]
+}

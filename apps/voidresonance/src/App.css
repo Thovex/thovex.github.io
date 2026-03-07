@@ -1,0 +1,771 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Dark Theme — Grungy Void ─── */
+:root,
+[data-theme="dark"] {
+  --bg-dark: #020508;
+  --bg-panel: #060b12;
+  --bg-card: #08111c;
+  --bg-card-hover: #0d1a2c;
+  --border: #0f1e30;
+  --border-bright: #1a3a5c;
+  --text-primary: #c8dae8;
+  --text-secondary: #5a8aac;
+  --text-dim: #2e5070;
+  --accent-blue: #4db8d8;
+  --accent-green: #3ddc84;
+  --accent-purple: #b06aff;
+  --accent-yellow: #ffaa22;
+  --accent-red: #ff4444;
+  --accent-cyan: #00d4aa;
+  --glow-blue: rgba(77, 184, 216, 0.12);
+  --glow-green: rgba(61, 220, 132, 0.12);
+  --glow-purple: rgba(176, 106, 255, 0.12);
+  --overlay-bg: rgba(0, 0, 0, 0.92);
+  --tab-bg: #030810;
+  --card-border-afford: #0d3a1a;
+  --card-afford-hover-bg: #0a1a18;
+  --toggle-bg: #0f1e30;
+  --toggle-border: #1a3050;
+  --toggle-checked-bg: #0f2a3a;
+  /* Grungy extras */
+  --grime: rgba(255, 180, 40, 0.04);
+  --rust: rgba(180, 60, 20, 0.06);
+  --noise-opacity: 0.03;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-dark);
+}
+
+/* Grime / noise texture overlay on the whole app */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.015) 3px,
+      rgba(0, 0, 0, 0.015) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(255, 200, 50, 0.003) 5px,
+      rgba(255, 200, 50, 0.003) 6px
+    );
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: overlay;
+}
+
+[data-theme="dark"] .app {
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(77, 184, 216, 0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 90% 80%, rgba(176, 106, 255, 0.03) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 68, 68, 0.015) 0%, transparent 60%),
+    radial-gradient(circle at 20% 80%, rgba(255, 170, 34, 0.02) 0%, transparent 30%),
+    linear-gradient(180deg, #020508 0%, #040a14 40%, #030810 100%);
+}
+
+/* ─── Scan line overlay ─── */
+.scanline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.06) 1px,
+    rgba(0, 0, 0, 0.06) 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── Main 3-column layout ─── */
+.main-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR — Grungy industrial panels
+   ═══════════════════════════════════════════════════════════ */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-panel);
+  position: relative;
+}
+
+
+
+.sidebar-right {
+  border-right: none;
+  border-left: 1px solid var(--border);
+}
+
+/* ─── SIDEBAR TABS — Big, bold, industrial ─── */
+.sidebar-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--tab-bg);
+  border-bottom: 2px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Bottom glow line under tabs */
+.sidebar-tabs::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--accent-blue) 20%,
+    var(--accent-purple) 50%,
+    var(--accent-cyan) 80%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  animation: tabGlowSweep 4s ease-in-out infinite alternate;
+}
+
+@keyframes tabGlowSweep {
+  0% { opacity: 0.15; filter: hue-rotate(0deg); }
+  100% { opacity: 0.4; filter: hue-rotate(30deg); }
+}
+
+.sidebar-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.25rem 0.5rem;
+  font-size: 0.6rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Diagonal scratch texture on tabs */
+.sidebar-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, 0.008) 4px,
+    rgba(255, 255, 255, 0.008) 5px
+  );
+  pointer-events: none;
+}
+
+/* Hover glow bar */
+.sidebar-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: var(--accent-blue);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px var(--accent-blue), 0 0 24px var(--accent-blue);
+}
+
+.sidebar-tab:hover::after {
+  width: 80%;
+}
+
+.sidebar-tab:hover {
+  color: var(--text-primary);
+  background: linear-gradient(180deg, rgba(77, 184, 216, 0.06) 0%, transparent 100%);
+  text-shadow: 0 0 8px rgba(77, 184, 216, 0.4);
+}
+
+.sidebar-tab:active {
+  transform: scale(0.93);
+  transition: transform 0.08s ease;
+}
+
+.sidebar-tab.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+  background: linear-gradient(180deg, rgba(77, 184, 216, 0.1) 0%, rgba(77, 184, 216, 0.02) 100%);
+  text-shadow: 0 0 12px rgba(77, 184, 216, 0.6);
+}
+
+.sidebar-tab.active::after {
+  width: 100%;
+  box-shadow: 0 0 16px var(--accent-blue), 0 0 32px rgba(77, 184, 216, 0.4);
+}
+
+.sidebar-tab-icon {
+  font-size: 1.25rem;
+  transition: all 0.25s ease;
+  filter: drop-shadow(0 0 2px currentColor);
+}
+
+.sidebar-tab:hover .sidebar-tab-icon {
+  transform: scale(1.3) rotate(-3deg);
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.sidebar-tab.active .sidebar-tab-icon {
+  animation: iconPulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px var(--accent-blue));
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.sidebar-tab-label {
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+}
+
+/* Badge — glowing + animated */
+.sidebar-tab-badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: linear-gradient(135deg, var(--accent-green), #2aff6a);
+  color: #000;
+  font-size: 0.55rem;
+  font-weight: 900;
+  font-family: 'Orbitron', monospace;
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  line-height: 1.2;
+  pointer-events: none;
+  animation: badgeFlash 1.5s ease-in-out infinite;
+  box-shadow:
+    0 0 6px var(--accent-green),
+    0 0 12px rgba(61, 220, 132, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes badgeFlash {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent-green), 0 0 12px rgba(61, 220, 132, 0.3); }
+  50% { opacity: 0.8; box-shadow: 0 0 10px var(--accent-green), 0 0 20px rgba(61, 220, 132, 0.5); }
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.75rem;
+  /* Subtle inner vignette */
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, transparent 8%, transparent 92%, rgba(0, 0, 0, 0.15) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0%, transparent 5%, transparent 95%, rgba(0, 0, 0, 0.08) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CENTER PANEL
+   ═══════════════════════════════════════════════════════════ */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.center-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ─── Center Tabs ─── */
+.center-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--tab-bg);
+  border-bottom: 2px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Status color overrides for center tabs */
+.center-tab.has-result {
+  color: var(--accent-yellow);
+  text-shadow: 0 0 8px rgba(255, 170, 34, 0.4);
+}
+
+.center-tab.has-result::after {
+  background: var(--accent-yellow);
+  box-shadow: 0 0 12px var(--accent-yellow), 0 0 24px var(--accent-yellow);
+}
+
+.center-tab.has-result.active::after {
+  width: 100%;
+}
+
+.center-tab.has-active:not(.active) {
+  color: var(--accent-cyan);
+  animation: centerTabPulse 3s ease infinite;
+}
+
+.center-tab-badge {
+  position: absolute;
+  top: 4px;
+  right: 20%;
+  background: var(--accent-yellow);
+  color: #000;
+  font-size: 0.55rem;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: centerTabGlow 1.5s ease infinite;
+  box-shadow: 0 0 8px rgba(255, 170, 34, 0.5);
+}
+
+.center-tab-dot {
+  position: absolute;
+  top: 6px;
+  right: 25%;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--accent-cyan);
+  animation: centerTabPulse 3s ease infinite;
+  box-shadow: 0 0 6px var(--accent-cyan);
+}
+
+@keyframes centerTabPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes centerTabGlow {
+  0%, 100% { box-shadow: 0 0 4px rgba(255, 170, 34, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(255, 170, 34, 0.7); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR — Grungy thin bar
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+  box-shadow: 0 0 4px var(--accent-blue);
+}
+
+::selection {
+  background: rgba(77, 184, 216, 0.25);
+  color: var(--accent-blue);
+}
+
+*:focus-visible {
+  outline: 1px solid var(--accent-blue);
+  outline-offset: 1px;
+  box-shadow: 0 0 8px rgba(77, 184, 216, 0.3);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PANEL HEADERS — Industrial stencil style
+   ═══════════════════════════════════════════════════════════ */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+
+/* Glowing underline sweep */
+.panel-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-blue), transparent);
+  opacity: 0.5;
+}
+
+.panel-header h2 {
+  font-size: 0.85rem;
+  color: var(--accent-blue);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(77, 184, 216, 0.3);
+  position: relative;
+}
+
+/* Stencil / stamp effect on headers */
+.panel-header h2::before {
+  content: '//';
+  color: var(--accent-yellow);
+  opacity: 0.5;
+  margin-right: 0.3rem;
+  font-weight: 400;
+}
+
+/* ─── Empty state ─── */
+.empty-message {
+  text-align: center;
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 2rem 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  border: 1px dashed var(--border);
+  border-radius: 2px;
+  margin: 0.5rem 0;
+}
+
+/* ─── Shared Icons (pure CSS, no emoji) ─── */
+.icon-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--accent-green);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.icon-check::after {
+  content: '';
+  width: 5px;
+  height: 10px;
+  border: solid var(--accent-green);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+.icon-lock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.icon-lock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 3px;
+  width: 10px;
+  height: 7px;
+  border: 2px solid var(--text-dim);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.icon-lock::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 12px;
+  height: 9px;
+  background: var(--text-dim);
+  border-radius: 1px;
+}
+
+.cat-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cat-dot.cat-click { background: #f0a030; }
+.cat-dot.cat-generator { background: var(--accent-blue); }
+.cat-dot.cat-global { background: var(--accent-green); }
+.cat-dot.cat-utility { background: #b070ff; }
+.cat-dot.cat-production { background: var(--accent-blue); }
+.cat-dot.cat-data { background: var(--accent-cyan); }
+.cat-dot.cat-prestige { background: var(--accent-purple); }
+.cat-dot.cat-void { background: #b44aff; }
+
+/* Inline-sized variants for tier gates, legend items, etc. */
+.skill-tier-gate .icon-check,
+.skill-tier-gate .icon-lock {
+  width: 12px;
+  height: 12px;
+}
+
+.skill-tier-gate .icon-check::after {
+  width: 3px;
+  height: 7px;
+  border-width: 0 1.5px 1.5px 0;
+  margin-top: -1px;
+}
+
+.skill-tier-gate .icon-lock::before {
+  left: 2px;
+  width: 8px;
+  height: 5px;
+  border-width: 1.5px;
+}
+
+.skill-tier-gate .icon-lock::after {
+  left: 1px;
+  width: 10px;
+  height: 7px;
+}
+
+.skill-tooltip-gate .icon-lock {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+}
+
+.skill-tooltip-gate .icon-lock::before {
+  left: 2px;
+  width: 8px;
+  height: 5px;
+  border-width: 1.5px;
+}
+
+.skill-tooltip-gate .icon-lock::after {
+  left: 1px;
+  width: 10px;
+  height: 7px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOW GRAPHICS — Strip all fluff
+   ═══════════════════════════════════════════════════════════ */
+
+/* Kill all animations globally */
+.gfx-low *,
+.gfx-low *::before,
+.gfx-low *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Remove app texture overlay */
+.gfx-low.app::before {
+  display: none;
+}
+
+/* Remove app radial gradients */
+.gfx-low.app,
+[data-theme="dark"] .gfx-low.app {
+  background: var(--bg-dark) !important;
+}
+
+/* Remove scan line overlay */
+.gfx-low .scanline-overlay {
+  display: none;
+}
+
+/* Strip header glow line */
+.gfx-low .header::after {
+  display: none;
+}
+
+/* Strip sidebar glow lines & scratches */
+.gfx-low .sidebar-tabs::after,
+.gfx-low .sidebar-tab::before {
+  display: none;
+}
+
+/* Simplify sidebar tab hover/active: no glow bar, just a solid border */
+.gfx-low .sidebar-tab::after {
+  display: none;
+}
+
+.gfx-low .sidebar-tab.active {
+  border-bottom: 3px solid var(--accent-blue);
+  background: var(--bg-card);
+  text-shadow: none;
+}
+
+.gfx-low .sidebar-tab:hover {
+  background: var(--bg-card);
+  text-shadow: none;
+}
+
+.gfx-low .sidebar-tab-icon {
+  filter: none !important;
+}
+
+/* Strip all box-shadow and text-shadow globally */
+.gfx-low .sidebar-tab-badge {
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* Simplify center tab status indicators */
+.gfx-low .center-tab-badge,
+.gfx-low .center-tab-dot {
+  box-shadow: none;
+}
+
+/* Strip panel header decorations */
+.gfx-low .panel-header::after {
+  display: none;
+}
+
+.gfx-low .panel-header h2 {
+  text-shadow: none;
+}
+
+/* Strip header title glow */
+.gfx-low .header-title h1 {
+  text-shadow: none;
+}
+
+.gfx-low .title-accent {
+  opacity: 1;
+}
+
+/* Strip resource display hover effects */
+.gfx-low .resource-display:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.gfx-low .flux-display:hover,
+.gfx-low .data-display:hover,
+.gfx-low .echo-display:hover,
+.gfx-low .click-display:hover {
+  background: var(--bg-card);
+  box-shadow: none;
+}
+
+/* Sidebar content — remove vignette */
+.gfx-low .sidebar-content {
+  background: none;
+}
+
+/* Focus outline — simple */
+.gfx-low *:focus-visible {
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE / RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 250px 1fr;
+  }
+
+  .sidebar-left {
+    display: none;
+  }
+
+  .center-panel {
+    border-bottom: 1px solid var(--border);
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "_comment": "Singularity (3rd prestige). Fragment gain: floor(sqrt(totalVoidShards / 10)). Requires 10+ totalVoidShards, 5+ void collapses, 3+ path mastery.",
+  "collapseThreshold": 5,
+  "masteryThreshold": 3,
+  "fragmentGainFormula": "floor(sqrt(totalVoidShards / 10))",
+  "upgrades": [
+    { "id": "sg_tickspeed", "name": "Time Compression", "cost": 1, "maxLevel": 10, "branch": "temporal", "effect": { "type": "tickSpeed", "value": 0.1 } },
+    { "id": "sg_timeloop", "name": "Time Loop", "cost": 15, "maxLevel": 1, "branch": "temporal", "effect": { "type": "unlockFeature", "value": 1 } },
+    { "id": "sg_chronomastery", "name": "Chrono Mastery", "cost": 30, "maxLevel": 1, "branch": "temporal", "effect": { "type": "unlockFeature", "value": 2 } },
+    { "id": "sg_eternityengine", "name": "Eternity Engine", "cost": 50, "maxLevel": 1, "branch": "temporal", "effect": { "type": "offlineBonus", "value": 2.0 } },
+    { "id": "sg_dimensionalprod", "name": "Dimensional Flux", "cost": 2, "maxLevel": 10, "branch": "dimensional", "effect": { "type": "productionMultiplier", "value": 1.5 } },
+    { "id": "sg_echomult", "name": "Echo Dimension", "cost": 3, "maxLevel": 5, "branch": "dimensional", "effect": { "type": "echoMultiplier", "value": 1.5 } },
+    { "id": "sg_shardmult", "name": "Shard Dimension", "cost": 5, "maxLevel": 5, "branch": "dimensional", "effect": { "type": "shardMultiplier", "value": 1.5 } },
+    { "id": "sg_omegaengine", "name": "The Omega Engine", "cost": 100, "maxLevel": 1, "branch": "dimensional", "effect": { "type": "productionMultiplier", "value": 10 } },
+    { "id": "sg_fragmentgain", "name": "Fragment Resonance", "cost": 3, "maxLevel": 10, "branch": "meta", "effect": { "type": "fragmentGainBonus", "value": 0.1 } },
+    { "id": "sg_universalautomator", "name": "Universal Automator", "cost": 15, "maxLevel": 1, "branch": "meta", "effect": { "type": "unlockFeature", "value": 3 } },
+    { "id": "sg_infiniteresearch", "name": "Infinite Research", "cost": 50, "maxLevel": 1, "branch": "meta", "effect": { "type": "unlockFeature", "value": 4 } }
+  ]
+}

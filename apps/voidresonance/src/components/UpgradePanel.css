@@ -1,0 +1,316 @@
+.upgrade-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.upgrade-count {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+}
+
+/* ─── Legend ─── */
+.upgrade-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  padding: 0.4rem 0;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.upgrade-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  opacity: 0.7;
+}
+
+.upgrade-legend-item.cat-click { color: #f0a030; }
+.upgrade-legend-item.cat-generator { color: var(--accent-blue); }
+.upgrade-legend-item.cat-global { color: var(--accent-green); }
+.upgrade-legend-item.cat-utility { color: #b070ff; }
+
+/* ─── Tree Layout ─── */
+.upgrade-tree {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 0.25rem 1rem;
+}
+
+/* ─── Tier / Category ─── */
+.upgrade-tier {
+  position: relative;
+  margin-bottom: 0.4rem;
+}
+
+.upgrade-tier-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.upgrade-tier-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+}
+
+.upgrade-tier-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-shadow: 0 0 6px var(--glow-blue);
+  white-space: nowrap;
+}
+
+.upgrade-tier-progress {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ─── Tier Nodes Grid ─── */
+.upgrade-tier-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.3rem 0;
+}
+
+/* ─── Upgrade Node — Compact Tile ─── */
+.upgrade-node {
+  width: 160px;
+  height: 170px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5rem 0.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: default;
+  transition: all 0.2s ease;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+/* Category left-border color */
+.upgrade-node.cat-click { border-left: 3px solid #f0a030; }
+.upgrade-node.cat-generator { border-left: 3px solid var(--accent-blue); }
+.upgrade-node.cat-global { border-left: 3px solid var(--accent-green); }
+.upgrade-node.cat-utility { border-left: 3px solid #b070ff; }
+
+/* Status states */
+.upgrade-node.completed {
+  border-color: var(--card-border-afford);
+  background: rgba(61, 220, 132, 0.04);
+}
+
+.upgrade-node.completed .upgrade-node-name,
+.upgrade-node.completed .upgrade-node-effect {
+  opacity: 0.7;
+}
+
+.upgrade-node.available {
+  border-color: var(--border-bright);
+  cursor: pointer;
+}
+
+.upgrade-node.available:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 14px var(--glow-green);
+  transform: translateY(-2px);
+  z-index: 5;
+}
+
+.upgrade-node.unavailable {
+  opacity: 0.6;
+}
+
+/* ─── Node Internals ─── */
+.upgrade-node-icon {
+  width: 12px;
+  height: 12px;
+  margin-bottom: 0.1rem;
+}
+
+.upgrade-node-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  line-height: 1.25;
+  max-height: 2.5em;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.upgrade-node-effect {
+  font-size: 0.65rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  line-height: 1.25;
+  text-shadow: 0 0 3px rgba(255, 170, 34, 0.15);
+}
+
+.upgrade-node-done {
+  /* removed — using shared .icon-check instead */
+}
+
+.upgrade-node-level {
+  font-size: 0.6rem;
+  color: var(--accent-purple, #b070ff);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.upgrade-node-cost {
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.upgrade-node-cost.affordable { color: var(--accent-green); }
+.upgrade-node-cost.expensive { color: var(--accent-red); }
+
+.upgrade-node-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-bright);
+  border-radius: 2px;
+  color: var(--accent-blue);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  font-weight: 700;
+  min-width: 3rem;
+}
+
+.upgrade-node-btn:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px var(--glow-green);
+  text-shadow: 0 0 4px var(--accent-green);
+}
+
+.upgrade-node-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.upgrade-node-btn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* ─── Tooltip ─── */
+.upgrade-tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(2, 5, 8, 0.97);
+  border: 1px solid var(--accent-green);
+  border-radius: 3px;
+  padding: 0.6rem 0.75rem;
+  width: max-content;
+  max-width: 280px;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 0 16px var(--glow-green), 0 4px 16px rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
+
+.upgrade-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: var(--accent-green);
+}
+
+.upgrade-node:hover .upgrade-tooltip {
+  display: block;
+}
+
+.upgrade-tooltip-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Orbitron', 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.upgrade-tooltip-effect {
+  font-size: 0.75rem;
+  color: var(--accent-yellow);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  text-shadow: 0 0 4px rgba(255, 170, 34, 0.2);
+}
+
+.upgrade-tooltip-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+}
+
+.upgrade-tooltip-flavor {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.35;
+  margin-bottom: 0.25rem;
+}
+
+.upgrade-tooltip-cost {
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.upgrade-tooltip-level {
+  font-size: 0.65rem;
+  color: var(--accent-purple, #b070ff);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+

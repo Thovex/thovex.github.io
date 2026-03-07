@@ -27,14 +27,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # firebase-config.js is committed directly in cms/
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/voidresonance/package-lock.json
+
+      - name: Install Void Resonance dependencies
+        working-directory: apps/voidresonance
+        run: npm ci
+
+      - name: Build Void Resonance
+        working-directory: apps/voidresonance
+        run: npm run build
+
+      - name: Stage site artifact
+        run: |
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='apps' \
+            --exclude='_site' \
+            ./ ./_site/
+          mkdir -p ./_site/voidresonance
+          rsync -av --delete ./apps/voidresonance/dist/ ./_site/voidresonance/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
