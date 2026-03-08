@@ -1985,6 +1985,55 @@ span.flag-icon {
     font-size: 0.65rem;
 }
 
+/* Anonymous sessions collapsible */
+.game-stats-anon-toggle {
+    cursor: pointer;
+    user-select: none;
+}
+
+.game-stats-anon-header {
+    padding: 0.6rem 0.75rem !important;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border-top: 1px solid var(--border-subtle);
+    transition: color var(--transition-fast);
+}
+
+.game-stats-anon-toggle:hover .game-stats-anon-header {
+    color: var(--text-secondary);
+}
+
+.game-stats-anon-arrow {
+    display: inline-block;
+    transition: transform var(--transition-fast);
+    font-size: 0.6rem;
+    margin-right: 0.3rem;
+}
+
+.game-stats-anon-arrow.open {
+    transform: rotate(90deg);
+}
+
+.game-stats-anon-group {
+    display: none;
+}
+
+.game-stats-anon-group.expanded {
+    display: table-row;
+}
+
+.game-stats-subtable {
+    width: 100%;
+    border: none;
+    margin: 0;
+}
+
+.game-stats-subtable td {
+    opacity: 0.7;
+}
+
 .stats-loading {
     padding: 2rem;
     text-align: center;

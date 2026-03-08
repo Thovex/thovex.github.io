@@ -129,6 +129,12 @@ function countBy(arr, key) {
 
 // ─── Formatting ───
 
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 function fmtNum(n) {
     if (n >= 1e15) return (n / 1e15).toFixed(1) + 'Q';
     if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T';
@@ -192,6 +198,7 @@ function buildDashboard(agg, sessions) {
         <table class="game-stats-table">
             <thead>
                 <tr>
+                    <th>Player</th>
                     <th>Last Seen</th>
                     <th>Version</th>
                     <th>Playtime</th>
@@ -203,17 +210,7 @@ function buildDashboard(agg, sessions) {
                 </tr>
             </thead>
             <tbody>
-                ${sessions.slice(0, 25).map(s => `
-                <tr>
-                    <td>${fmtTimestamp(s.lastUpdate)}</td>
-                    <td><code>${s.appVersion ?? '?'}</code></td>
-                    <td>${fmtDuration(s.totalTimePlayed ?? 0)}</td>
-                    <td>${fmtNum(s.totalClicks ?? 0)}</td>
-                    <td>${fmtNum(s.totalFluxEarned ?? 0)}</td>
-                    <td>${s.prestigeCount ?? 0}</td>
-                    <td>${s.generatorsOwned ?? 0} <span class="text-muted">(${s.generatorTypes ?? 0} types)</span></td>
-                    <td>${s.isMobile ? '📱' : '🖥️'}</td>
-                </tr>`).join('')}
+                ${buildSessionRows(sessions)}
             </tbody>
         </table>
     </div>`;
@@ -247,4 +244,43 @@ function buildBreakdownSection(title, map) {
             </div>`;
         }).join('')}
     </div>`;
+}
+
+function sessionRow(s) {
+    return `
+    <tr>
+        <td>${s.playerName ? `<strong>${escapeHtml(s.playerName)}</strong>` : '<span class="text-muted">Anonymous</span>'}</td>
+        <td>${fmtTimestamp(s.lastUpdate)}</td>
+        <td><code>${s.appVersion ?? '?'}</code></td>
+        <td>${fmtDuration(s.totalTimePlayed ?? 0)}</td>
+        <td>${fmtNum(s.totalClicks ?? 0)}</td>
+        <td>${fmtNum(s.totalFluxEarned ?? 0)}</td>
+        <td>${s.prestigeCount ?? 0}</td>
+        <td>${s.generatorsOwned ?? 0} <span class="text-muted">(${s.generatorTypes ?? 0} types)</span></td>
+        <td>${s.isMobile ? '📱' : '🖥️'}</td>
+    </tr>`;
+}
+
+function buildSessionRows(sessions) {
+    const named = sessions.filter(s => s.playerName);
+    const anonymous = sessions.filter(s => !s.playerName);
+
+    let rows = named.slice(0, 50).map(sessionRow).join('');
+
+    if (anonymous.length > 0) {
+        const anonId = 'anon-sessions-' + Date.now();
+        rows += `
+        <tr class="game-stats-anon-toggle" onclick="var g=document.getElementById('${anonId}');g.classList.toggle('expanded');this.querySelector('.game-stats-anon-arrow').classList.toggle('open')">
+            <td colspan="9" class="game-stats-anon-header">
+                <span class="game-stats-anon-arrow">▶</span> Anonymous Sessions (${anonymous.length})
+            </td>
+        </tr>`;
+        rows += `<tr id="${anonId}" class="game-stats-anon-group"><td colspan="9" style="padding:0">
+            <table class="game-stats-table game-stats-subtable"><tbody>
+                ${anonymous.slice(0, 25).map(sessionRow).join('')}
+            </tbody></table>
+        </td></tr>`;
+    }
+
+    return rows;
 }
