@@ -1,0 +1,3 @@
+[submodule "apps/voidresonance"]
+	path = apps/voidresonance
+	url = https://github.com/Thovex/ClickerSpace.git
