@@ -1842,6 +1842,158 @@ span.flag-icon {
     }
 }
 
+/* ─── VoidResonance Game Stats ─── */
+
+.game-stats-section {
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 1.5rem;
+}
+
+.game-stats-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--color-cyan);
+    margin-bottom: 1rem;
+}
+
+.game-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.game-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.game-stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.game-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+}
+
+.game-stat-sub {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.game-stats-heading {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 1.5rem 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.game-stats-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.game-stats-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+}
+
+.game-stats-bar-label {
+    min-width: 100px;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
+
+.game-stats-bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--surface);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.game-stats-bar-fill {
+    height: 100%;
+    background: var(--color-cyan);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.game-stats-bar-value {
+    min-width: 70px;
+    text-align: right;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+}
+
+.game-stats-table-wrap {
+    overflow-x: auto;
+    margin-top: 0.5rem;
+}
+
+.game-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+}
+
+.game-stats-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.game-stats-table td {
+    padding: 0.4rem 0.75rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.game-stats-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.game-stats-table .text-muted {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+}
+
+.stats-loading {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+}
+
 .stat-sub {
     font-size: 0.7rem;
     color: var(--text-muted);

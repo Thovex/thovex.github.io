@@ -13,6 +13,32 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    // VoidResonance game sessions: anyone can create/update their own
+    // session; only admin can read aggregate data.
+    match /voidresonance_sessions/{sessionId} {
+      allow create, update: if isValidSession();
+      allow read: if isAdmin();
+    }
+
+    // Validate incoming session documents have the expected shape
+    // and contain no unexpected fields.
+    function isValidSession() {
+      let data = request.resource.data;
+      return data.keys().hasAll([
+               'sessionId', 'appVersion', 'sessionStart', 'lastUpdate',
+               'totalTimePlayed', 'totalFluxEarned', 'totalDataEarned',
+               'totalClicks', 'prestigeCount', 'voidCollapseCount',
+               'singularityCount', 'generatorsOwned', 'generatorTypes',
+               'researchCompleted', 'achievementsUnlocked',
+               'expeditionsCompleted', 'ascendancyPath', 'isMobile',
+               'screenWidth', 'screenHeight'
+             ])
+          && data.sessionId is string
+          && data.sessionId.size() <= 64
+          && data.totalTimePlayed is number
+          && data.totalClicks is number;
+    }
+
     // Helper: check if the authenticated user is the sole admin
     function isAdmin() {
       return request.auth != null

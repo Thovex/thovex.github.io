@@ -27,6 +27,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js';
 
 import { initStatistics, saveGA4Property } from './statistics.js';
+import { initGameStats, renderGameStats } from './game-stats.js';
 
 // ─── Constants ───
 const ALLOWED_EMAIL = 'thovexii@gmail.com';
@@ -48,6 +49,7 @@ try {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+    initGameStats(app);
 } catch (e) {
     console.error('Firebase init failed:', e.message);
     showToast('Firebase not configured. Copy firebase-config.example.js → firebase-config.js and add your keys.', 'error');
@@ -976,6 +978,7 @@ function switchTab(tabName) {
     // Init statistics when tab is shown
     if (tabName === 'statistics') {
         initStatistics();
+        renderGameStats();
     }
 }
 
