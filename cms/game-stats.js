@@ -10,8 +10,6 @@ import {
     query,
     orderBy,
     limit,
-    where,
-    Timestamp,
 } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js';
 
 let db = null;
@@ -22,11 +20,20 @@ let initialized = false;
 export function initGameStats(firebaseApp) {
     if (!firebaseApp) return;
     db = getFirestore(firebaseApp);
+    console.log('[game-stats] initialized with Firestore');
 }
 
 export async function renderGameStats() {
     const container = document.getElementById('gameStatsContent');
-    if (!container || !db) return;
+    if (!container) {
+        console.error('[game-stats] #gameStatsContent element not found');
+        return;
+    }
+    if (!db) {
+        container.innerHTML = '<div class="stats-empty"><h3>Firestore not initialized</h3><p>initGameStats() was not called or Firebase failed to load.</p></div>';
+        console.error('[game-stats] db is null — initGameStats() was not called');
+        return;
+    }
 
     container.innerHTML = '<div class="stats-loading">Loading game session data…</div>';
 
