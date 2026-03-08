@@ -38,7 +38,11 @@ export async function renderGameStats() {
     container.innerHTML = '<div class="stats-loading">Loading game session data…</div>';
 
     try {
-        const sessions = await fetchSessions();
+        const sessions = (await fetchSessions()).filter(s => {
+            const v = s.appVersion ?? '';
+            const major = parseInt(v.split('.')[0], 10);
+            return !isNaN(major) && major >= 1;
+        });
         if (sessions.length === 0) {
             container.innerHTML = `
                 <div class="stats-empty">
@@ -262,22 +266,60 @@ function sessionRow(s) {
 }
 
 function buildSessionRows(sessions) {
-    const named = sessions.filter(s => s.playerName);
-    const anonymous = sessions.filter(s => !s.playerName);
+    // Group sessions by version
+    const versionMap = {};
+    for (const s of sessions) {
+        const v = s.appVersion ?? '(unknown)';
+        if (!versionMap[v]) versionMap[v] = [];
+        versionMap[v].push(s);
+    }
 
-    let rows = named.slice(0, 50).map(sessionRow).join('');
+    // Sort versions descending (newest first)
+    const sortedVersions = Object.keys(versionMap).sort((a, b) => {
+        const pa = a.split('.').map(Number);
+        const pb = b.split('.').map(Number);
+        for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+            const diff = (pb[i] ?? 0) - (pa[i] ?? 0);
+            if (diff !== 0) return diff;
+        }
+        return 0;
+    });
 
-    if (anonymous.length > 0) {
-        const anonId = 'anon-sessions-' + Date.now();
+    let rows = '';
+    const uid = Date.now();
+
+    for (const version of sortedVersions) {
+        const group = versionMap[version];
+        const named = group.filter(s => s.playerName);
+        const anonymous = group.filter(s => !s.playerName);
+        const groupId = 'ver-' + version.replace(/\W/g, '-') + '-' + uid;
+        const anonId = groupId + '-anon';
+
         rows += `
-        <tr class="game-stats-anon-toggle" onclick="var g=document.getElementById('${anonId}');g.classList.toggle('expanded');this.querySelector('.game-stats-anon-arrow').classList.toggle('open')">
+        <tr class="game-stats-anon-toggle" onclick="var g=document.getElementById('${groupId}');g.classList.toggle('expanded');this.querySelector('.game-stats-anon-arrow').classList.toggle('open')">
             <td colspan="9" class="game-stats-anon-header">
-                <span class="game-stats-anon-arrow">▶</span> Anonymous Sessions (${anonymous.length})
+                <span class="game-stats-anon-arrow">▶</span> v${escapeHtml(version)} (${group.length} session${group.length !== 1 ? 's' : ''})
             </td>
-        </tr>`;
-        rows += `<tr id="${anonId}" class="game-stats-anon-group"><td colspan="9" style="padding:0">
+        </tr>
+        <tr id="${groupId}" class="game-stats-anon-group"><td colspan="9" style="padding:0">
             <table class="game-stats-table game-stats-subtable"><tbody>
-                ${anonymous.slice(0, 25).map(sessionRow).join('')}
+                ${named.slice(0, 50).map(sessionRow).join('')}`;
+
+        if (anonymous.length > 0) {
+            rows += `
+                <tr class="game-stats-anon-toggle" onclick="var g=document.getElementById('${anonId}');g.classList.toggle('expanded');this.querySelector('.game-stats-anon-arrow').classList.toggle('open')">
+                    <td colspan="9" class="game-stats-anon-header">
+                        <span class="game-stats-anon-arrow">▶</span> Anonymous Sessions (${anonymous.length})
+                    </td>
+                </tr>
+                <tr id="${anonId}" class="game-stats-anon-group"><td colspan="9" style="padding:0">
+                    <table class="game-stats-table game-stats-subtable"><tbody>
+                        ${anonymous.slice(0, 25).map(sessionRow).join('')}
+                    </tbody></table>
+                </td></tr>`;
+        }
+
+        rows += `
             </tbody></table>
         </td></tr>`;
     }
