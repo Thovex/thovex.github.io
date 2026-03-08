@@ -30,11 +30,13 @@ service cloud.firestore {
                'totalClicks', 'prestigeCount', 'voidCollapseCount',
                'singularityCount', 'generatorsOwned', 'generatorTypes',
                'researchCompleted', 'achievementsUnlocked',
-               'expeditionsCompleted', 'ascendancyPath', 'isMobile',
-               'screenWidth', 'screenHeight'
+               'expeditionsCompleted', 'ascendancyPath', 'playerName',
+               'isMobile', 'screenWidth', 'screenHeight'
              ])
           && data.sessionId is string
           && data.sessionId.size() <= 64
+          && data.playerName is string
+          && data.playerName.size() <= 32
           && data.totalTimePlayed is number
           && data.totalClicks is number;
     }
