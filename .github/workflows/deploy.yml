@@ -8,14 +8,14 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 # Allow only one concurrent deployment
 concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -27,8 +27,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true
-          token: ${{ secrets.SUBMODULE_PAT }}
+          token: ${{ github.token }}
+
+      - name: Sync Void Resonance submodule
+        env:
+          SUBMODULE_PAT: ${{ secrets.SUBMODULE_PAT }}
+        run: |
+          if [ -z "$SUBMODULE_PAT" ]; then
+            echo "::error::SUBMODULE_PAT is required to fetch apps/voidresonance"
+            exit 1
+          fi
+          case "$SUBMODULE_PAT" in
+            *$'\n'*|*$'\r'*)
+              echo "::error::SUBMODULE_PAT must not contain newlines"
+              exit 1
+              ;;
+          esac
+
+          credentials_file="$(mktemp)"
+          cleanup() {
+            git config --global --unset credential.helper || true
+            rm -f "$credentials_file"
+          }
+          trap cleanup EXIT
+          git config --global credential.helper "store --file=$credentials_file"
+          printf 'protocol=https\nhost=github.com\nusername=x-access-token\npassword=%s\n\n' "$SUBMODULE_PAT" | git credential approve
+          git submodule sync -- apps/voidresonance
+          git submodule update --init --remote apps/voidresonance
+
+      - name: Push submodule update
+        if: github.actor != 'github-actions[bot]'
+        run: |
+          if git diff --quiet --exit-code -- apps/voidresonance; then
+            echo "Submodule already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/voidresonance
+          git commit -m "chore: update voidresonance submodule"
+          git push origin HEAD:${{ github.ref_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -67,4 +106,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
