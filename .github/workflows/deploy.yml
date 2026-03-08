@@ -8,7 +8,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -27,8 +27,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true
-          token: ${{ secrets.SUBMODULE_PAT }}
+          token: ${{ github.token }}
+
+      - name: Sync Void Resonance submodule
+        env:
+          SUBMODULE_PAT: ${{ secrets.SUBMODULE_PAT }}
+        run: |
+          if [ -z "$SUBMODULE_PAT" ]; then
+            echo "::error::SUBMODULE_PAT is required to fetch apps/voidresonance"
+            exit 1
+          fi
+
+          auth_header=$(printf 'x-access-token:%s' "$SUBMODULE_PAT" | base64 -w0)
+          git submodule sync -- apps/voidresonance
+          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic $auth_header" \
+            submodule update --init --remote --depth=1 apps/voidresonance
+
+      - name: Push submodule update
+        run: |
+          if git diff --quiet --exit-code -- apps/voidresonance; then
+            echo "Submodule already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/voidresonance
+          git commit -m "chore: update voidresonance submodule"
+          git push
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -67,4 +93,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
