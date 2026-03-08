@@ -2089,6 +2089,119 @@ span.flag-icon {
     font-size: 0.8rem;
 }
 
+/* ─── Portfolio Stats Header ─── */
+.portfolio-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.portfolio-stats-header.revealed {
+    animation: brutalist-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.portfolio-stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.portfolio-stats-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+}
+
+/* ─── Void Resonance Stats Section ─── */
+.vr-stats-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(168, 85, 247, 0.2);
+    position: relative;
+}
+
+.vr-stats-section::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a855f7, transparent);
+    opacity: 0.6;
+}
+
+.vr-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.vr-stats-header.revealed {
+    animation: brutalist-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.vr-stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #a855f7;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.vr-stats-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+}
+
+.vr-stat-card:hover {
+    border-color: rgba(168, 85, 247, 0.3) !important;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.08), inset 0 0 20px rgba(168, 85, 247, 0.03) !important;
+}
+
+.vr-stat-card::before {
+    background: linear-gradient(90deg, transparent, #a855f7, transparent) !important;
+}
+
+.vr-stats-section .stats-table tbody tr:hover td {
+    background: rgba(168, 85, 247, 0.04);
+}
+
+.vr-stats-section .stats-table td:nth-child(n+2) {
+    color: #a855f7;
+}
+
+.vr-stats-section .stats-table-section h3 svg {
+    stroke: #a855f7;
+}
+
+.vr-stats-section .trend-chart-wrap {
+    background: rgba(168, 85, 247, 0.015);
+}
+
+.vr-stats-section .trend-chart-section h3 svg {
+    color: #a855f7;
+}
+
 /* ─── Stats Responsive ─── */
 @media (max-width: 768px) {
     .stats-grid {
