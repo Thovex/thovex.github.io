@@ -14,7 +14,7 @@ permissions:
 
 # Allow only one concurrent deployment
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -38,10 +38,16 @@ jobs:
             exit 1
           fi
 
-          auth_header=$(printf 'x-access-token:%s' "$SUBMODULE_PAT" | base64 -w0)
+          credentials_file="$(mktemp)"
+          cleanup() {
+            git config --global --unset credential.helper || true
+            rm -f "$credentials_file"
+          }
+          trap cleanup EXIT
+          git config --global credential.helper "store --file=$credentials_file"
+          printf 'protocol=https\nhost=github.com\nusername=x-access-token\npassword=%s\n\n' "$SUBMODULE_PAT" | git credential approve
           git submodule sync -- apps/voidresonance
-          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic $auth_header" \
-            submodule update --init --remote --depth=1 apps/voidresonance
+          git submodule update --init --remote --depth=1 apps/voidresonance
 
       - name: Push submodule update
         run: |
