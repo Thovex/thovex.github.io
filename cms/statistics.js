@@ -434,23 +434,27 @@ async function fetchAnalytics(propertyId) {
         const results = await Promise.all(fetches);
         const realtimeData = results[0];
 
+        // Named indices for clarity — order must match the fetches array above
+        const IDX_OVERVIEW = 1, IDX_PAGES = 2, IDX_REFERRERS = 3, IDX_COUNTRIES = 4, IDX_TREND = 5;
+        const IDX_VR_OVERVIEW = 6, IDX_VR_PAGES = 7, IDX_VR_COUNTRIES = 8, IDX_VR_TREND = 9, IDX_VR_REFERRERS = 10;
+
         let data;
         if (cachedData) {
             data = { ...cachedData, realtime: realtimeData };
         } else {
             data = {
                 realtime: realtimeData,
-                overview: parseOverview(results[1]),
-                pages: parseTable(results[2]),
-                referrers: parseTable(results[3]),
-                countries: parseTable(results[4]),
-                dailyTrend: parseDailyTrend(results[5]),
+                overview: parseOverview(results[IDX_OVERVIEW]),
+                pages: parseTable(results[IDX_PAGES]),
+                referrers: parseTable(results[IDX_REFERRERS]),
+                countries: parseTable(results[IDX_COUNTRIES]),
+                dailyTrend: parseDailyTrend(results[IDX_TREND]),
                 vr: {
-                    overview: parseOverview(results[6]),
-                    pages: parseTable(results[7]),
-                    countries: parseTable(results[8]),
-                    dailyTrend: parseDailyTrend(results[9]),
-                    referrers: parseTable(results[10])
+                    overview: parseOverview(results[IDX_VR_OVERVIEW]),
+                    pages: parseTable(results[IDX_VR_PAGES]),
+                    countries: parseTable(results[IDX_VR_COUNTRIES]),
+                    dailyTrend: parseDailyTrend(results[IDX_VR_TREND]),
+                    referrers: parseTable(results[IDX_VR_REFERRERS])
                 }
             };
             sessionStorage.setItem(CACHE_KEY, JSON.stringify({
@@ -994,11 +998,11 @@ function renderStats(data) {
             </div>
         </div>
 
+        ${vrHTML}
+
         <div class="stats-footer">
             <span>Data from Google Analytics 4 · Realtime updates every 15s · <button class="btn-link" id="btnRefreshStats">Refresh All</button></span>
         </div>
-
-        ${vrHTML}
     `;
 
     // Animate
