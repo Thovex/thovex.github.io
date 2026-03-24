@@ -326,7 +326,12 @@ ul {
 }
 
 .hero-title .highlight {
+    display: block;
     color: var(--accent);
+    font-size: clamp(1rem, 2.5vw, 1.6rem);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-top: 0.5rem;
     position: relative;
 }
 
@@ -673,7 +678,7 @@ ul {
    ========================================================================== */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
 }
 
@@ -1210,7 +1215,7 @@ ul {
 
 .work-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.2rem;
 }
 
@@ -1297,7 +1302,7 @@ ul {
 
 .media-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1rem;
 }
 
