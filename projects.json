@@ -1,804 +1,788 @@
 [
-  {
-    "id": "dtail-spaces",
-    "card": true,
-    "title": "Dtail Spaces",
-    "language": "C++",
-    "engine": "Unreal",
-    "role": "Game Programmer",
-    "duration": "Active",
-    "datetime": "2025-Present",
-    "minisrc": "res/projects/dtail-spaces/mini.png",
-    "banner": "res/projects/dtail-spaces/banner.png",
-    "type": "PixelPool",
-    "description": "A 3D application built with Unreal Engine 5 that lets fashion brands create virtual store environments with fixtures and products.",
-    "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces.",
-    "work": [
-      {
-        "title": "Refactoring",
-        "description": "Working on Refactoring large portions of the Project."
-      },
-      {
-        "title": "Feature Development",
-        "description": "Developing new features for the application (NDA)."
-      }
-    ],
-    "tags": [
-      "gameplay",
-      "refactoring",
-      "optimization"
-    ],
-    "socials": [
-      {
-        "info": "dtail.com",
-        "url": "https://www.dtail.com/",
-        "icon": "res/ico_site.png"
-      }
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/dtail-spaces/ss_01.png",
-        "alt": "Virtual showroom with fixtures and product displays"
-      },
-      {
-        "src": "res/projects/dtail-spaces/ss_02.jpg",
-        "alt": "Environment overview"
-      },
-      {
-        "src": "res/projects/dtail-spaces/ss_03.png",
-        "alt": "DIsplays and Products"
-      },
-      {
-        "src": "res/projects/dtail-spaces/ss_04.png",
-        "alt": "Connect to the Platform"
-      }
-    ]
-  },
-  {
-    "id": "ember-sword",
-    "card": true,
-    "title": "Ember Sword",
-    "language": "C++",
-    "engine": "Radiance",
-    "role": "Gameplay Programmer",
-    "duration": "4y+",
-    "datetime": "2021-2025",
-    "minisrc": "res/projects/ember-sword/mini.png",
-    "banner": "res/projects/ember-sword/banner.png",
-    "type": "BSS",
-    "description": "An open-world sandbox MMORPG by Bright Star Studios.",
-    "longdescription": "Ember Sword is a browser based MMORPG. Players can explore a large variety of environments, towns, craft and do combat with unique NPCs and bosses with combat inspired by the popular VRising or run a global emporium with running Trade packs across the world.",
-    "work": [
-      {
-        "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon.",
-        "title": "Exploration"
-      },
-      {
-        "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic.",
-        "title": "Trade Packs"
-      },
-      {
-        "title": "Combat",
-        "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server."
-      },
-      {
-        "title": "Gameplay Data",
-        "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more."
-      },
-      {
-        "title": "Creature Behaviors",
-        "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases."
-      },
-      {
-        "title": "Gathering",
-        "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced."
-      },
-      {
-        "title": "Crafting",
-        "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items."
-      },
-      {
-        "title": "Quests",
-        "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives."
-      },
-      {
-        "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system.",
-        "title": "Player Interaction"
-      },
-      {
-        "title": "Boss Battles",
-        "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced."
-      },
-      {
+    {
+        "id": "dtail-spaces",
+        "card": true,
+        "title": "Dtail Spaces",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "Active",
+        "datetime": "2025-Present",
+        "minisrc": "res/projects/dtail-spaces/mini.png",
+        "banner": "res/projects/dtail-spaces/banner.png",
+        "type": "PixelPool",
+        "description": "A 3D application built with Unreal Engine 5 that lets fashion brands create virtual store environments with fixtures and products.",
+        "longdescription": "Dtail Spaces is an interactive 3D application where fashion brands can build hyperrealistic virtual showrooms by dragging and dropping fixtures and products into customizable retail spaces.",
+        "work": [
+            {
+                "description": "Working on Refactoring large portions of the Project.",
+                "title": "Refactoring"
+            },
+            {
+                "description": "Developing new features for the application (NDA).",
+                "title": "Feature Development"
+            }
+        ],
+        "tags": [
+            "gameplay",
+            "refactoring",
+            "optimization"
+        ],
+        "socials": [
+            {
+                "icon": "res/ico_site.png",
+                "info": "dtail.com",
+                "url": "https://www.dtail.com/"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/dtail-spaces/ss_01.png",
+                "alt": "Virtual showroom with fixtures and product displays"
+            },
+            {
+                "alt": "Environment overview",
+                "src": "res/projects/dtail-spaces/ss_02.jpg"
+            },
+            {
+                "src": "res/projects/dtail-spaces/ss_03.png",
+                "alt": "DIsplays and Products"
+            },
+            {
+                "alt": "Connect to the Platform",
+                "src": "res/projects/dtail-spaces/ss_04.png"
+            }
+        ]
+    },
+    {
+        "id": "ember-sword",
+        "card": true,
+        "title": "Ember Sword",
+        "language": "C++",
+        "engine": "Radiance",
+        "role": "Gameplay Programmer",
+        "duration": "4y+",
+        "datetime": "2021-2025",
+        "minisrc": "res/projects/ember-sword/mini.png",
+        "banner": "res/projects/ember-sword/banner.png",
+        "type": "BSS",
+        "description": "An open-world sandbox MMORPG by Bright Star Studios.",
+        "longdescription": "Ember Sword is a browser based MMORPG. Players can explore a large variety of environments, towns, craft and do combat with unique NPCs and bosses with combat inspired by the popular VRising or run a global emporium with running Trade packs across the world.",
+        "work": [
+            {
+                "title": "Exploration",
+                "description": "Built the open world featuring PvP zones, player-owned plots, questing, creature spawners, and patrolling creatures. Also worked on the instanced gameplay mechanics in the Ultra Deep dungeon."
+            },
+            {
+                "title": "Trade Packs",
+                "description": "Built the Trade Pack system where players gather resources, craft them into trade packs, and deliver them across the map for profit. Other players can steal your packs, creating a real risk vs reward dynamic."
+            },
+            {
+                "description": "Helped set up and iterate on the Ability system. Ember Sword uses a custom timeline system where we assign triggers to specific times, allowing things to happen simultaneously on client and server.",
+                "title": "Combat"
+            },
+            {
+                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced data tracking, and more.",
+                "title": "Gameplay Data"
+            },
+            {
+                "description": "Built a custom Behavior Tree solution with an engine visualizer to inspect real-time creature decision-making. Examples: boars encircle players, bandit javelin throwers keep distance, and the Ultra Deep boss has unique abilities and phases.",
+                "title": "Creature Behaviors"
+            },
+            {
+                "description": "Created the first iteration of the gathering system. It was later overhauled by another team member, but the original design was eventually brought back and enhanced.",
+                "title": "Gathering"
+            },
+            {
+                "description": "Built the server-side crafting mechanics. Players collect resources, find interactive crafting tables in the world, and use them to make items.",
+                "title": "Crafting"
+            },
+            {
+                "description": "Designed and built a questing system together with my gameplay lead (ex-World of Warcraft). It's built to be performant and easy to extend with new quest objectives.",
+                "title": "Quests"
+            },
+            {
+                "title": "Player Interaction",
+                "description": "Built PvP as a game mechanic, worked on the chat system, supported parties, and created the Emote system."
+            },
+            {
+                "description": "Each boss has custom mechanics. Canavar uses close-range abilities based on player positions and charges to close gaps. Shauk returns to the center of a circular arena for special attacks and has two phases where every attack is greatly enhanced.",
+                "title": "Boss Battles"
+            },
+            {
+                "description": "Many other systems and features I contributed to over 4+ years.",
+                "title": "And more..."
+            }
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/ember-sword/ss_04.png",
+                "alt": "Ember Sword open world with player characters in a fantasy landscape"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_01.png",
+                "alt": "Ember Sword combat encounter with creatures in a forest biome"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_02.png",
+                "alt": "Ember Sword player-owned land plots and town building"
+            },
+            {
+                "src": "res/projects/ember-sword/ss_03.png",
+                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
+            }
+        ],
+        "videos": [
+            {
+                "src": "res/projects/ember-sword/vid_01.webm",
+                "alt": "Ember Sword open world exploration gameplay"
+            },
+            {
+                "alt": "Ember Sword PvP combat and ability system",
+                "src": "res/projects/ember-sword/vid_02.webm"
+            },
+            {
+                "alt": "Ember Sword creature behaviors and AI in action",
+                "src": "res/projects/ember-sword/vid_03.webm"
+            },
+            {
+                "alt": "Ember Sword trade pack system and gathering",
+                "src": "res/projects/ember-sword/vid_04.webm"
+            }
+        ]
+    },
+    {
+        "id": "motherlode-tycoon",
+        "card": true,
+        "title": "Motherlode Tycoon",
+        "language": "Verse",
+        "engine": "UEFN",
+        "role": "Game Programmer",
+        "duration": "2m",
+        "datetime": "2025",
+        "minisrc": "res/projects/motherlode-tycoon/mini.png",
+        "banner": "res/projects/motherlode-tycoon/banner.png",
+        "type": "Zloppy-Games",
+        "description": "A take on the classic tycoon genre in Fortnite Creative, aiming for a fun and engaging experience without predatory hooks.",
+        "longdescription": "A tycoon game built in Fortnite Creative (UEFN) with my friend. We wanted to make something that's genuinely fun rather than just designed to keep kids glued to the screen.",
+        "work": [
+            {
+                "title": "Core Design",
+                "description": "Designed the core gameplay loop together with my friend: owning plots, building and upgrading structures, displaying resources, 3D world UI, and more."
+            },
+            {
+                "title": "Gathering",
+                "description": "Built responsive gathering feedback with clear visual information. Players collect resources from the world to build and upgrade structures."
+            },
+            {
+                "title": "Cosmetics",
+                "description": "Built a persistent cosmetics system where players can purchase and equip clothing, accessories, and other visual customizations."
+            },
+            {
+                "title": "Co-op Projects",
+                "description": "Built a cooperative system where players work together on shared objectives like building structures or gathering resources."
+            },
+            {
+                "title": "Teleportation, Barriers and More",
+                "description": "Built teleportation for quick travel, plus barriers that gate areas behind objectives or progression milestones."
+            },
+            {
+                "title": "Gifts",
+                "description": "Built a reward system for completing objectives, hitting milestones, or simply waiting."
+            },
+            {
+                "title": "Level Design",
+                "description": "Designed the main level layout including resource spawners, player plots, and the overall look and feel."
+            },
+            {
+                "title": "And more...",
+                "description": "Various other systems and features."
+            }
+        ],
+        "tags": [
+            "gameplay",
+            "design"
+        ],
+        "socials": [
+            {
+                "info": "fortnite.gg",
+                "url": "https://fortnite.gg/island?code=3579-7551-5955",
+                "icon": "res/ico_site.png"
+            }
+        ],
+        "videos": [
+            {
+                "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building",
+                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw"
+            }
+        ]
+    },
+    {
+        "id": "void-resonance",
+        "card": true,
+        "title": "Void Resonance",
+        "language": "TypeScript",
+        "engine": "React",
+        "role": "Game Programmer",
+        "duration": "Active",
+        "datetime": "2025-Present",
+        "minisrc": "res/projects/void-resonance/mini.png",
+        "banner": "res/projects/void-resonance/banner.png",
+        "type": "Hobby",
+        "description": "NOTE. This game is completely built from scratch by Claude & Copilot. Including this singular portfolio entry.\n\nA browser-based incremental idle game set in the void of space, featuring deep prestige layers and progression systems.",
+        "longdescription": "Void Resonance is an incremental idle game where players harvest flux from a void reactor, build generators, research technologies, and ascend through multiple prestige layers including Echoes, Void Collapse, and Singularity.",
+        "work": [
+            {
+                "title": "Core Gameplay Loop",
+                "description": "Built the clicking and idle mechanics: flux generation, generator production chains, upgrade system, and multi-tier buy modes."
+            },
+            {
+                "title": "Prestige Systems",
+                "description": "Designed and implemented three prestige layers: Echoes (soft reset for permanent boosts), Void Collapse (second prestige with Void Shards), and Singularity (third layer with Reality Fragments)."
+            },
+            {
+                "title": "Research Tree",
+                "description": "Created a research system with 18+ technologies that unlock new mechanics, boost production, and gate progression milestones."
+            },
+            {
+                "title": "Void Expeditions",
+                "description": "Built a side-activity system where players launch expeditions for artifacts, lore, and permanent bonuses."
+            },
+            {
+                "title": "Achievements & Events",
+                "description": "Implemented an achievement system tracking milestones across all game systems, plus random in-game events like click frenzies and void rifts."
+            },
+            {
+                "title": "In-Game Wiki",
+                "description": "Created a comprehensive wiki with LaTeX-rendered formulas explaining every game mechanic and production formula."
+            }
+        ],
+        "tags": [
+            "gameplay",
+            "ui"
+        ],
+        "socials": [
+            {
+                "info": "Play Void Resonance",
+                "url": "https://thovex.github.io/voidresonance/",
+                "icon": "res/ico_site.png"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/void-resonance/ss_01.png",
+                "alt": "Void Resonance early game with reactor and first generators"
+            },
+            {
+                "src": "res/projects/void-resonance/ss_02.png",
+                "alt": "Void Resonance mid-game with multiple generator types producing flux"
+            },
+            {
+                "src": "res/projects/void-resonance/ss_03.png",
+                "alt": "Void Resonance late-game with all generators and billions of flux per second"
+            }
+        ]
+    },
+    {
+        "id": "ecs-ue",
+        "card": true,
+        "title": "ECS for Unreal",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "6 months",
+        "datetime": "2023-2024",
+        "type": "Hobby",
+        "description": "Creating a prototype ECS system for Unreal Engine using EnTT.",
+        "longdescription": "After using EnTT for Ember Sword I got intrigued by using an ECS for game development. I decided to make a framework on top of Unreal to create entities, populate them with data and have systems manipulate or read the data.",
+        "work": [
+            {
+                "description": "Setting up the initial framework and syntaxing.",
+                "title": "Core Framework"
+            },
+            {
+                "description": "Important systems such as a Transform system, Rendering system, Collision system and Cleanup system have been built.",
+                "title": "Various Base Systems"
+            },
+            {
+                "description": "Inspecting an object in the hierarchy is extremely useful, therefor I created an inspector which reads the entity registry and lists their components. This tool also allows you to edit data on the fly.",
+                "title": "Inspector Tools"
+            }
+        ],
+        "tags": [
+            "ECS",
+            "Entities",
+            "EnTT"
+        ],
+        "videos": [
+            {
+                "src": "res/projects/ecs-ue/vid_02.mp4"
+            },
+            {
+                "src": "res/projects/ecs-ue/vid_01.mp4"
+            },
+            {
+                "src": "res/projects/ecs-ue/vid_04.mp4"
+            }
+        ]
+    },
+    {
+        "id": "farmion",
+        "card": true,
+        "title": "Farmion",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "6m",
+        "datetime": "2022-2023",
+        "minisrc": "res/projects/farmion/mini.png",
+        "banner": "res/projects/farmion/banner.png",
+        "type": "BH",
+        "description": "A time-management wizard-themed farming sim with cooperative play!",
+        "longdescription": "Solo dev production. Various art is from the Unreal Marketplace, some made by me. Farmion is a time-management wizard-themed farming sim with cooperative play!",
+        "work": [
+            {
+                "description": "Time management is everything. You have limited daylight and every day is a 'Tick' in gameplay terms. Forget to water crops? They die. Left your cows outside? They vanish. You'll die too if you're caught outside during the Cycle transition.",
+                "title": "A Cycle a Day"
+            },
+            {
+                "description": "You can hold and throw any object. Real physics isn't in play, just the illusion of it, keeping things reliable in multiplayer while still feeling satisfying.",
+                "title": "Physics Fun"
+            },
+            {
+                "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants.",
+                "title": "Stage-Based Farming"
+            },
+            {
+                "description": "Purchase upgrades like a Pantry to store goods, an Animal Barn for your livestock, a Greenhouse, and more.",
+                "title": "Upgrades Everywhere"
+            },
+            {
+                "description": "Games are better together. Farmion is designed for 1-6 players from the ground up.",
+                "title": "Multiplayer"
+            },
+            {
+                "description": "Redesign your magical mansion while waiting for the night to pass.",
+                "title": "House & Character Customization"
+            },
+            {
+                "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely.",
+                "title": "Cheese System"
+            },
+            {
+                "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive.",
+                "title": "Buffs System"
+            },
+            {
+                "description": "You can only hold one item at a time, so use carts to haul multiple items around.",
+                "title": "Transportation and Carts"
+            },
+            {
+                "description": "Various other systems and features.",
+                "title": "And more..."
+            }
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "socials": [
+            {
+                "icon": "res/projects/farmion/ico_01.png",
+                "info": "link.tree",
+                "url": "https://linktr.ee/baerandhoggo"
+            },
+            {
+                "info": "discord",
+                "url": "https://discord.gg/7X7gYf93ph",
+                "icon": "res/ico_discord.png"
+            }
+        ],
+        "screenshots": [
+            {
+                "alt": "Farmion magical mansion overview with surrounding farm plots",
+                "src": "res/projects/farmion/ss_11.png"
+            },
+            {
+                "src": "res/projects/farmion/ss_12.png",
+                "alt": "Farmion Steam store page capsule art"
+            },
+            {
+                "src": "res/projects/farmion/ss_01.png",
+                "alt": "Farmion crop farming with watering and growth stages"
+            },
+            {
+                "alt": "Farmion multiplayer co-op gathering resources together",
+                "src": "res/projects/farmion/ss_02.png"
+            },
+            {
+                "src": "res/projects/farmion/ss_03.png",
+                "alt": "Farmion animal barn with livestock management"
+            },
+            {
+                "alt": "Farmion player throwing objects with physics system",
+                "src": "res/projects/farmion/ss_04.png"
+            },
+            {
+                "alt": "Farmion cheese aging and crafting system",
+                "src": "res/projects/farmion/ss_05.png"
+            },
+            {
+                "alt": "Farmion upgrade shop with purchasable structures",
+                "src": "res/projects/farmion/ss_06.png"
+            },
+            {
+                "src": "res/projects/farmion/ss_07.png",
+                "alt": "Farmion house customization interior decorating"
+            },
+            {
+                "src": "res/projects/farmion/ss_08.png",
+                "alt": "Farmion day-night cycle transition with danger warning"
+            },
+            {
+                "src": "res/projects/farmion/ss_09.png",
+                "alt": "Farmion cart transportation hauling multiple items"
+            },
+            {
+                "alt": "Farmion Giant Statue buff system with item sacrifice",
+                "src": "res/projects/farmion/ss_10.png"
+            }
+        ],
+        "videos": [
+            {
+                "alt": "Farmion gameplay showcase with farming and co-op mechanics",
+                "src": "res/projects/farmion/vid_01.mp4"
+            }
+        ]
+    },
+    {
+        "id": "radiance",
+        "card": true,
+        "title": "Radiance Engine",
+        "language": "C++",
+        "engine": "Radiance",
+        "role": "Tools Programmer",
+        "duration": "4y+",
+        "datetime": "2021-2025",
+        "minisrc": "res/projects/radiance/mini.png",
+        "banner": "res/projects/radiance/banner.png",
+        "type": "BSS",
+        "description": "The creation of a web-based MMORPG game engine.",
+        "longdescription": "Radiance is a custom engine built by Bright Star Studios for the MMORPG Ember Sword. It's web-based, enabling cross-platform play.",
+        "work": [
+            {
+                "description": "Created a system to sync Unity with Radiance during the transition between engines. This let Level Design and World Design keep working in Unity until Radiance had matching capabilities.",
+                "title": "Unity to Radiance Sync"
+            },
+            {
+                "description": "Created an Animation State Machine Editor so designers could view animation states and their transitions visually.",
+                "title": "Animation State Machine Editor"
+            },
+            {
+                "description": "Built a visual Behavior Tree Editor for creating and modifying AI behaviors.",
+                "title": "Behavior Tree Editor"
+            },
+            {
+                "description": "Created an Item Editor for designers to create and modify in-game items.",
+                "title": "Item Editor"
+            },
+            {
+                "description": "Created a Crafting Recipe Editor for managing recipes. Both this and the Item Editor are built on a shared Base Editor Tool I created.",
+                "title": "Crafting Recipe Editor"
+            }
+        ],
+        "tags": [
+            "tools",
+            "engine"
+        ],
+        "screenshots": [
+            {
+                "alt": "Radiance Engine behavior tree editor with real-time AI visualization",
+                "src": "res/projects/radiance/ss_05.png"
+            },
+            {
+                "src": "res/projects/radiance/ss_01.png",
+                "alt": "Radiance Engine animation state machine editor interface"
+            },
+            {
+                "alt": "Radiance Engine item editor tool for game designers",
+                "src": "res/projects/radiance/ss_02.png"
+            },
+            {
+                "alt": "Radiance Engine crafting recipe editor with ingredient management",
+                "src": "res/projects/radiance/ss_03.png"
+            },
+            {
+                "src": "res/projects/radiance/ss_04.png",
+                "alt": "Radiance Engine Unity-to-Radiance level sync pipeline"
+            }
+        ]
+    },
+    {
+        "id": "bitfarers",
+        "card": true,
+        "title": "BitFarers",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "datetime": "2021",
+        "minisrc": "res/projects/bitfarers/mini.png",
+        "banner": "res/projects/bitfarers/banner.png",
+        "type": "Hobby",
+        "description": "A co-op dungeon running game with a theme traversal twist.",
+        "longdescription": "A theme-traversal co-op FPS with roguelike elements. Players travel through differently themed dungeons, each with unique mechanics and enemies, and upgrade their characters as they progress.",
+        "work": [
+            {
+                "description": "Created seamless multiplayer level transitions so all players travel through dungeon levels together and regroup at the lobby.",
+                "title": "Seamless Co-op"
+            },
+            {
+                "description": "Worked on weapon mechanics: shooting, reloading, weapon switching, aiming down sights, and more. Accuracy and feel had to be right for all players, with proper replication so everyone sees correct third-person muzzle flashes and projectiles.",
+                "title": "First Person Gunplay"
+            },
+            {
+                "description": "Implemented a loot table system for breakables, enemies, and chests.",
+                "title": "Loot, Loot, and Destructible Loot"
+            },
+            {
+                "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory.",
+                "title": "User Interface"
+            }
+        ],
+        "tags": [
+            "networking",
+            "gameplay"
+        ],
+        "screenshots": [
+            {
+                "alt": "BitFarers first-person view inside a themed dungeon corridor",
+                "src": "res/projects/bitfarers/ss_01.png"
+            },
+            {
+                "src": "res/projects/bitfarers/ss_02.png",
+                "alt": "BitFarers co-op gameplay with HUD showing health and ammo"
+            }
+        ],
+        "videos": [
+            {
+                "alt": "BitFarers dungeon exploration with weapon combat",
+                "src": "res/projects/bitfarers/vid_01.mp4"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_02.mp4",
+                "alt": "BitFarers multiplayer level transition between themed zones"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_03.mp4",
+                "alt": "BitFarers loot and destructible objects gameplay"
+            },
+            {
+                "src": "res/projects/bitfarers/vid_04.mp4",
+                "alt": "BitFarers lobby and character upgrade system"
+            }
+        ]
+    },
+    {
+        "id": "idle-cards",
+        "card": true,
+        "title": "IdleCards",
+        "language": "C#",
+        "engine": "Unity",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "datetime": "2020",
+        "minisrc": "res/projects/idle-cards/mini.png",
+        "banner": "res/projects/idle-cards/banner.png",
+        "type": "Hobby",
+        "description": "An idle game with card-based combat for phones.",
+        "longdescription": "An idle game at its core with an active card battling system on top. Players collect cards, upgrade them, and use them in battles to progress.",
+        "work": [
+            {
+                "description": "Created a turn-based card battling system with AI opponents. The AI evaluates the board state to determine its best move.",
+                "title": "Card Battling vs AI"
+            },
+            {
+                "description": "Built offline simulation so the game progresses while you're away. Come back to big numbers and that sweet dopamine hit.",
+                "title": "Offline Idle Progression"
+            },
+            {
+                "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings.",
+                "title": "Unity UI"
+            }
+        ],
+        "tags": [
+            "android",
+            "gameplay"
+        ],
+        "screenshots": [
+            {
+                "alt": "IdleCards card battle screen with AI opponent and board state",
+                "src": "res/projects/idle-cards/ss_02.png"
+            },
+            {
+                "src": "res/projects/idle-cards/ss_03.png",
+                "alt": "IdleCards collection and upgrade interface with card stats"
+            },
+            {
+                "alt": "IdleCards idle progression buildings and resource generation",
+                "src": "res/projects/idle-cards/ss_01.png"
+            }
+        ],
+        "videos": [
+            {
+                "alt": "IdleCards turn-based card combat against AI",
+                "src": "res/projects/idle-cards/vid_01.mp4"
+            },
+            {
+                "src": "res/projects/idle-cards/vid_02.mp4",
+                "alt": "IdleCards idle progression and building management"
+            }
+        ]
+    },
+    {
+        "id": "andromeda-resonance",
+        "card": true,
+        "title": "Andromeda Resonance",
+        "language": "C++",
+        "engine": "Unreal",
+        "role": "Game Programmer",
+        "duration": "4m",
+        "datetime": "2019",
+        "minisrc": "res/projects/andromeda-resonance/mini.png",
+        "banner": "res/projects/andromeda-resonance/banner.png",
+        "type": "HKU",
+        "description": "3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
+        "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. A 3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
+        "work": [
+            {
+                "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity.",
+                "title": "Wave Function Collapse"
+            },
+            {
+                "description": "Fly around the generated levels with a drone to showcase the results.",
+                "title": "Drone Flying"
+            },
+            {
+                "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm.",
+                "title": "Graduation Papers & Tools"
+            }
+        ],
+        "tags": [
+            "generation",
+            "gameplay"
+        ],
+        "videos": [
+            {
+                "alt": "Andromeda Resonance 3D Wave Function Collapse level generation demo",
+                "src": "https://youtu.be/7anvESagd90"
+            },
+            {
+                "alt": "Andromeda Resonance WFC data asset creation tutorial",
+                "src": "https://youtu.be/rkmlyX7Vv3I"
+            }
+        ]
+    },
+    {
+        "id": "cat",
+        "card": true,
+        "title": "Cat Parent",
+        "language": "meow-speak",
+        "engine": "Real Life",
+        "role": "Assistant",
+        "duration": "2y+",
+        "datetime": "2022",
+        "minisrc": "res/projects/cat/mini.png",
+        "banner": "res/projects/cat/mini.png",
+        "type": "Hobby",
+        "description": "Finn & Dusty need a lot of attention!",
+        "longdescription": "Two Ragdoll cats: one white, one grey. Excellent office staff.",
+        "work": [
+            {
+                "description": "",
+                "title": "Feeding the Cats"
+            },
+            {
+                "description": "",
+                "title": "Petting the Cats"
+            },
+            {
+                "description": "",
+                "title": "Playing with the Cats"
+            },
+            {
+                "description": "",
+                "title": "Cleaning the Litterbox"
+            }
+        ],
+        "tags": [
+            "joy"
+        ],
+        "screenshots": [
+            {
+                "src": "res/projects/cat/ss_01.png",
+                "alt": "Finn the white Ragdoll cat lounging on a desk"
+            },
+            {
+                "src": "res/projects/cat/ss_03.png",
+                "alt": "Dusty the grey Ragdoll cat supervising code reviews"
+            },
+            {
+                "alt": "Finn and Dusty napping together on the couch",
+                "src": "res/projects/cat/ss_04.png"
+            },
+            {
+                "alt": "Office setup with feline quality assurance team present",
+                "src": "res/projects/cat/ss_05.png"
+            },
+            {
+                "src": "res/projects/cat/ss_02.png",
+                "alt": "Close-up portrait of a Ragdoll cat with blue eyes"
+            }
+        ]
+    },
+    {
+        "id": "project-9",
+        "card": false,
+        "title": "Kio",
+        "language": "C++",
+        "engine": "Unreal",
+        "datetime": "2018",
+        "description": "A glassblowing puzzle and adventure game. Light all glass objects by blowing glass shapes that redirect light in specific directions.",
+        "archive": "https://web.archive.org/web/20220528013025/https://jessevanvliet.com/portfolio-kio.php"
+    },
+    {
+        "id": "project-10",
+        "card": false,
+        "title": "StratEgel GameWork",
+        "language": "C++",
+        "engine": "Unreal",
+        "datetime": "2017",
+        "description": "A framework by StratEgel B.V. in cooperation with Strategis for social gameplay. Players create an ideal world while balancing the goals of multiple parties.",
+        "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/portfolio-gamework.php"
+    },
+    {
+        "id": "project-11",
+        "card": false,
+        "title": "Hack Stevie",
+        "language": "C#",
+        "engine": "Unity",
+        "datetime": "2017",
+        "description": "A game for Dutch primary school kids (groups 7 and 8) to raise cybersecurity awareness. Built during my internship at Flavour for 'De week van de Mediawijsheid'. This game is the prequel to 'Hack Shield'.",
+        "archive": "https://web.archive.org/web/20190415160215/https://jessevanvliet.com/portfolio-hackstevie.php"
+    },
+    {
+        "id": "project-12",
+        "card": false,
         "title": "And more...",
-        "description": "Many other systems and features I contributed to over 4+ years."
-      }
-    ],
-    "tags": [
-      "networking",
-      "gameplay"
-    ],
-    "screenshots": [
-      {
-        "alt": "Ember Sword open world with player characters in a fantasy landscape",
-        "src": "res/projects/ember-sword/ss_04.png"
-      },
-      {
-        "src": "res/projects/ember-sword/ss_01.png",
-        "alt": "Ember Sword combat encounter with creatures in a forest biome"
-      },
-      {
-        "alt": "Ember Sword player-owned land plots and town building",
-        "src": "res/projects/ember-sword/ss_02.png"
-      },
-      {
-        "src": "res/projects/ember-sword/ss_03.png",
-        "alt": "Ember Sword Ultra Deep dungeon boss encounter"
-      }
-    ],
-    "videos": [
-      {
-        "src": "res/projects/ember-sword/vid_01.webm",
-        "alt": "Ember Sword open world exploration gameplay"
-      },
-      {
-        "alt": "Ember Sword PvP combat and ability system",
-        "src": "res/projects/ember-sword/vid_02.webm"
-      },
-      {
-        "alt": "Ember Sword creature behaviors and AI in action",
-        "src": "res/projects/ember-sword/vid_03.webm"
-      },
-      {
-        "src": "res/projects/ember-sword/vid_04.webm",
-        "alt": "Ember Sword trade pack system and gathering"
-      }
-    ]
-  },
-  {
-    "id": "motherlode-tycoon",
-    "card": true,
-    "title": "Motherlode Tycoon",
-    "language": "Verse",
-    "engine": "UEFN",
-    "role": "Game Programmer",
-    "duration": "2m",
-    "datetime": "2025",
-    "minisrc": "res/projects/motherlode-tycoon/mini.png",
-    "banner": "res/projects/motherlode-tycoon/banner.png",
-    "type": "Zloppy-Games",
-    "description": "A take on the classic tycoon genre in Fortnite Creative, aiming for a fun and engaging experience without predatory hooks.",
-    "longdescription": "A tycoon game built in Fortnite Creative (UEFN) with my friend. We wanted to make something that's genuinely fun rather than just designed to keep kids glued to the screen.",
-    "work": [
-      {
-        "title": "Core Design",
-        "description": "Designed the core gameplay loop together with my friend: owning plots, building and upgrading structures, displaying resources, 3D world UI, and more."
-      },
-      {
-        "title": "Gathering",
-        "description": "Built responsive gathering feedback with clear visual information. Players collect resources from the world to build and upgrade structures."
-      },
-      {
-        "title": "Cosmetics",
-        "description": "Built a persistent cosmetics system where players can purchase and equip clothing, accessories, and other visual customizations."
-      },
-      {
-        "title": "Co-op Projects",
-        "description": "Built a cooperative system where players work together on shared objectives like building structures or gathering resources."
-      },
-      {
-        "title": "Teleportation, Barriers and More",
-        "description": "Built teleportation for quick travel, plus barriers that gate areas behind objectives or progression milestones."
-      },
-      {
-        "title": "Gifts",
-        "description": "Built a reward system for completing objectives, hitting milestones, or simply waiting."
-      },
-      {
-        "title": "Level Design",
-        "description": "Designed the main level layout including resource spawners, player plots, and the overall look and feel."
-      },
-      {
-        "title": "And more...",
-        "description": "Various other systems and features."
-      }
-    ],
-    "tags": [
-      "gameplay",
-      "design"
-    ],
-    "socials": [
-      {
-        "info": "fortnite.gg",
-        "url": "https://fortnite.gg/island?code=3579-7551-5955",
-        "icon": "res/ico_site.png"
-      }
-    ],
-    "videos": [
-      {
-        "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
-        "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building"
-      }
-    ]
-  },
-  {
-    "id": "void-resonance",
-    "card": true,
-    "title": "Void Resonance",
-    "language": "TypeScript",
-    "engine": "React",
-    "role": "Game Programmer",
-    "duration": "Active",
-    "datetime": "2025-Present",
-    "minisrc": "res/projects/void-resonance/mini.png",
-    "banner": "res/projects/void-resonance/banner.png",
-    "type": "Hobby",
-    "description": "A browser-based incremental idle game set in the void of space, featuring deep prestige layers and progression systems.",
-    "longdescription": "Void Resonance is an incremental idle game where players harvest flux from a void reactor, build generators, research technologies, and ascend through multiple prestige layers including Echoes, Void Collapse, and Singularity.",
-    "work": [
-      {
-        "title": "Core Gameplay Loop",
-        "description": "Built the clicking and idle mechanics: flux generation, generator production chains, upgrade system, and multi-tier buy modes."
-      },
-      {
-        "title": "Prestige Systems",
-        "description": "Designed and implemented three prestige layers: Echoes (soft reset for permanent boosts), Void Collapse (second prestige with Void Shards), and Singularity (third layer with Reality Fragments)."
-      },
-      {
-        "title": "Research Tree",
-        "description": "Created a research system with 18+ technologies that unlock new mechanics, boost production, and gate progression milestones."
-      },
-      {
-        "title": "Void Expeditions",
-        "description": "Built a side-activity system where players launch expeditions for artifacts, lore, and permanent bonuses."
-      },
-      {
-        "title": "Achievements & Events",
-        "description": "Implemented an achievement system tracking milestones across all game systems, plus random in-game events like click frenzies and void rifts."
-      },
-      {
-        "title": "In-Game Wiki",
-        "description": "Created a comprehensive wiki with LaTeX-rendered formulas explaining every game mechanic and production formula."
-      }
-    ],
-    "tags": [
-      "gameplay",
-      "ui"
-    ],
-    "socials": [
-      {
-        "info": "Play Void Resonance",
-        "url": "https://thovex.github.io/voidresonance/",
-        "icon": "res/ico_site.png"
-      }
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/void-resonance/ss_01.png",
-        "alt": "Void Resonance early game with reactor and first generators"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_02.png",
-        "alt": "Void Resonance mid-game with multiple generator types producing flux"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_03.png",
-        "alt": "Void Resonance late-game with all generators and billions of flux per second"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_04.png",
-        "alt": "Void Resonance Echo Chamber prestige system with permanent upgrades"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_05.png",
-        "alt": "Void Resonance Void Collapse second prestige layer with shard upgrades"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_06.png",
-        "alt": "Void Resonance Singularity endgame system with dimensional upgrades"
-      },
-      {
-        "src": "res/projects/void-resonance/ss_07.png",
-        "alt": "Void Resonance in-game wiki with LaTeX formulas explaining game mechanics"
-      }
-    ]
-  },
-  {
-    "id": "ecs-ue",
-    "card": true,
-    "title": "ECS for Unreal",
-    "language": "C++",
-    "engine": "Unreal",
-    "role": "Game Programmer",
-    "duration": "6 months",
-    "datetime": "2023-2024",
-    "type": "Hobby",
-    "description": "Creating a prototype ECS system for Unreal Engine using EnTT.",
-    "longdescription": "After using EnTT for Ember Sword I got intrigued by using an ECS for game development. I decided to make a framework on top of Unreal to create entities, populate them with data and have systems manipulate or read the data.",
-    "work": [
-      {
-        "title": "Core Framework",
-        "description": "Setting up the initial framework and syntaxing."
-      },
-      {
-        "title": "Various Base Systems",
-        "description": "Important systems such as a Transform system, Rendering system, Collision system and Cleanup system have been built."
-      },
-      {
-        "title": "Inspector Tools",
-        "description": "Inspecting an object in the hierarchy is extremely useful, therefor I created an inspector which reads the entity registry and lists their components. This tool also allows you to edit data on the fly."
-      }
-    ],
-    "tags": [
-      "ECS",
-      "Entities",
-      "EnTT"
-    ],
-    "videos": [
-      {
-        "src": "res/projects/ecs-ue/vid_02.mp4"
-      },
-      {
-        "src": "res/projects/ecs-ue/vid_01.mp4"
-      },
-      {
-        "src": "res/projects/ecs-ue/vid_04.mp4"
-      }
-    ]
-  },
-  {
-    "id": "farmion",
-    "card": true,
-    "title": "Farmion",
-    "language": "C++",
-    "engine": "Unreal",
-    "role": "Game Programmer",
-    "duration": "6m",
-    "datetime": "2022-2023",
-    "minisrc": "res/projects/farmion/mini.png",
-    "banner": "res/projects/farmion/banner.png",
-    "type": "BH",
-    "description": "A time-management wizard-themed farming sim with cooperative play!",
-    "longdescription": "Solo dev production. Various art is from the Unreal Marketplace, some made by me. Farmion is a time-management wizard-themed farming sim with cooperative play!",
-    "work": [
-      {
-        "title": "A Cycle a Day",
-        "description": "Time management is everything. You have limited daylight and every day is a 'Tick' in gameplay terms. Forget to water crops? They die. Left your cows outside? They vanish. You'll die too if you're caught outside during the Cycle transition."
-      },
-      {
-        "title": "Physics Fun",
-        "description": "You can hold and throw any object. Real physics isn't in play, just the illusion of it, keeping things reliable in multiplayer while still feeling satisfying."
-      },
-      {
-        "title": "Stage-Based Farming",
-        "description": "Plant crops that last for X days and require Y water. Bees speed up growth, hostile Bugs attack your plants."
-      },
-      {
-        "title": "Upgrades Everywhere",
-        "description": "Purchase upgrades like a Pantry to store goods, an Animal Barn for your livestock, a Greenhouse, and more."
-      },
-      {
-        "title": "Multiplayer",
-        "description": "Games are better together. Farmion is designed for 1-6 players from the ground up."
-      },
-      {
-        "title": "House & Character Customization",
-        "description": "Redesign your magical mansion while waiting for the night to pass."
-      },
-      {
-        "title": "Cheese System",
-        "description": "Make cheese from your animals' milk, curd it, age it in the right environment, and sell it for a profit. Or ruin it entirely."
-      },
-      {
-        "title": "Buffs System",
-        "description": "Throw any item into the Giant all-eating Statue and get unique buffs for a limited time. Recycling has never been this productive."
-      },
-      {
-        "title": "Transportation and Carts",
-        "description": "You can only hold one item at a time, so use carts to haul multiple items around."
-      },
-      {
-        "title": "And more...",
-        "description": "Various other systems and features."
-      }
-    ],
-    "tags": [
-      "networking",
-      "gameplay"
-    ],
-    "socials": [
-      {
-        "info": "link.tree",
-        "icon": "res/projects/farmion/ico_01.png",
-        "url": "https://linktr.ee/baerandhoggo"
-      },
-      {
-        "url": "https://discord.gg/7X7gYf93ph",
-        "icon": "res/ico_discord.png",
-        "info": "discord"
-      }
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/farmion/ss_11.png",
-        "alt": "Farmion magical mansion overview with surrounding farm plots"
-      },
-      {
-        "src": "res/projects/farmion/ss_12.png",
-        "alt": "Farmion Steam store page capsule art"
-      },
-      {
-        "src": "res/projects/farmion/ss_01.png",
-        "alt": "Farmion crop farming with watering and growth stages"
-      },
-      {
-        "src": "res/projects/farmion/ss_02.png",
-        "alt": "Farmion multiplayer co-op gathering resources together"
-      },
-      {
-        "src": "res/projects/farmion/ss_03.png",
-        "alt": "Farmion animal barn with livestock management"
-      },
-      {
-        "src": "res/projects/farmion/ss_04.png",
-        "alt": "Farmion player throwing objects with physics system"
-      },
-      {
-        "src": "res/projects/farmion/ss_05.png",
-        "alt": "Farmion cheese aging and crafting system"
-      },
-      {
-        "src": "res/projects/farmion/ss_06.png",
-        "alt": "Farmion upgrade shop with purchasable structures"
-      },
-      {
-        "src": "res/projects/farmion/ss_07.png",
-        "alt": "Farmion house customization interior decorating"
-      },
-      {
-        "src": "res/projects/farmion/ss_08.png",
-        "alt": "Farmion day-night cycle transition with danger warning"
-      },
-      {
-        "src": "res/projects/farmion/ss_09.png",
-        "alt": "Farmion cart transportation hauling multiple items"
-      },
-      {
-        "src": "res/projects/farmion/ss_10.png",
-        "alt": "Farmion Giant Statue buff system with item sacrifice"
-      }
-    ],
-    "videos": [
-      {
-        "src": "res/projects/farmion/vid_01.mp4",
-        "alt": "Farmion gameplay showcase with farming and co-op mechanics"
-      }
-    ]
-  },
-  {
-    "id": "radiance",
-    "card": true,
-    "title": "Radiance Engine",
-    "language": "C++",
-    "engine": "Radiance",
-    "role": "Tools Programmer",
-    "duration": "4y+",
-    "datetime": "2021-2025",
-    "minisrc": "res/projects/radiance/mini.png",
-    "banner": "res/projects/radiance/banner.png",
-    "type": "BSS",
-    "description": "The creation of a web-based MMORPG game engine.",
-    "longdescription": "Radiance is a custom engine built by Bright Star Studios for the MMORPG Ember Sword. It's web-based, enabling cross-platform play.",
-    "work": [
-      {
-        "title": "Unity to Radiance Sync",
-        "description": "Created a system to sync Unity with Radiance during the transition between engines. This let Level Design and World Design keep working in Unity until Radiance had matching capabilities."
-      },
-      {
-        "title": "Animation State Machine Editor",
-        "description": "Created an Animation State Machine Editor so designers could view animation states and their transitions visually."
-      },
-      {
-        "title": "Behavior Tree Editor",
-        "description": "Built a visual Behavior Tree Editor for creating and modifying AI behaviors."
-      },
-      {
-        "title": "Item Editor",
-        "description": "Created an Item Editor for designers to create and modify in-game items."
-      },
-      {
-        "title": "Crafting Recipe Editor",
-        "description": "Created a Crafting Recipe Editor for managing recipes. Both this and the Item Editor are built on a shared Base Editor Tool I created."
-      }
-    ],
-    "tags": [
-      "tools",
-      "engine"
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/radiance/ss_05.png",
-        "alt": "Radiance Engine behavior tree editor with real-time AI visualization"
-      },
-      {
-        "src": "res/projects/radiance/ss_01.png",
-        "alt": "Radiance Engine animation state machine editor interface"
-      },
-      {
-        "src": "res/projects/radiance/ss_02.png",
-        "alt": "Radiance Engine item editor tool for game designers"
-      },
-      {
-        "src": "res/projects/radiance/ss_03.png",
-        "alt": "Radiance Engine crafting recipe editor with ingredient management"
-      },
-      {
-        "src": "res/projects/radiance/ss_04.png",
-        "alt": "Radiance Engine Unity-to-Radiance level sync pipeline"
-      }
-    ]
-  },
-  {
-    "id": "bitfarers",
-    "card": true,
-    "title": "BitFarers",
-    "language": "C++",
-    "engine": "Unreal",
-    "role": "Game Programmer",
-    "duration": "4m",
-    "datetime": "2021",
-    "minisrc": "res/projects/bitfarers/mini.png",
-    "banner": "res/projects/bitfarers/banner.png",
-    "type": "Hobby",
-    "description": "A co-op dungeon running game with a theme traversal twist.",
-    "longdescription": "A theme-traversal co-op FPS with roguelike elements. Players travel through differently themed dungeons, each with unique mechanics and enemies, and upgrade their characters as they progress.",
-    "work": [
-      {
-        "title": "Seamless Co-op",
-        "description": "Created seamless multiplayer level transitions so all players travel through dungeon levels together and regroup at the lobby."
-      },
-      {
-        "title": "First Person Gunplay",
-        "description": "Worked on weapon mechanics: shooting, reloading, weapon switching, aiming down sights, and more. Accuracy and feel had to be right for all players, with proper replication so everyone sees correct third-person muzzle flashes and projectiles."
-      },
-      {
-        "title": "Loot, Loot, and Destructible Loot",
-        "description": "Implemented a loot table system for breakables, enemies, and chests."
-      },
-      {
-        "title": "User Interface",
-        "description": "Created the in-game UI: buffs, debuffs, health, ammo, weapon display, and ammo inventory."
-      }
-    ],
-    "tags": [
-      "networking",
-      "gameplay"
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/bitfarers/ss_01.png",
-        "alt": "BitFarers first-person view inside a themed dungeon corridor"
-      },
-      {
-        "src": "res/projects/bitfarers/ss_02.png",
-        "alt": "BitFarers co-op gameplay with HUD showing health and ammo"
-      }
-    ],
-    "videos": [
-      {
-        "src": "res/projects/bitfarers/vid_01.mp4",
-        "alt": "BitFarers dungeon exploration with weapon combat"
-      },
-      {
-        "src": "res/projects/bitfarers/vid_02.mp4",
-        "alt": "BitFarers multiplayer level transition between themed zones"
-      },
-      {
-        "src": "res/projects/bitfarers/vid_03.mp4",
-        "alt": "BitFarers loot and destructible objects gameplay"
-      },
-      {
-        "src": "res/projects/bitfarers/vid_04.mp4",
-        "alt": "BitFarers lobby and character upgrade system"
-      }
-    ]
-  },
-  {
-    "id": "idle-cards",
-    "card": true,
-    "title": "IdleCards",
-    "language": "C#",
-    "engine": "Unity",
-    "role": "Game Programmer",
-    "duration": "4m",
-    "datetime": "2020",
-    "minisrc": "res/projects/idle-cards/mini.png",
-    "banner": "res/projects/idle-cards/banner.png",
-    "type": "Hobby",
-    "description": "An idle game with card-based combat for phones.",
-    "longdescription": "An idle game at its core with an active card battling system on top. Players collect cards, upgrade them, and use them in battles to progress.",
-    "work": [
-      {
-        "title": "Card Battling vs AI",
-        "description": "Created a turn-based card battling system with AI opponents. The AI evaluates the board state to determine its best move."
-      },
-      {
-        "title": "Offline Idle Progression",
-        "description": "Built offline simulation so the game progresses while you're away. Come back to big numbers and that sweet dopamine hit."
-      },
-      {
-        "title": "Unity UI",
-        "description": "Worked on 'fake 3D' card elements you can play on boards, plus 2D interfaces for buying and upgrading buildings."
-      }
-    ],
-    "tags": [
-      "android",
-      "gameplay"
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/idle-cards/ss_02.png",
-        "alt": "IdleCards card battle screen with AI opponent and board state"
-      },
-      {
-        "src": "res/projects/idle-cards/ss_03.png",
-        "alt": "IdleCards collection and upgrade interface with card stats"
-      },
-      {
-        "src": "res/projects/idle-cards/ss_01.png",
-        "alt": "IdleCards idle progression buildings and resource generation"
-      }
-    ],
-    "videos": [
-      {
-        "src": "res/projects/idle-cards/vid_01.mp4",
-        "alt": "IdleCards turn-based card combat against AI"
-      },
-      {
-        "src": "res/projects/idle-cards/vid_02.mp4",
-        "alt": "IdleCards idle progression and building management"
-      }
-    ]
-  },
-  {
-    "id": "andromeda-resonance",
-    "card": true,
-    "title": "Andromeda Resonance",
-    "language": "C++",
-    "engine": "Unreal",
-    "role": "Game Programmer",
-    "duration": "4m",
-    "datetime": "2019",
-    "minisrc": "res/projects/andromeda-resonance/mini.png",
-    "banner": "res/projects/andromeda-resonance/banner.png",
-    "type": "HKU",
-    "description": "3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
-    "longdescription": "My graduation project at the University of the Arts Utrecht for my BSc in Game Programming. A 3D Wave Function Collapse algorithm for Unreal Engine with a mini-game to showcase it.",
-    "work": [
-      {
-        "title": "Wave Function Collapse",
-        "description": "Implemented the Wave Function Collapse algorithm in 3D space in Unreal Engine. This world generation algorithm produces high variety based on local similarity."
-      },
-      {
-        "title": "Drone Flying",
-        "description": "Fly around the generated levels with a drone to showcase the results."
-      },
-      {
-        "title": "Graduation Papers & Tools",
-        "description": "Wrote a paper on the Wave Function Collapse algorithm and created a tool to generate 3D levels in Unreal Engine. Also made a YouTube tutorial on creating data assets for the algorithm."
-      }
-    ],
-    "tags": [
-      "generation",
-      "gameplay"
-    ],
-    "videos": [
-      {
-        "src": "https://youtu.be/7anvESagd90",
-        "alt": "Andromeda Resonance 3D Wave Function Collapse level generation demo"
-      },
-      {
-        "src": "https://youtu.be/rkmlyX7Vv3I",
-        "alt": "Andromeda Resonance WFC data asset creation tutorial"
-      }
-    ]
-  },
-  {
-    "id": "cat",
-    "card": true,
-    "title": "Cat Parent",
-    "language": "meow-speak",
-    "engine": "Real Life",
-    "role": "Assistant",
-    "duration": "2y+",
-    "datetime": "2022",
-    "minisrc": "res/projects/cat/mini.png",
-    "banner": "res/projects/cat/mini.png",
-    "type": "Hobby",
-    "description": "Finn & Dusty need a lot of attention!",
-    "longdescription": "Two Ragdoll cats: one white, one grey. Excellent office staff.",
-    "work": [
-      {
-        "title": "Feeding the Cats",
-        "description": ""
-      },
-      {
-        "title": "Petting the Cats",
-        "description": ""
-      },
-      {
-        "title": "Playing with the Cats",
-        "description": ""
-      },
-      {
-        "title": "Cleaning the Litterbox",
-        "description": ""
-      }
-    ],
-    "tags": [
-      "joy"
-    ],
-    "screenshots": [
-      {
-        "src": "res/projects/cat/ss_01.png",
-        "alt": "Finn the white Ragdoll cat lounging on a desk"
-      },
-      {
-        "src": "res/projects/cat/ss_03.png",
-        "alt": "Dusty the grey Ragdoll cat supervising code reviews"
-      },
-      {
-        "src": "res/projects/cat/ss_04.png",
-        "alt": "Finn and Dusty napping together on the couch"
-      },
-      {
-        "src": "res/projects/cat/ss_05.png",
-        "alt": "Office setup with feline quality assurance team present"
-      },
-      {
-        "src": "res/projects/cat/ss_02.png",
-        "alt": "Close-up portrait of a Ragdoll cat with blue eyes"
-      }
-    ]
-  },
-  {
-    "id": "project-9",
-    "card": false,
-    "title": "Kio",
-    "language": "C++",
-    "engine": "Unreal",
-    "datetime": "2018",
-    "description": "A glassblowing puzzle and adventure game. Light all glass objects by blowing glass shapes that redirect light in specific directions.",
-    "archive": "https://web.archive.org/web/20220528013025/https://jessevanvliet.com/portfolio-kio.php"
-  },
-  {
-    "id": "project-10",
-    "card": false,
-    "title": "StratEgel GameWork",
-    "language": "C++",
-    "engine": "Unreal",
-    "datetime": "2017",
-    "description": "A framework by StratEgel B.V. in cooperation with Strategis for social gameplay. Players create an ideal world while balancing the goals of multiple parties.",
-    "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/portfolio-gamework.php"
-  },
-  {
-    "id": "project-11",
-    "card": false,
-    "title": "Hack Stevie",
-    "language": "C#",
-    "engine": "Unity",
-    "datetime": "2017",
-    "description": "A game for Dutch primary school kids (groups 7 and 8) to raise cybersecurity awareness. Built during my internship at Flavour for 'De week van de Mediawijsheid'. This game is the prequel to 'Hack Shield'.",
-    "archive": "https://web.archive.org/web/20190415160215/https://jessevanvliet.com/portfolio-hackstevie.php"
-  },
-  {
-    "id": "project-12",
-    "card": false,
-    "title": "And more...",
-    "language": "Mostly C# and some C++ during this period",
-    "engine": "Unity, Unreal and Custom",
-    "datetime": "2011-2017",
-    "description": "Various games for university, hobby projects and whatnot. Check out the archived portfolio page for more.",
-    "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/index.php"
-  }
+        "language": "Mostly C# and some C++ during this period",
+        "engine": "Unity, Unreal and Custom",
+        "datetime": "2011-2017",
+        "description": "Various games for university, hobby projects and whatnot. Check out the archived portfolio page for more.",
+        "archive": "https://web.archive.org/web/20190415154046/https://jessevanvliet.com/index.php"
+    }
 ]
