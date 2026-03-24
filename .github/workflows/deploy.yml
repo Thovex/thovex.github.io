@@ -28,13 +28,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ github.token }}
+          submodules: false
 
       - name: Sync Void Resonance submodule
         env:
           SUBMODULE_PAT: ${{ secrets.SUBMODULE_PAT }}
         run: |
           if [ -z "$SUBMODULE_PAT" ]; then
-            echo "::error::SUBMODULE_PAT is required to fetch apps/voidresonance"
+            echo "::error::SUBMODULE_PAT secret is required to fetch the private apps/voidresonance submodule."
+            echo "::error::Create a fine-grained PAT with 'Contents: Read' on baer-and-hoggo/ClickerSpace and add it as a repository secret named SUBMODULE_PAT."
             exit 1
           fi
           case "$SUBMODULE_PAT" in

@@ -195,9 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ).join('');
 
             const socialsHTML = (project.socials || []).map(s =>
-                `<a href="${s.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    ${s.icon ? `<img src="${s.icon}" alt="">` : ''}
-                    ${s.info}
+                `<a href="${s.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="${s.info}">
+                    ${s.icon ? `<img src="${s.icon}" alt="${s.info}">` : ''}
                 </a>`
             ).join('');
 

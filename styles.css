@@ -283,19 +283,17 @@ ul {
 .hero-title {
     font-size: clamp(2.8rem, 6vw, 5rem);
     font-weight: 900;
-    line-height: 1.05;
+    line-height: 0.95;
     margin-bottom: 0.5rem;
     letter-spacing: -0.035em;
     animation: hero-title-boot 0.8s ease 0.2s both;
 }
 
 .hero-name {
-    display: block;
     color: var(--text-primary);
 }
 
 .hero-surname {
-    display: block;
     color: var(--text-primary);
 }
 
@@ -984,7 +982,7 @@ ul {
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    margin-top: -1.5rem;
+    margin-top: 1.5rem;
     position: relative;
     z-index: 3;
     max-width: var(--container-width);
@@ -1024,20 +1022,25 @@ ul {
 /* ---------- Project Socials ---------- */
 .project-socials {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.6rem;
     margin-top: 1.5rem;
 }
 
 .project-socials a {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
+    gap: 0.5rem;
+    padding: 0.5rem 1.1rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
     transition: all var(--transition-fast);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 .project-socials a:last-child {
@@ -1047,12 +1050,13 @@ ul {
 .project-socials a:hover {
     background: rgba(124, 106, 255, 0.15);
     border-color: var(--border-accent);
-    transform: scale(1.08);
+    color: var(--accent);
+    transform: translateY(-1px);
 }
 
 .project-socials a img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     opacity: 0.6;
     transition: opacity var(--transition-fast);
 }
@@ -1346,8 +1350,8 @@ ul {
 
 .cv-actions {
     display: flex;
-    gap: 1rem;
-    border-bottom: 1px solid var(--border-subtle);
+    gap: 0;
+    border-bottom: none;
 }
 
 .cv-actions .btn {

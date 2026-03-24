@@ -333,6 +333,7 @@
                 border: 1px solid rgba(244,114,182,0.2); padding: 0.45rem 1rem;
                 border-radius: 999px;
                 cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+                margin-top: 0.4rem;
             }
             .surprise-btn:hover {
                 background: rgba(244,114,182,0.12); border-color: rgba(244,114,182,0.4);

@@ -75,14 +75,14 @@
             },
             {
                 "title": "Trade Packs",
-                "description": "Built the Trade Pack system — gather resources, craft packs, deliver them for profit. Other players can steal your packs, so there's real risk vs reward."
+                "description": "Built the Trade Pack system: gather resources, craft packs, deliver them for profit. Other players can steal your packs, so there's real risk vs reward."
             },
             {
                 "description": "Helped set up and iterate on the ability system. We use a custom timeline system where triggers fire at specific times, keeping client and server in sync.",
                 "title": "Combat"
             },
             {
-                "description": "Created the ValueBag — a flexible data container used for abilities, behaviors, instanced tracking, and more.",
+                "description": "Created the ValueBag, a flexible data container used for abilities, behaviors, instanced tracking, and more.",
                 "title": "Gameplay Data"
             },
             {
@@ -94,7 +94,7 @@
                 "title": "Gathering"
             },
             {
-                "description": "Built server-side crafting — players collect resources, find crafting stations in the world, and use them to make items.",
+                "description": "Built server-side crafting: players collect resources, find crafting stations in the world, and use them to make items.",
                 "title": "Crafting"
             },
             {
@@ -172,7 +172,7 @@
         "work": [
             {
                 "title": "Core Design",
-                "description": "Designed the core loop together — owning plots, building and upgrading structures, resource display, 3D world UI, and more."
+                "description": "Designed the core loop together: owning plots, building and upgrading structures, resource display, 3D world UI, and more."
             },
             {
                 "title": "Gathering",
@@ -180,7 +180,7 @@
             },
             {
                 "title": "Cosmetics",
-                "description": "Built a persistent cosmetics system — players can buy and equip clothing, accessories, and other visual stuff."
+                "description": "Built a persistent cosmetics system. Players can buy and equip clothing, accessories, and other visual stuff."
             },
             {
                 "title": "Co-op Projects",
@@ -196,7 +196,7 @@
             },
             {
                 "title": "Level Design",
-                "description": "Designed the main level layout — resource spawners, player plots, and the overall vibe."
+                "description": "Designed the main level layout: resource spawners, player plots, and the overall vibe."
             },
             {
                 "title": "And more...",
@@ -238,7 +238,7 @@
         "work": [
             {
                 "title": "Core Gameplay Loop",
-                "description": "Built the clicking and idle mechanics — flux generation, generator chains, upgrades, and multi-tier buy modes."
+                "description": "Built the clicking and idle mechanics: flux generation, generator chains, upgrades, and multi-tier buy modes."
             },
             {
                 "title": "Prestige Systems",
@@ -305,7 +305,7 @@
                 "title": "Core Framework"
             },
             {
-                "description": "Built core systems — Transform, Rendering, Collision, and Cleanup.",
+                "description": "Built core systems: Transform, Rendering, Collision, and Cleanup.",
                 "title": "Various Base Systems"
             },
             {
@@ -350,7 +350,7 @@
                 "title": "A Cycle a Day"
             },
             {
-                "description": "You can hold and throw anything. It's not real physics — just the illusion of it — which keeps things reliable in multiplayer while still feeling good.",
+                "description": "You can hold and throw anything. It's not real physics, just the illusion of it, which keeps things reliable in multiplayer while still feeling good.",
                 "title": "Physics Fun"
             },
             {
@@ -542,7 +542,7 @@
                 "title": "Seamless Co-op"
             },
             {
-                "description": "Worked on weapon mechanics — shooting, reloading, switching, ADS, and making sure everything replicates properly so other players see correct muzzle flashes and projectiles.",
+                "description": "Worked on weapon mechanics: shooting, reloading, switching, ADS, and making sure everything replicates properly so other players see correct muzzle flashes and projectiles.",
                 "title": "First Person Gunplay"
             },
             {
@@ -550,7 +550,7 @@
                 "title": "Loot, Loot, and Destructible Loot"
             },
             {
-                "description": "Made the in-game HUD — buffs, debuffs, health, ammo, weapon display, and inventory.",
+                "description": "Made the in-game HUD: buffs, debuffs, health, ammo, weapon display, and inventory.",
                 "title": "User Interface"
             }
         ],
