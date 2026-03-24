@@ -31,7 +31,7 @@
     --transition-smooth: 0.35s cubic-bezier(0.22, 0.68, 0, 1.1);
     --transition-spring: 0.5s cubic-bezier(0.22, 0.68, 0, 1.1);
     --font-body: 'Nunito', sans-serif;
-    --font-mono: 'Quicksand', 'Fira Code', sans-serif;
+    --font-mono: 'Fira Code', 'Quicksand', monospace;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 18px;

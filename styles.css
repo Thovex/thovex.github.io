@@ -39,7 +39,7 @@
     --transition-smooth: 0.35s cubic-bezier(0.22, 0.68, 0, 1.1);
     --transition-spring: 0.5s cubic-bezier(0.22, 0.68, 0, 1.1);
     --font-body: 'Nunito', sans-serif;
-    --font-mono: 'Quicksand', 'Fira Code', sans-serif;
+    --font-mono: 'Fira Code', 'Quicksand', monospace;
     --container-width: 1200px;
     --nav-height: 64px;
     --card-color: #f8f8ff;
