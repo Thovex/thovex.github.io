@@ -30,23 +30,23 @@
         ],
         "socials": [
             {
+                "url": "https://www.dtail.com/",
                 "icon": "res/ico_site.png",
-                "info": "dtail.com",
-                "url": "https://www.dtail.com/"
+                "info": "dtail.com"
             }
         ],
         "screenshots": [
             {
-                "src": "res/projects/dtail-spaces/ss_01.png",
-                "alt": "Virtual showroom with fixtures and product displays"
+                "alt": "Virtual showroom with fixtures and product displays",
+                "src": "res/projects/dtail-spaces/ss_01.png"
             },
             {
                 "alt": "Environment overview",
                 "src": "res/projects/dtail-spaces/ss_02.jpg"
             },
             {
-                "src": "res/projects/dtail-spaces/ss_03.png",
-                "alt": "DIsplays and Products"
+                "alt": "DIsplays and Products",
+                "src": "res/projects/dtail-spaces/ss_03.png"
             },
             {
                 "alt": "Connect to the Platform",
@@ -124,30 +124,30 @@
                 "alt": "Ember Sword open world with player characters in a fantasy landscape"
             },
             {
-                "src": "res/projects/ember-sword/ss_01.png",
-                "alt": "Ember Sword combat encounter with creatures in a forest biome"
+                "alt": "Ember Sword combat encounter with creatures in a forest biome",
+                "src": "res/projects/ember-sword/ss_01.png"
             },
             {
                 "src": "res/projects/ember-sword/ss_02.png",
                 "alt": "Ember Sword player-owned land plots and town building"
             },
             {
-                "src": "res/projects/ember-sword/ss_03.png",
-                "alt": "Ember Sword Ultra Deep dungeon boss encounter"
+                "alt": "Ember Sword Ultra Deep dungeon boss encounter",
+                "src": "res/projects/ember-sword/ss_03.png"
             }
         ],
         "videos": [
             {
-                "src": "res/projects/ember-sword/vid_01.webm",
-                "alt": "Ember Sword open world exploration gameplay"
+                "alt": "Ember Sword open world exploration gameplay",
+                "src": "res/projects/ember-sword/vid_01.webm"
             },
             {
-                "alt": "Ember Sword PvP combat and ability system",
-                "src": "res/projects/ember-sword/vid_02.webm"
+                "src": "res/projects/ember-sword/vid_02.webm",
+                "alt": "Ember Sword PvP combat and ability system"
             },
             {
-                "alt": "Ember Sword creature behaviors and AI in action",
-                "src": "res/projects/ember-sword/vid_03.webm"
+                "src": "res/projects/ember-sword/vid_03.webm",
+                "alt": "Ember Sword creature behaviors and AI in action"
             },
             {
                 "alt": "Ember Sword trade pack system and gathering",
@@ -216,8 +216,8 @@
         ],
         "videos": [
             {
-                "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building",
-                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw"
+                "src": "https://www.youtube.com/watch?v=zu5cCjzQ0Dw",
+                "alt": "Motherlode Tycoon gameplay trailer showing resource gathering and building"
             }
         ]
     },
@@ -233,8 +233,8 @@
         "minisrc": "res/projects/void-resonance/mini.png",
         "banner": "res/projects/void-resonance/banner.png",
         "type": "Hobby",
-        "description": "NOTE. This game is completely built from scratch by Claude & Copilot. Including this singular portfolio entry.\n\nA browser-based incremental idle game set in the void of space, featuring deep prestige layers and progression systems.",
-        "longdescription": "Void Resonance is an incremental idle game where players harvest flux from a void reactor, build generators, research technologies, and ascend through multiple prestige layers including Echoes, Void Collapse, and Singularity.",
+        "description": "A browser-based incremental idle game set in the void of space, featuring deep prestige layers and progression systems.",
+        "longdescription": "NOTE. This game is completely built from scratch by Claude & Copilot. Including this singular portfolio entry.\n\nVoid Resonance is an incremental idle game where players harvest flux from a void reactor, build generators, research technologies, and ascend through multiple prestige layers including Echoes, Void Collapse, and Singularity.",
         "work": [
             {
                 "title": "Core Gameplay Loop",
@@ -392,8 +392,8 @@
         ],
         "socials": [
             {
-                "icon": "res/projects/farmion/ico_01.png",
                 "info": "link.tree",
+                "icon": "res/projects/farmion/ico_01.png",
                 "url": "https://linktr.ee/baerandhoggo"
             },
             {
@@ -408,20 +408,20 @@
                 "src": "res/projects/farmion/ss_11.png"
             },
             {
-                "src": "res/projects/farmion/ss_12.png",
-                "alt": "Farmion Steam store page capsule art"
+                "alt": "Farmion Steam store page capsule art",
+                "src": "res/projects/farmion/ss_12.png"
             },
             {
-                "src": "res/projects/farmion/ss_01.png",
-                "alt": "Farmion crop farming with watering and growth stages"
+                "alt": "Farmion crop farming with watering and growth stages",
+                "src": "res/projects/farmion/ss_01.png"
             },
             {
                 "alt": "Farmion multiplayer co-op gathering resources together",
                 "src": "res/projects/farmion/ss_02.png"
             },
             {
-                "src": "res/projects/farmion/ss_03.png",
-                "alt": "Farmion animal barn with livestock management"
+                "alt": "Farmion animal barn with livestock management",
+                "src": "res/projects/farmion/ss_03.png"
             },
             {
                 "alt": "Farmion player throwing objects with physics system",
@@ -436,16 +436,16 @@
                 "src": "res/projects/farmion/ss_06.png"
             },
             {
-                "src": "res/projects/farmion/ss_07.png",
-                "alt": "Farmion house customization interior decorating"
+                "alt": "Farmion house customization interior decorating",
+                "src": "res/projects/farmion/ss_07.png"
             },
             {
-                "src": "res/projects/farmion/ss_08.png",
-                "alt": "Farmion day-night cycle transition with danger warning"
+                "alt": "Farmion day-night cycle transition with danger warning",
+                "src": "res/projects/farmion/ss_08.png"
             },
             {
-                "src": "res/projects/farmion/ss_09.png",
-                "alt": "Farmion cart transportation hauling multiple items"
+                "alt": "Farmion cart transportation hauling multiple items",
+                "src": "res/projects/farmion/ss_09.png"
             },
             {
                 "alt": "Farmion Giant Statue buff system with item sacrifice",
@@ -505,8 +505,8 @@
                 "src": "res/projects/radiance/ss_05.png"
             },
             {
-                "src": "res/projects/radiance/ss_01.png",
-                "alt": "Radiance Engine animation state machine editor interface"
+                "alt": "Radiance Engine animation state machine editor interface",
+                "src": "res/projects/radiance/ss_01.png"
             },
             {
                 "alt": "Radiance Engine item editor tool for game designers",
@@ -517,8 +517,8 @@
                 "src": "res/projects/radiance/ss_03.png"
             },
             {
-                "src": "res/projects/radiance/ss_04.png",
-                "alt": "Radiance Engine Unity-to-Radiance level sync pipeline"
+                "alt": "Radiance Engine Unity-to-Radiance level sync pipeline",
+                "src": "res/projects/radiance/ss_04.png"
             }
         ]
     },
@@ -564,8 +564,8 @@
                 "src": "res/projects/bitfarers/ss_01.png"
             },
             {
-                "src": "res/projects/bitfarers/ss_02.png",
-                "alt": "BitFarers co-op gameplay with HUD showing health and ammo"
+                "alt": "BitFarers co-op gameplay with HUD showing health and ammo",
+                "src": "res/projects/bitfarers/ss_02.png"
             }
         ],
         "videos": [
@@ -574,16 +574,16 @@
                 "src": "res/projects/bitfarers/vid_01.mp4"
             },
             {
-                "src": "res/projects/bitfarers/vid_02.mp4",
-                "alt": "BitFarers multiplayer level transition between themed zones"
+                "alt": "BitFarers multiplayer level transition between themed zones",
+                "src": "res/projects/bitfarers/vid_02.mp4"
             },
             {
-                "src": "res/projects/bitfarers/vid_03.mp4",
-                "alt": "BitFarers loot and destructible objects gameplay"
+                "alt": "BitFarers loot and destructible objects gameplay",
+                "src": "res/projects/bitfarers/vid_03.mp4"
             },
             {
-                "src": "res/projects/bitfarers/vid_04.mp4",
-                "alt": "BitFarers lobby and character upgrade system"
+                "alt": "BitFarers lobby and character upgrade system",
+                "src": "res/projects/bitfarers/vid_04.mp4"
             }
         ]
     },
@@ -625,8 +625,8 @@
                 "src": "res/projects/idle-cards/ss_02.png"
             },
             {
-                "src": "res/projects/idle-cards/ss_03.png",
-                "alt": "IdleCards collection and upgrade interface with card stats"
+                "alt": "IdleCards collection and upgrade interface with card stats",
+                "src": "res/projects/idle-cards/ss_03.png"
             },
             {
                 "alt": "IdleCards idle progression buildings and resource generation",
@@ -639,8 +639,8 @@
                 "src": "res/projects/idle-cards/vid_01.mp4"
             },
             {
-                "src": "res/projects/idle-cards/vid_02.mp4",
-                "alt": "IdleCards idle progression and building management"
+                "alt": "IdleCards idle progression and building management",
+                "src": "res/projects/idle-cards/vid_02.mp4"
             }
         ]
     },
@@ -724,12 +724,12 @@
         ],
         "screenshots": [
             {
-                "src": "res/projects/cat/ss_01.png",
-                "alt": "Finn the white Ragdoll cat lounging on a desk"
+                "alt": "Finn the white Ragdoll cat lounging on a desk",
+                "src": "res/projects/cat/ss_01.png"
             },
             {
-                "src": "res/projects/cat/ss_03.png",
-                "alt": "Dusty the grey Ragdoll cat supervising code reviews"
+                "alt": "Dusty the grey Ragdoll cat supervising code reviews",
+                "src": "res/projects/cat/ss_03.png"
             },
             {
                 "alt": "Finn and Dusty napping together on the couch",
@@ -740,8 +740,8 @@
                 "src": "res/projects/cat/ss_05.png"
             },
             {
-                "src": "res/projects/cat/ss_02.png",
-                "alt": "Close-up portrait of a Ragdoll cat with blue eyes"
+                "alt": "Close-up portrait of a Ragdoll cat with blue eyes",
+                "src": "res/projects/cat/ss_02.png"
             }
         ]
     },
