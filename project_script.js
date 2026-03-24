@@ -3,10 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── Lightbox ───
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxVideo = document.getElementById('lightboxVideo');
     const lightboxClose = document.getElementById('lightboxClose');
 
-    function openLightbox(src) {
-        lightboxImg.src = src;
+    function openLightbox(src, type) {
+        if (type === 'video') {
+            lightboxImg.style.display = 'none';
+            lightboxVideo.style.display = 'block';
+            lightboxVideo.src = src;
+            lightboxVideo.play();
+        } else {
+            lightboxVideo.style.display = 'none';
+            lightboxVideo.pause();
+            lightboxVideo.src = '';
+            lightboxImg.style.display = 'block';
+            lightboxImg.src = src;
+        }
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -14,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeLightbox() {
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
+        lightboxVideo.pause();
+        lightboxVideo.src = '';
     }
 
     if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
@@ -80,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             : '';
 
         heroContent.innerHTML = `
-            <a href="index.html" class="back-link">
+            <a href="index.html#projects" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                 Back to projects
             </a>
@@ -176,11 +190,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     item.innerHTML = `
-                        <video src="${video.src}" controls playsinline autoplay muted loop preload="none">
+                        <video src="${video.src}" muted loop playsinline preload="metadata">
                             Your browser does not support the video tag.
                         </video>
+                        <div class="media-click-overlay">
+                            <div class="media-play-hint">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                        </div>
                     `;
-                    item.style.cursor = 'default';
+                    item.querySelector('.media-click-overlay').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openLightbox(video.src, 'video');
+                    });
+
+                    // Play preview on hover, pause on leave
+                    const vid = item.querySelector('video');
+                    item.addEventListener('mouseenter', () => { vid.play(); });
+                    item.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
                 }
 
                 mediaGrid.appendChild(item);

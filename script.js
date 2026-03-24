@@ -12,6 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Re-observe newly created cards
             initScrollReveal();
 
+            // Scroll to hash anchor after content renders (e.g. #projects from back-link)
+            if (window.location.hash) {
+                const hash = window.location.hash;
+                const doScroll = () => {
+                    const el = document.querySelector(hash);
+                    if (!el) return;
+                    // Disable smooth scroll temporarily so it jumps instantly
+                    document.documentElement.style.scrollBehavior = 'auto';
+                    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY);
+                    // Re-enable smooth scroll after jump
+                    requestAnimationFrame(() => {
+                        document.documentElement.style.scrollBehavior = '';
+                    });
+                };
+                // Fire immediately, and again after load event for safety
+                doScroll();
+                setTimeout(doScroll, 300);
+                window.addEventListener('load', () => setTimeout(doScroll, 100));
+            }
+
             // Init row-hover grunge lines
             initRowHoverEffect();
 
@@ -52,57 +72,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
         filterBar.innerHTML = '';
 
-        const rows = document.createElement('div');
-        rows.className = 'filter-rows';
+        filterBar.appendChild(createFilterGroup('Language', 'language', languages, null, cardProjects));
+        filterBar.appendChild(createFilterGroup('Engine', 'engine', engines, null, cardProjects));
+        filterBar.appendChild(createFilterGroup('Role', 'role', roles, null, cardProjects));
+        filterBar.appendChild(createFilterGroup('Source', 'type', types, typeLabels, cardProjects));
 
-        rows.appendChild(createFilterRow('Language', 'language', languages));
-        rows.appendChild(createFilterRow('Engine', 'engine', engines));
-        rows.appendChild(createFilterRow('Role', 'role', roles));
-        rows.appendChild(createFilterRow('Source', 'type', types, typeLabels));
-
-        filterBar.appendChild(rows);
+        const divider = document.createElement('div');
+        divider.className = 'filter-bar-divider';
+        filterBar.appendChild(divider);
 
         const resetBtn = document.createElement('button');
         resetBtn.className = 'filter-reset-all';
         resetBtn.id = 'filterResetAll';
         resetBtn.innerHTML = `
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            Reset Filters
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
         `;
         resetBtn.style.display = 'none';
         filterBar.appendChild(resetBtn);
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.filter-group')) {
+                filterBar.querySelectorAll('.filter-group.open').forEach(g => g.classList.remove('open'));
+            }
+        });
     }
 
-    function createFilterRow(label, filterKey, values, labelMap) {
-        const row = document.createElement('div');
-        row.className = 'filter-row';
+    function createFilterGroup(label, filterKey, values, labelMap, cardProjects) {
+        const group = document.createElement('div');
+        group.className = 'filter-group';
+        group.dataset.key = filterKey;
 
-        const lbl = document.createElement('span');
-        lbl.className = 'filter-row-label';
-        lbl.textContent = label;
-        row.appendChild(lbl);
+        const total = cardProjects ? cardProjects.length : 0;
 
-        const pills = document.createElement('div');
-        pills.className = 'filter-row-pills';
+        const btn = document.createElement('button');
+        btn.className = 'filter-group-btn';
+        btn.innerHTML = `
+            <span class="filter-label">${label}</span>
+            <span class="filter-value">All</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        `;
 
-        const allPill = document.createElement('button');
-        allPill.className = 'filter-pill active';
-        allPill.textContent = 'All';
-        allPill.dataset.filterKey = filterKey;
-        allPill.dataset.filterValue = 'all';
-        pills.appendChild(allPill);
+        const dropdown = document.createElement('div');
+        dropdown.className = 'filter-dropdown';
+
+        // "All" option
+        const allOpt = document.createElement('button');
+        allOpt.className = 'filter-option active';
+        allOpt.innerHTML = `All <span class="filter-count">${total}</span>`;
+        allOpt.dataset.filterKey = filterKey;
+        allOpt.dataset.filterValue = 'all';
+        dropdown.appendChild(allOpt);
 
         values.forEach(val => {
-            const pill = document.createElement('button');
-            pill.className = 'filter-pill';
-            pill.textContent = labelMap && labelMap[val] ? labelMap[val] : val;
-            pill.dataset.filterKey = filterKey;
-            pill.dataset.filterValue = val;
-            pills.appendChild(pill);
+            const opt = document.createElement('button');
+            opt.className = 'filter-option';
+            const displayName = labelMap && labelMap[val] ? labelMap[val] : val;
+            const count = cardProjects ? cardProjects.filter(p => p[filterKey] === val).length : 0;
+            opt.innerHTML = `${displayName} <span class="filter-count">${count}</span>`;
+            opt.dataset.filterKey = filterKey;
+            opt.dataset.filterValue = val;
+            dropdown.appendChild(opt);
         });
 
-        row.appendChild(pills);
-        return row;
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Close other open groups
+            document.querySelectorAll('.filter-group.open').forEach(g => {
+                if (g !== group) g.classList.remove('open');
+            });
+            group.classList.toggle('open');
+        });
+
+        group.appendChild(btn);
+        group.appendChild(dropdown);
+        return group;
     }
 
     function updateResetButton() {
@@ -114,31 +159,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetAllFilters() {
         Object.keys(activeFilters).forEach(key => { activeFilters[key] = 'all'; });
-        document.querySelectorAll('.filter-pill').forEach(p => {
-            p.classList.toggle('active', p.dataset.filterValue === 'all');
+        document.querySelectorAll('.filter-option').forEach(o => {
+            o.classList.toggle('active', o.dataset.filterValue === 'all');
+        });
+        document.querySelectorAll('.filter-group').forEach(g => {
+            g.classList.remove('filtered');
+            g.querySelector('.filter-value').textContent = 'All';
         });
         applyFilters();
         updateResetButton();
     }
 
     function initFilters() {
-        document.querySelectorAll('.filter-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                const key = pill.dataset.filterKey;
-                const value = pill.dataset.filterValue;
+        document.querySelectorAll('.filter-option').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const key = opt.dataset.filterKey;
+                const value = opt.dataset.filterValue;
                 activeFilters[key] = value;
 
-                pill.closest('.filter-row-pills').querySelectorAll('.filter-pill').forEach(p => {
-                    p.classList.remove('active');
-                    p.style.animation = 'none';
-                });
+                // Update active state in dropdown
+                const dropdown = opt.closest('.filter-dropdown');
+                dropdown.querySelectorAll('.filter-option').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
 
-                // Force reflow then set active with animation
-                void pill.offsetWidth;
-                pill.closest('.filter-row-pills').querySelectorAll('.filter-pill').forEach(p => {
-                    p.style.animation = '';
-                    p.classList.toggle('active', p.dataset.filterValue === value);
-                });
+                // Update button label
+                const group = opt.closest('.filter-group');
+                group.querySelector('.filter-value').textContent = opt.textContent;
+                group.classList.remove('open');
+
+                // Highlight group if filtered
+                group.classList.toggle('filtered', value !== 'all');
 
                 applyFilters();
                 updateResetButton();

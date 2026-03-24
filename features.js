@@ -1,10 +1,19 @@
 // ─────────────────────────────────────────────────────────────
-//  Site Features — Visitor-facing enhancements
+//  Site Features - Visitor-facing enhancements
 //  1. Quick Preview (Space key on hovered/focused card)
 //  2. Keyboard Card Navigation (J/K, arrows, Enter)
 //  3. Random Project Discovery ("Surprise Me" button)
 //  4. Spotlight Search (Ctrl+K / Ctrl+F / /)
 //  5. Konami Code Easter Egg
+//  6. Hero Constellation Particles (shooting stars, mouse attract, glow)
+//  7. Card Tilt & Glow on Hover (3D perspective + radial glow)
+//  8. Dynamic Greeting (time-of-day + typewriter)
+//  9. Scroll Progress Bar (gradient top bar)
+// 10. Hover Ripple Effect (click to produce expanding color ring)
+// 11. Section Parallax Depth
+// 12. Floating Accent Shapes
+// 13. Card Counter Badge
+// 14. Smooth Section Fade Transitions
 // ─────────────────────────────────────────────────────────────
 
 (function () {
@@ -330,10 +339,9 @@
                 display: inline-flex; align-items: center; gap: 0.45rem;
                 font-family: var(--font-body); font-size: 0.72rem; font-weight: 600;
                 color: var(--color-pink); background: rgba(244,114,182,0.06);
-                border: 1px solid rgba(244,114,182,0.2); padding: 0.45rem 1rem;
-                border-radius: 999px;
+                border: 1px solid rgba(244,114,182,0.2); padding: 0.4rem 0.85rem;
+                border-radius: var(--radius-md);
                 cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
-                margin-top: 0.4rem;
             }
             .surprise-btn:hover {
                 background: rgba(244,114,182,0.12); border-color: rgba(244,114,182,0.4);
@@ -808,6 +816,572 @@
     }
 
     // ═══════════════════════════════════════════════════════════
+    //  Feature 6 - Hero Constellation Particles
+    //  Flashy floating particles with colored connecting lines,
+    //  mouse attraction, shooting stars, and pulsing glow.
+    // ═══════════════════════════════════════════════════════════
+
+    function initHeroConstellation() {
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;';
+        hero.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        let w, h, time = 0;
+        let mouse = { x: -1000, y: -1000 };
+        const PARTICLE_COUNT = 70;
+        const CONNECT_DIST = 160;
+        const MOUSE_DIST = 250;
+        const particles = [];
+        const shootingStars = [];
+
+        const colors = [
+            { r: 124, g: 106, b: 255 },  // purple
+            { r: 94,  g: 196, b: 212 },  // cyan
+            { r: 110, g: 231, b: 183 },  // green
+            { r: 244, g: 114, b: 182 },  // pink
+            { r: 235, g: 193, b: 88  },  // yellow
+        ];
+
+        function resize() {
+            w = canvas.width = hero.offsetWidth;
+            h = canvas.height = hero.offsetHeight;
+        }
+
+        function Particle() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.baseR = Math.random() * 2 + 0.8;
+            this.r = this.baseR;
+            this.c = colors[Math.floor(Math.random() * colors.length)];
+            this.phase = Math.random() * Math.PI * 2;
+        }
+
+        function ShootingStar() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h * 0.4;
+            this.vx = (Math.random() * 3 + 2) * (Math.random() > 0.5 ? 1 : -1);
+            this.vy = Math.random() * 1.5 + 0.5;
+            this.life = 1;
+            this.decay = 0.008 + Math.random() * 0.012;
+            this.len = 20 + Math.random() * 30;
+            this.c = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+        }
+
+        function draw() {
+            time += 0.01;
+            ctx.clearRect(0, 0, w, h);
+
+            // Spawn shooting stars randomly
+            if (Math.random() < 0.008) shootingStars.push(new ShootingStar());
+
+            // Draw & update shooting stars
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+                s.x += s.vx;
+                s.y += s.vy;
+                s.life -= s.decay;
+
+                const tailX = s.x - s.vx * s.len * 0.3;
+                const tailY = s.y - s.vy * s.len * 0.3;
+                const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+                grad.addColorStop(0, `rgba(${s.c.r},${s.c.g},${s.c.b},0)`);
+                grad.addColorStop(1, `rgba(${s.c.r},${s.c.g},${s.c.b},${s.life * 0.7})`);
+                ctx.beginPath();
+                ctx.moveTo(tailX, tailY);
+                ctx.lineTo(s.x, s.y);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Head glow
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${s.c.r},${s.c.g},${s.c.b},${s.life})`;
+                ctx.shadowColor = `rgba(${s.c.r},${s.c.g},${s.c.b},${s.life})`;
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                if (s.life <= 0) shootingStars.splice(i, 1);
+            }
+
+            // Update particles
+            for (const p of particles) {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0) p.x = w;
+                if (p.x > w) p.x = 0;
+                if (p.y < 0) p.y = h;
+                if (p.y > h) p.y = 0;
+
+                // Pulse size
+                p.r = p.baseR + Math.sin(time * 2 + p.phase) * 0.5;
+
+                // Mouse attraction
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_DIST && dist > 0) {
+                    const force = (1 - dist / MOUSE_DIST) * 0.6;
+                    p.x += (dx / dist) * force;
+                    p.y += (dy / dist) * force;
+                }
+            }
+
+            // Draw lines with colored gradients
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECT_DIST) {
+                        const alpha = (1 - dist / CONNECT_DIST) * 0.25;
+                        const ci = particles[i].c;
+                        const cj = particles[j].c;
+                        const grad = ctx.createLinearGradient(
+                            particles[i].x, particles[i].y,
+                            particles[j].x, particles[j].y
+                        );
+                        grad.addColorStop(0, `rgba(${ci.r},${ci.g},${ci.b},${alpha})`);
+                        grad.addColorStop(1, `rgba(${cj.r},${cj.g},${cj.b},${alpha})`);
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = grad;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Mouse connection lines
+            if (mouse.x > 0) {
+                for (const p of particles) {
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < MOUSE_DIST) {
+                        const alpha = (1 - dist / MOUSE_DIST) * 0.35;
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x, mouse.y);
+                        ctx.lineTo(p.x, p.y);
+                        ctx.strokeStyle = `rgba(${p.c.r},${p.c.g},${p.c.b},${alpha})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw particles with glow
+            for (const p of particles) {
+                // Outer glow
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.c.r},${p.c.g},${p.c.b},0.04)`;
+                ctx.fill();
+
+                // Core
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.c.r},${p.c.g},${p.c.b},0.8)`;
+                ctx.shadowColor = `rgba(${p.c.r},${p.c.g},${p.c.b},0.5)`;
+                ctx.shadowBlur = 6;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+        });
+
+        window.addEventListener('resize', resize);
+        resize();
+        initParticles();
+        draw();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 7 - Card Tilt & Glow on Hover
+    //  3D perspective tilt that follows cursor + colored radial
+    //  glow under the cursor on project cards.
+    // ═══════════════════════════════════════════════════════════
+
+    function initCardTiltGlow() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .project-card { transform-style: preserve-3d; }
+            .project-card .card-glow {
+                position: absolute; inset: 0; z-index: 0; pointer-events: none;
+                border-radius: var(--radius-lg); opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .project-card:hover .card-glow { opacity: 1; }
+            .project-card-body, .project-card-image { position: relative; z-index: 1; }
+        `;
+        document.head.appendChild(style);
+
+        function attachTilt(card) {
+            // Inject glow overlay
+            const glow = document.createElement('div');
+            glow.className = 'card-glow';
+            card.prepend(glow);
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const rotateX = ((y - cy) / cy) * -4;
+                const rotateY = ((x - cx) / cx) * 4;
+
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
+                glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(124,106,255,0.12) 0%, transparent 60%)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                glow.style.background = '';
+            });
+        }
+
+        // Attach to existing and future cards
+        const grid = document.getElementById('projectsGrid');
+        if (!grid) return;
+
+        const obs = new MutationObserver(() => {
+            grid.querySelectorAll('.project-card:not([data-tilt])').forEach(card => {
+                card.setAttribute('data-tilt', '');
+                attachTilt(card);
+            });
+        });
+        obs.observe(grid, { childList: true, subtree: true });
+        // Also attach to any already rendered
+        grid.querySelectorAll('.project-card:not([data-tilt])').forEach(card => {
+            card.setAttribute('data-tilt', '');
+            attachTilt(card);
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 8 - Dynamic Greeting
+    //  Changes the hero subtitle based on time of day and adds
+    //  a typewriter effect on first visit.
+    // ═══════════════════════════════════════════════════════════
+
+    function initDynamicGreeting() {
+        const subtitle = document.querySelector('.hero-subtitle');
+        if (!subtitle) return;
+
+        const hour = new Date().getHours();
+        let greeting;
+        if (hour >= 5 && hour < 12) greeting = 'Good morning';
+        else if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
+        else if (hour >= 17 && hour < 21) greeting = 'Good evening';
+        else greeting = 'Working late, huh?';
+
+        const base = subtitle.textContent.trim();
+        const full = `${greeting}!
+         ${base}`;
+
+        // Check if already visited this session
+        if (sessionStorage.getItem('greeted')) {
+            subtitle.textContent = full;
+            return;
+        }
+
+        sessionStorage.setItem('greeted', '1');
+
+        // Typewriter effect
+        subtitle.textContent = '';
+        subtitle.style.borderRight = '2px solid var(--accent)';
+        let i = 0;
+        function type() {
+            if (i < full.length) {
+                subtitle.textContent += full[i];
+                i++;
+                setTimeout(type, 25 + Math.random() * 15);
+            } else {
+                // Blink cursor then remove
+                setTimeout(() => { subtitle.style.borderRight = 'none'; }, 1200);
+            }
+        }
+        // Start after hero animation finishes
+        setTimeout(type, 800);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 9 - Scroll Progress Bar
+    //  Thin accent-colored bar at the top showing page scroll.
+    // ═══════════════════════════════════════════════════════════
+
+    function initScrollProgress() {
+        const bar = document.createElement('div');
+        bar.style.cssText = `
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 10001;
+            background: linear-gradient(90deg, var(--accent), var(--color-cyan), var(--color-green), var(--color-pink));
+            background-size: 300% 100%;
+            animation: gradient-slide 4s ease infinite;
+            width: 0; transition: width 0.1s linear;
+            border-radius: 0 999px 999px 0;
+            pointer-events: none;
+        `;
+        document.body.appendChild(bar);
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            bar.style.width = pct + '%';
+        }, { passive: true });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 10 - Hover Ripple Effect
+    //  Click anywhere to produce a colorful expanding ring.
+    // ═══════════════════════════════════════════════════════════
+
+    function initClickRipple() {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .click-ripple {
+                position: fixed;
+                pointer-events: none;
+                z-index: 9998;
+                border-radius: 50%;
+                border: 2px solid var(--accent);
+                transform: translate(-50%, -50%) scale(0);
+                animation: click-ripple-expand 0.6s ease-out forwards;
+            }
+            @keyframes click-ripple-expand {
+                0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.6; width: 0; height: 0; }
+                100% { transform: translate(-50%, -50%) scale(1); opacity: 0; width: 120px; height: 120px; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        const colors = ['#7c6aff', '#5ec4d4', '#6ee7b7', '#f472b6', '#ebc158', '#fb923c'];
+        let ci = 0;
+
+        document.addEventListener('click', (e) => {
+            const ripple = document.createElement('div');
+            ripple.className = 'click-ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.borderColor = colors[ci++ % colors.length];
+            document.body.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 11 - Section Parallax Depth
+    //  Sections shift at different scroll speeds for depth.
+    // ═══════════════════════════════════════════════════════════
+
+    function initParallaxSections() {
+        const sections = document.querySelectorAll('.section-header, .project-hero-content');
+        if (!sections.length) return;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            sections.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const offset = (rect.top / window.innerHeight) * 15;
+                el.style.transform = `translateY(${offset}px)`;
+            });
+        }, { passive: true });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 12 - Floating Accent Shapes
+    //  Random soft geometric shapes float behind content.
+    // ═══════════════════════════════════════════════════════════
+
+    function initFloatingShapes() {
+        const container = document.createElement('div');
+        container.style.cssText = `
+            position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+        `;
+        document.body.appendChild(container);
+
+        const colors = [
+            'rgba(124,106,255,0.03)', 'rgba(94,196,212,0.025)',
+            'rgba(110,231,183,0.02)', 'rgba(244,114,182,0.02)',
+        ];
+
+        for (let i = 0; i < 6; i++) {
+            const shape = document.createElement('div');
+            const size = 200 + Math.random() * 400;
+            const isCircle = Math.random() > 0.4;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const dur = 20 + Math.random() * 30;
+            const delay = -Math.random() * 20;
+
+            shape.style.cssText = `
+                position: absolute;
+                width: ${size}px; height: ${size}px;
+                left: ${x}%; top: ${y}%;
+                background: ${colors[i % colors.length]};
+                border-radius: ${isCircle ? '50%' : (20 + Math.random() * 30) + '%'};
+                filter: blur(${40 + Math.random() * 40}px);
+                animation: float-shape-${i} ${dur}s ease-in-out ${delay}s infinite alternate;
+            `;
+            container.appendChild(shape);
+        }
+
+        const keyframes = document.createElement('style');
+        let css = '';
+        for (let i = 0; i < 6; i++) {
+            const dx = -30 + Math.random() * 60;
+            const dy = -30 + Math.random() * 60;
+            css += `
+                @keyframes float-shape-${i} {
+                    0% { transform: translate(0, 0) rotate(0deg); }
+                    100% { transform: translate(${dx}px, ${dy}px) rotate(${Math.random() * 60 - 30}deg); }
+                }
+            `;
+        }
+        keyframes.textContent = css;
+        document.head.appendChild(keyframes);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 13 - Card Counter Badge
+    //  Shows a live count of visible projects in the filter bar.
+    // ═══════════════════════════════════════════════════════════
+
+    function initCardCounter() {
+        const filterBar = document.getElementById('filterBar');
+        const grid = document.getElementById('projectsGrid');
+        if (!filterBar || !grid) return;
+
+        const badge = document.createElement('span');
+        badge.className = 'card-counter-badge';
+        badge.style.cssText = `
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-family: var(--font-body); font-size: 0.68rem; font-weight: 700;
+            color: var(--text-muted); background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle); padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-md); transition: all 0.3s;
+        `;
+
+        function update() {
+            const visible = grid.querySelectorAll('.project-card:not([style*="display: none"])').length;
+            const total = grid.querySelectorAll('.project-card').length;
+            if (total === 0) return;
+            badge.innerHTML = `
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                ${visible}/${total} projects
+            `;
+
+            // Highlight if filtered
+            if (visible < total) {
+                badge.style.color = 'var(--accent)';
+                badge.style.borderColor = 'var(--border-accent)';
+                badge.style.background = 'rgba(124,106,255,0.06)';
+            } else {
+                badge.style.color = 'var(--text-muted)';
+                badge.style.borderColor = 'var(--border-subtle)';
+                badge.style.background = 'rgba(255,255,255,0.03)';
+            }
+        }
+
+        function tryInsert() {
+            if (filterBar.querySelector('.card-counter-badge')) return;
+            if (grid.children.length === 0) return;
+            filterBar.appendChild(badge);
+            update();
+
+            const obs = new MutationObserver(update);
+            obs.observe(grid, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        }
+
+        tryInsert();
+        const obs = new MutationObserver(tryInsert);
+        obs.observe(grid, { childList: true });
+        setTimeout(tryInsert, 2000);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 14 - Smooth Section Fade Transitions
+    //  Sections elegantly stagger-reveal child elements
+    //  as they enter the viewport.
+    // ═══════════════════════════════════════════════════════════
+
+    function initStaggerReveal() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .stagger-child {
+                opacity: 0;
+                transform: translateY(18px) scale(0.98);
+                transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 0.68, 0, 1.1);
+            }
+            .stagger-child.visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Tag children of work-grid and media-grid
+        function tagChildren() {
+            document.querySelectorAll('.work-grid .work-card, .media-grid .media-item').forEach((el, idx) => {
+                if (!el.classList.contains('stagger-child')) {
+                    el.classList.add('stagger-child');
+                    el.style.transitionDelay = (idx % 6) * 0.08 + 's';
+                }
+            });
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        function observe() {
+            tagChildren();
+            document.querySelectorAll('.stagger-child:not(.visible)').forEach(el => observer.observe(el));
+        }
+
+        // Run after content loads
+        setTimeout(observe, 500);
+        setTimeout(observe, 2000);
+
+        // Also observe DOM additions
+        const body = document.body;
+        const domObs = new MutationObserver(() => { setTimeout(observe, 100); });
+        domObs.observe(body, { childList: true, subtree: true });
+    }
+
+    // ═══════════════════════════════════════════════════════════
     //  Init
     // ═══════════════════════════════════════════════════════════
 
@@ -818,6 +1392,10 @@
         if (isIndexPage) {
             initKeyboardNav();
             initRandomProject();
+            initHeroConstellation();
+            initCardTiltGlow();
+            initDynamicGreeting();
+            initCardCounter();
         }
 
         // Quick preview works on index page
@@ -830,6 +1408,13 @@
 
         // Konami code easter egg works on ALL pages
         initKonamiCode();
+
+        // These work on all pages
+        initScrollProgress();
+        initClickRipple();
+        initFloatingShapes();
+        initParallaxSections();
+        initStaggerReveal();
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
