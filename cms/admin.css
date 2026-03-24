@@ -23,10 +23,10 @@
     --text-muted: rgba(240, 240, 255, 0.5);
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-hard: rgba(255, 255, 255, 0.10);
-    --border-accent: rgba(124, 106, 255, 0.3);
+    --border-accent: rgba(126, 114, 255, 0.3);
     --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--border-subtle);
     --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.18);
-    --shadow-glow: 0 4px 20px rgba(124, 106, 255, 0.12);
+    --shadow-glow: 0 4px 20px rgba(126, 114, 255, 0.12);
     --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-smooth: 0.35s cubic-bezier(0.22, 0.68, 0, 1.1);
     --transition-spring: 0.5s cubic-bezier(0.22, 0.68, 0, 1.1);
@@ -112,7 +112,7 @@ body::after {
         text-shadow: 0 0 8px var(--accent-glow);
     }
     50% {
-        text-shadow: 0 0 16px var(--accent-glow), 0 0 32px rgba(124, 106, 255, 0.08);
+        text-shadow: 0 0 16px var(--accent-glow), 0 0 32px rgba(126, 114, 255, 0.08);
     }
 }
 
@@ -191,7 +191,7 @@ body::after {
 }
 
 .login-box h1 {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -218,7 +218,7 @@ body::after {
 .login-security span {
     font-size: 0.75rem;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -282,7 +282,7 @@ body::after {
 }
 
 .mfa-box h2 {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 1.3rem;
     margin-bottom: 1rem;
 }
@@ -308,7 +308,7 @@ body::after {
     border: 1px solid var(--border-hard);
     border-radius: var(--radius-md);
     color: var(--text-primary);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 1.2rem;
     text-align: center;
     letter-spacing: 0.5em;
@@ -342,7 +342,7 @@ body::after {
 }
 
 .topbar-brand {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-weight: 700;
     font-size: 1rem;
     animation: title-glitch 4s ease-in-out infinite;
@@ -359,7 +359,7 @@ body::after {
 .topbar-user {
     font-size: 0.8rem;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
 }
 
 .topbar-user .auth-badge {
@@ -389,7 +389,7 @@ body::after {
 }
 
 .btn:hover {
-    background: rgba(124, 106, 255, 0.08);
+    background: rgba(126, 114, 255, 0.08);
     border-color: var(--border-accent);
     transform: translateY(-2px);
     box-shadow: var(--shadow-soft);
@@ -403,13 +403,13 @@ body::after {
     background: var(--accent);
     border-color: var(--accent);
     color: #fff;
-    box-shadow: 0 2px 10px rgba(124, 106, 255, 0.25);
+    box-shadow: 0 2px 10px rgba(126, 114, 255, 0.25);
 }
 
 .btn-primary:hover {
     background: #6b59e6;
     border-color: #6b59e6;
-    box-shadow: 0 4px 18px rgba(124, 106, 255, 0.35);
+    box-shadow: 0 4px 18px rgba(126, 114, 255, 0.35);
 }
 
 .btn-danger {
@@ -470,13 +470,13 @@ body::after {
 
 .tab:hover {
     color: var(--text-secondary);
-    background: rgba(124, 106, 255, 0.04);
+    background: rgba(126, 114, 255, 0.04);
 }
 
 .tab.active {
     color: var(--text-primary);
     border-bottom-color: var(--accent);
-    background: rgba(124, 106, 255, 0.06);
+    background: rgba(126, 114, 255, 0.06);
 }
 
 .tab-content { display: none; }
@@ -498,7 +498,7 @@ body::after {
 .project-count {
     color: var(--text-muted);
     font-size: 0.8rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
 }
 
 .project-table {
@@ -516,11 +516,11 @@ body::after {
     text-align: left;
     padding: 0.75rem 1rem;
     font-size: 0.7rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
     letter-spacing: 0.06em;
     border-bottom: 1px solid var(--border-subtle);
-    background: rgba(124, 106, 255, 0.03);
+    background: rgba(126, 114, 255, 0.03);
 }
 
 .project-table td {
@@ -539,7 +539,7 @@ body::after {
 }
 
 .project-table tr:hover td {
-    background: rgba(124, 106, 255, 0.04);
+    background: rgba(126, 114, 255, 0.04);
 }
 
 .project-table tbody tr:last-child td {
@@ -572,7 +572,7 @@ body::after {
     display: inline-block;
     padding: 0.2rem 0.6rem;
     font-size: 0.7rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     border: 1px solid;
     border-radius: 999px;
 }
@@ -629,7 +629,7 @@ body::after {
 .media-preview .preview-error {
     font-size: 0.7rem;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     padding: 0.3rem 0;
 }
 
@@ -681,7 +681,7 @@ body::after {
     font-size: 0.75rem;
     color: var(--color-cyan);
     text-decoration: none;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -788,7 +788,7 @@ body::after {
 
 .form-group label {
     font-size: 0.75rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
     letter-spacing: 0.03em;
     font-weight: 600;
@@ -910,7 +910,7 @@ body::after {
 
 .array-item:hover {
     border-color: var(--border-accent);
-    box-shadow: 0 2px 8px rgba(124, 106, 255, 0.06);
+    box-shadow: 0 2px 8px rgba(126, 114, 255, 0.06);
 }
 
 .array-item .array-item-fields {
@@ -992,7 +992,7 @@ body::after {
     border: 1px solid var(--border-accent);
     border-radius: 999px;
     font-size: 0.75rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-secondary);
     animation: row-enter 0.2s ease both;
 }
@@ -1215,7 +1215,7 @@ body::after {
     align-items: center;
     gap: 0.3rem;
     font-size: 0.7rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
 }
 
@@ -1304,13 +1304,13 @@ body::after {
 }
 
 .combo-option:hover {
-    background: rgba(124, 106, 255, 0.08);
+    background: rgba(126, 114, 255, 0.08);
 }
 
 .combo-option-add {
     color: var(--accent);
     border-top: 1px solid var(--border-subtle);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.8rem;
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     margin: 0;
@@ -1362,7 +1362,7 @@ body::after {
     align-items: center;
     gap: 0.3rem;
     font-size: 0.75rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
     cursor: pointer;
     white-space: nowrap;
@@ -1451,7 +1451,7 @@ body::after {
 
 @keyframes glow-pulse {
     from { box-shadow: 0 0 4px var(--accent); }
-    to   { box-shadow: 0 0 12px var(--accent), 0 0 20px rgba(124, 106, 255, 0.2); }
+    to   { box-shadow: 0 0 12px var(--accent), 0 0 20px rgba(126, 114, 255, 0.2); }
 }
 
 /* ─── Animated Media Tooltip ─── */
@@ -1465,7 +1465,7 @@ body::after {
     background: var(--bg-secondary);
     border: 1px solid var(--border-hard);
     border-radius: var(--radius-md);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 12px rgba(124, 106, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 12px rgba(126, 114, 255, 0.1);
     opacity: 0;
     transform: scale(0.9) translateY(6px);
     transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1491,7 +1491,7 @@ body::after {
     padding: 1rem;
     text-align: center;
     color: var(--color-red);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.8rem;
 }
 
@@ -1565,7 +1565,7 @@ body::after {
     align-items: center;
     gap: 0.5rem;
     font-size: 0.8rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--color-yellow);
     white-space: nowrap;
 }
@@ -1627,7 +1627,7 @@ body::after {
 }
 
 .stats-live-counter #realtimeCount {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 2rem;
     font-weight: 800;
     color: var(--color-green);
@@ -1636,7 +1636,7 @@ body::after {
 }
 
 .stats-live-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-muted);
@@ -1644,7 +1644,7 @@ body::after {
 }
 
 .stats-live-meta {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.7rem;
     color: var(--text-muted);
 }
@@ -1676,7 +1676,7 @@ body::after {
     padding: 2rem;
     text-align: center;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.75rem;
 }
 
@@ -1699,7 +1699,7 @@ body::after {
 }
 
 .visitor-card:hover {
-    background: rgba(124, 106, 255, 0.04);
+    background: rgba(126, 114, 255, 0.04);
     border-color: var(--border-subtle);
     transform: translateX(4px);
 }
@@ -1711,7 +1711,7 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.6rem;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.9);
@@ -1770,7 +1770,7 @@ span.flag-icon {
 }
 
 .visitor-users {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.6rem;
     color: var(--text-muted);
     margin-left: auto;
@@ -1783,7 +1783,7 @@ span.flag-icon {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     color: var(--text-muted);
 }
@@ -1877,7 +1877,7 @@ span.flag-icon {
 }
 
 .stat-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     font-weight: 600;
     color: var(--text-muted);
@@ -1886,7 +1886,7 @@ span.flag-icon {
 }
 
 .stat-value {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 1.8rem;
     font-weight: 800;
     color: var(--text-primary);
@@ -1925,7 +1925,7 @@ span.flag-icon {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.9rem;
     color: var(--accent);
     margin-bottom: 1rem;
@@ -1953,7 +1953,7 @@ span.flag-icon {
 }
 
 .game-stat-value {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-primary);
@@ -1974,7 +1974,7 @@ span.flag-icon {
 }
 
 .game-stats-heading {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.8rem;
     color: var(--text-secondary);
     margin: 1.5rem 0 0.75rem;
@@ -1998,7 +1998,7 @@ span.flag-icon {
 .game-stats-bar-label {
     min-width: 100px;
     color: var(--text-secondary);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
 }
 
 .game-stats-bar-track {
@@ -2020,7 +2020,7 @@ span.flag-icon {
     min-width: 70px;
     text-align: right;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.7rem;
 }
 
@@ -2034,7 +2034,7 @@ span.flag-icon {
     border-collapse: separate;
     border-spacing: 0;
     font-size: 0.75rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -2047,7 +2047,7 @@ span.flag-icon {
     font-size: 0.65rem;
     letter-spacing: 0.04em;
     border-bottom: 1px solid var(--border-subtle);
-    background: rgba(124, 106, 255, 0.03);
+    background: rgba(126, 114, 255, 0.03);
 }
 
 .game-stats-table td {
@@ -2057,7 +2057,7 @@ span.flag-icon {
 }
 
 .game-stats-table tr:hover td {
-    background: rgba(124, 106, 255, 0.04);
+    background: rgba(126, 114, 255, 0.04);
 }
 
 .game-stats-table .text-muted {
@@ -2074,7 +2074,7 @@ span.flag-icon {
 .game-stats-anon-header {
     padding: 0.6rem 0.75rem !important;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.75rem;
     letter-spacing: 0.5px;
     border-top: 1px solid var(--border-subtle);
@@ -2118,14 +2118,14 @@ span.flag-icon {
     padding: 2rem;
     text-align: center;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.8rem;
 }
 
 .stat-sub {
     font-size: 0.7rem;
     color: var(--text-muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
 }
 
 /* ─── Stats Tables ─── */
@@ -2175,18 +2175,18 @@ span.flag-icon {
     text-align: left;
     padding: 0.6rem 0.8rem;
     font-size: 0.65rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
     letter-spacing: 0.06em;
     border-bottom: 1px solid var(--border-subtle);
-    background: rgba(124, 106, 255, 0.03);
+    background: rgba(126, 114, 255, 0.03);
 }
 
 .stats-table td {
     padding: 0.5rem 0.8rem;
     font-size: 0.8rem;
     border-bottom: 1px solid var(--border-subtle);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-secondary);
 }
 
@@ -2195,7 +2195,7 @@ span.flag-icon {
 }
 
 .stats-table tbody tr:hover td {
-    background: rgba(124, 106, 255, 0.04);
+    background: rgba(126, 114, 255, 0.04);
     color: var(--text-primary);
 }
 
@@ -2221,7 +2221,7 @@ span.flag-icon {
     text-align: center;
     padding: 1rem 0;
     font-size: 0.7rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     color: var(--text-muted);
     border-top: 1px solid var(--border-subtle);
 }
@@ -2234,7 +2234,7 @@ span.flag-icon {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -2267,7 +2267,7 @@ span.flag-icon {
 }
 .trend-chart-wrap {
     width: 100%;
-    background: rgba(124, 106, 255, 0.02);
+    background: rgba(126, 114, 255, 0.02);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     padding: 0.75rem;
@@ -2294,7 +2294,7 @@ span.flag-icon {
     border: none;
     color: var(--accent);
     cursor: pointer;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.7rem;
     padding: 0;
     text-decoration: underline;
@@ -2345,7 +2345,7 @@ span.flag-icon {
 
 .stats-empty-hint code {
     color: var(--accent);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.75rem;
     background: var(--accent-glow);
     padding: 0.15rem 0.5rem;
@@ -2372,7 +2372,7 @@ span.flag-icon {
 }
 
 .stats-loading p {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.8rem;
 }
 
@@ -2394,7 +2394,7 @@ span.flag-icon {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--accent);
@@ -2402,7 +2402,7 @@ span.flag-icon {
 }
 
 .portfolio-stats-sub {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     color: var(--text-muted);
     letter-spacing: 0.02em;
@@ -2445,7 +2445,7 @@ span.flag-icon {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.95rem;
     font-weight: 700;
     color: #a855f7;
@@ -2453,7 +2453,7 @@ span.flag-icon {
 }
 
 .vr-stats-sub {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.65rem;
     color: var(--text-muted);
     letter-spacing: 0.02em;
