@@ -14,6 +14,9 @@
 // 12. Floating Accent Shapes
 // 13. Card Counter Badge
 // 14. Smooth Section Fade Transitions
+// 15. Nav Scroll Glow (gradient border on scroll)
+// 16. Smooth Page Transitions (fade out/in between pages)
+// 17. Nav Magnetic Hover (text follows cursor)
 // ─────────────────────────────────────────────────────────────
 
 (function () {
@@ -1382,6 +1385,105 @@
     }
 
     // ═══════════════════════════════════════════════════════════
+    //  Feature 15 — Nav Scroll Glow
+    // ═══════════════════════════════════════════════════════════
+
+    function initNavScrollGlow() {
+        const nav = document.querySelector('.nav');
+        if (!nav) return;
+
+        let ticking = false;
+        const threshold = 40;
+
+        function update() {
+            if (window.scrollY > threshold) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(update);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        update();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 16 — Smooth Page Transitions
+    // ═══════════════════════════════════════════════════════════
+
+    function initPageTransitions() {
+        // Fade in on load
+        document.body.classList.add('page-entering');
+        document.body.addEventListener('animationend', function handler(e) {
+            if (e.animationName === 'page-fade-in') {
+                document.body.classList.remove('page-entering');
+                document.body.removeEventListener('animationend', handler);
+            }
+        });
+
+        // Intercept same-domain link clicks
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            // Skip external, anchor-only, mail, tel, and new-tab links
+            if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') ||
+                link.target === '_blank' || link.hasAttribute('download')) return;
+
+            // Skip if modifier key held
+            if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+
+            // Only intercept same-origin links
+            try {
+                const url = new URL(href, window.location.origin);
+                if (url.origin !== window.location.origin) return;
+            } catch { return; }
+
+            e.preventDefault();
+            document.body.classList.add('page-leaving');
+
+            setTimeout(function () {
+                window.location.href = href;
+            }, 200);
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  Feature 17 — Nav Magnetic Hover
+    // ═══════════════════════════════════════════════════════════
+
+    function initNavMagneticHover() {
+        // Skip on touch devices
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+        const links = document.querySelectorAll('.nav-links a');
+        const maxPull = 4; // max px of magnetic displacement
+
+        links.forEach(function (link) {
+            link.addEventListener('mousemove', function (e) {
+                const rect = link.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = (e.clientX - cx) / (rect.width / 2);
+                const dy = (e.clientY - cy) / (rect.height / 2);
+                link.style.transform = 'translate(' + (dx * maxPull) + 'px, ' + (dy * maxPull) + 'px)';
+            });
+
+            link.addEventListener('mouseleave', function () {
+                link.style.transform = '';
+            });
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════
     //  Init
     // ═══════════════════════════════════════════════════════════
 
@@ -1415,6 +1517,9 @@
         initFloatingShapes();
         initParallaxSections();
         initStaggerReveal();
+        initNavScrollGlow();
+        initPageTransitions();
+        initNavMagneticHover();
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
