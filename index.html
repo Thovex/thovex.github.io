@@ -6,90 +6,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <title>Jesse van Vliet | Game Programmer</title>
-    <meta name="description" content="Game programmer who loves C++, Unreal Engine, and making fun stuff.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Game programmer working with C++, Unreal Engine, gameplay systems, tools, and game tech.">
+    <link rel="canonical" href="https://www.jessevanvliet.xyz/">
+    <meta property="og:title" content="Jesse van Vliet | Game Programmer">
+    <meta property="og:description" content="Game programmer working with C++, Unreal Engine, gameplay systems, tools, and game tech.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.jessevanvliet.xyz/">
+    <meta property="og:image" content="https://www.jessevanvliet.xyz/res/projects/ember-sword/banner.png">
+    <link rel="stylesheet" href="styles.css?v=20260622-type-pass-3">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Jesse van Vliet",
+            "jobTitle": "Game Programmer",
+            "url": "https://www.jessevanvliet.xyz/",
+            "sameAs": ["https://www.linkedin.com/in/jesse-j-van-vliet/"]
+        }
+    </script>
     <script src="analytics.js"></script>
 </head>
 
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="hero-name">Jesse </span><span class="hero-surname">van Vliet</span><br>
-                <span class="highlight">Game Programmer</span>
-            </h1>
-            <p class="hero-subtitle">
-                I make games and game tech with C++, mostly in Unreal Engine.
-            </p>
-            <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                    </svg>
-                    View Projects
-                </a>
-                <a href="contact.html" class="btn btn-secondary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                    </svg>
-                    Get in Touch
-                </a>
-            </div>
-        </div>
-    </section>
+    <main id="main">
+        <section class="intro" id="intro" aria-labelledby="intro-title">
+            <div class="page-shell intro-grid">
+                <aside class="identity-rail" aria-label="Profile summary">
+                    <p class="mono-label">Portfolio and CV</p>
+                    <h1 id="intro-title">Jesse van Vliet</h1>
+                    <p class="role-line">Game Programmer</p>
+                    <p class="rail-summary">C++ and Unreal Engine programmer focused on gameplay systems, tools, and game tech.</p>
+                    <dl class="quick-facts">
+                        <div>
+                            <dt>Main stack</dt>
+                            <dd>C++ and Unreal Engine</dd>
+                        </div>
+                        <div>
+                            <dt>Core domains</dt>
+                            <dd>Gameplay, networking, AI, tools</dd>
+                        </div>
+                        <div>
+                            <dt>Location</dt>
+                            <dd>Breda, the Netherlands</dd>
+                        </div>
+                    </dl>
+                    <div class="rail-actions">
+                        <a class="button" href="mailto:jjvanvliet@protonmail.com">Email</a>
+                        <a class="button" href="jessevanvliet-cv.pdf" target="_blank" rel="noopener">Full CV</a>
+                        <a class="button" href="jessevanvliet-cv_onepage.pdf" target="_blank" rel="noopener">One-page CV</a>
+                    </div>
+                </aside>
 
-    <!-- Projects -->
-    <section class="section" id="projects">
-        <div class="section-inner">
-            <div class="section-header" data-reveal>
-                <p class="section-label">Projects</p>
-                <h2 class="section-title">What I've Worked On</h2>
-                <p class="section-desc">MMORPGs, shooters, co-op, singleplayer, simulators, tycoons, idle games, custom engines, a bit of everything. I just love making my ideas come to life.</p>
-            </div>
+                <div class="intro-main">
+                    <p class="eyebrow">Gameplay, Systems, Tools</p>
+                    <p class="intro-copy">I work on gameplay systems, tools, and engine-facing game tech, mostly in C++ and Unreal Engine.</p>
+                    <ul class="intro-tags" aria-label="Primary focus areas">
+                        <li>C++</li>
+                        <li>Unreal Engine</li>
+                        <li>Gameplay systems</li>
+                        <li>Tools</li>
+                        <li>Networking</li>
+                    </ul>
 
-            <div class="filter-bar" data-reveal id="filterBar"></div>
+                    <h2 class="glance-title" id="glance-title">At a glance</h2>
+                    <div class="glance" aria-labelledby="glance-title">
+                        <div class="glance-grid">
+                            <div>
+                                <span>Primary role</span>
+                                <strong>Game Programmer</strong>
+                            </div>
+                            <div>
+                                <span>Recent work</span>
+                                <strong>Dtail Spaces, Ember Sword, Radiance</strong>
+                            </div>
+                            <div>
+                                <span>Preferred work</span>
+                                <strong>Gameplay systems, tools, technical prototypes</strong>
+                            </div>
+                            <div>
+                                <span>Contact</span>
+                                <strong><a href="mailto:jjvanvliet@protonmail.com">jjvanvliet@protonmail.com</a></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            <div class="grid-row-hover-wrapper">
-                <div class="row-hover-line row-hover-line--left"></div>
-                <div class="row-hover-line row-hover-line--right"></div>
-                <div class="projects-grid" id="projectsGrid"></div>
+        <section class="section" id="work" aria-labelledby="work-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Work</p>
+                    <h2 id="work-title">Recent Projects</h2>
+                </div>
+                <div>
+                    <div class="work-list" id="selectedWork"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Archive -->
-    <section class="section other-projects-section" id="archive">
-        <div class="section-inner">
-            <div class="section-header" data-reveal>
-                <p class="section-label">Older Stuff</p>
-                <h2 class="section-title">Other Projects</h2>
-                <p class="section-desc">Uni work, internships, and hobby projects from back in the day.</p>
+        <section class="section" id="experience" aria-labelledby="experience-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Experience</p>
+                    <h2 id="experience-title">CV</h2>
+                </div>
+                <div class="timeline" id="experienceList"></div>
             </div>
-            <div class="archive-hover-wrapper">
-                <div class="row-hover-line row-hover-line--left" data-hover-group="archive"></div>
-                <div class="row-hover-line row-hover-line--right" data-hover-group="archive"></div>
-                <div class="archive-list" id="archiveList" data-reveal></div>
+        </section>
+
+        <section class="section section-quiet" id="education" aria-labelledby="education-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Education</p>
+                    <h2 id="education-title">Education</h2>
+                </div>
+                <div class="education-list" id="educationList"></div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section class="section" id="skills" aria-labelledby="skills-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Skills</p>
+                    <h2 id="skills-title">Tech</h2>
+                </div>
+                <div class="skill-groups" id="skillGroups"></div>
+            </div>
+        </section>
+
+        <section class="section section-quiet" id="older-projects" aria-labelledby="older-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Earlier work</p>
+                    <h2 id="older-title">Past Projects</h2>
+                </div>
+                <div class="older-list" id="olderProjects"></div>
+            </div>
+        </section>
+
+        <section class="section contact-band" id="contact" aria-labelledby="contact-title">
+            <div class="page-shell two-column">
+                <div class="section-kicker">
+                    <p class="eyebrow">Contact</p>
+                    <h2 id="contact-title">Connect</h2>
+                </div>
+                <div class="contact-actions">
+                    <div class="action-row">
+                        <a class="button" href="mailto:jjvanvliet@protonmail.com">Email</a>
+                        <a class="button" href="https://www.linkedin.com/in/jesse-j-van-vliet/" target="_blank" rel="noopener">LinkedIn</a>
+                    </div>
+                    <span class="copy-status" role="status" aria-live="polite"></span>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <div id="footer-placeholder"></div>
 
-    <script src="components.js"></script>
-    <script src="script.js"></script>
-    <script src="features.js"></script>
-    <script src="cms-overlay.js"></script>
+    <script src="cv-data.js?v=20260622-cv-cleanup"></script>
+    <script src="components.js?v=20260622-cv-cleanup"></script>
+    <script src="script.js?v=20260622-cv-cleanup"></script>
+    <script src="cms-overlay.js?v=20260622-cv-cleanup"></script>
 </body>
 
 </html>

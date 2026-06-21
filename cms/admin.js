@@ -27,16 +27,18 @@ import {
 } from 'https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js';
 
 import { initStatistics, saveGA4Property } from './statistics.js';
-import { initGameStats, renderGameStats } from './game-stats.js';
 
 // ─── Constants ───
 const ALLOWED_EMAIL = 'thovexii@gmail.com';
 const GITHUB_DEFAULTS = { owner: 'Thovex', repo: 'thovex.github.io', branch: 'main' };
 const SITE_ROOT = '../';
+const IS_LOCAL_DEV = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+const HIDDEN_PROJECT_IDS = new Set(['andromeda-resonance']);
 
 // ─── Firebase Init ───
 let app, auth, db;
 let mfaResolver = null;
+let cmsPreviewMode = false;
 
 try {
     const configModule = await import('./firebase-config.js');
@@ -49,7 +51,6 @@ try {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
-    initGameStats(app);
 } catch (e) {
     console.error('Firebase init failed:', e.message);
     showToast('Firebase not configured. Copy firebase-config.example.js → firebase-config.js and add your keys.', 'error');
@@ -771,10 +772,19 @@ if (auth) {
             }
             enterDashboard(user);
         } else {
+            if (cmsPreviewMode) return;
             localStorage.removeItem('cms_authed');
             showScreen('login');
         }
     });
+}
+
+if (IS_LOCAL_DEV) {
+    const localPreviewBtn = $('btnLocalPreview');
+    if (localPreviewBtn) {
+        localPreviewBtn.hidden = false;
+        localPreviewBtn.addEventListener('click', () => enterLocalPreviewDashboard());
+    }
 }
 
 $('btnGoogleLogin').addEventListener('click', async () => {
@@ -886,6 +896,7 @@ $('mfaCode').addEventListener('keydown', (e) => {
 
 // ─── Logout ───
 $('btnLogout').addEventListener('click', async () => {
+    cmsPreviewMode = false;
     localStorage.removeItem('cms_google_access_token');
     localStorage.removeItem('cms_google_token_time');
     localStorage.removeItem('cms_authed');
@@ -894,6 +905,21 @@ $('btnLogout').addEventListener('click', async () => {
 });
 
 // ─── Dashboard Entry ───
+function enterLocalPreviewDashboard() {
+    if (!IS_LOCAL_DEV) return;
+
+    cmsPreviewMode = true;
+    showScreen('dashboard');
+    localStorage.removeItem('cms_authed');
+    $('topbarUser').textContent = 'Local preview';
+
+    renderSettingsManagers();
+    loadSettings();
+    loadPreviewProjects();
+    restoreTabFromHash();
+    showToast('Local preview loaded from projects.json. Production auth is unchanged.', 'info');
+}
+
 function enterDashboard(user) {
     showScreen('dashboard');
 
@@ -978,7 +1004,6 @@ function switchTab(tabName) {
     // Init statistics when tab is shown
     if (tabName === 'statistics') {
         initStatistics();
-        renderGameStats();
     }
 }
 
@@ -1119,13 +1144,29 @@ window.addEventListener('beforeunload', (e) => {
 // ─── Projects CRUD ───
 let projects = [];
 
+async function loadPreviewProjects() {
+    try {
+        const response = await fetch('../projects.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        projects = Array.isArray(data) ? data.filter(p => !HIDDEN_PROJECT_IDS.has(p.id)) : [];
+        renderProjectList();
+        markClean();
+    } catch (error) {
+        console.error('Preview project load error:', error);
+        showToast('Failed to load local projects.json: ' + error.message, 'error');
+    }
+}
+
 async function loadProjects() {
     if (!db) return;
 
     try {
         const q = query(collection(db, 'projects'), orderBy('order', 'asc'));
         const snapshot = await getDocs(q);
-        projects = snapshot.docs.map(d => ({ ...d.data(), _docId: d.id }));
+        projects = snapshot.docs
+            .map(d => ({ ...d.data(), _docId: d.id }))
+            .filter(p => !HIDDEN_PROJECT_IDS.has(p.id));
         renderProjectList();
         markClean();
     } catch (error) {
@@ -1800,7 +1841,7 @@ $('btnClearAll').addEventListener('click', async () => {
 
 // ─── Publish: Generate JSON ───
 function generateProjectsJson() {
-    return projects.map(p => {
+    return projects.filter(p => !HIDDEN_PROJECT_IDS.has(p.id)).map(p => {
         const out = {};
 
         if (p.id) out.id = p.id;

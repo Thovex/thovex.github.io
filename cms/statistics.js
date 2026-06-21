@@ -6,28 +6,6 @@ const CACHE_KEY = 'cms_analytics_cache';
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 const TOKEN_TTL = 55 * 60 * 1000; // Google OAuth tokens expire after ~60min, check at 55min
 
-// ─── Void Resonance filter constants ───
-const VR_PATH_PREFIX = '/voidresonance';
-
-// GA4 dimension filter: only /voidresonance pages
-const VR_FILTER = {
-    filter: {
-        fieldName: 'pagePath',
-        stringFilter: { matchType: 'BEGINS_WITH', value: VR_PATH_PREFIX }
-    }
-};
-
-// GA4 dimension filter: exclude /voidresonance pages (portfolio only)
-const PORTFOLIO_FILTER = {
-    notExpression: {
-        filter: {
-            fieldName: 'pagePath',
-            stringFilter: { matchType: 'BEGINS_WITH', value: VR_PATH_PREFIX }
-        }
-    }
-};
-
-// Country name → flag emoji
 function countryFlag(countryName) {
     if (!countryName || countryName === '(not set)') return '<span class="flag-icon">🌐</span>';
     // Common country name → ISO 3166-1 alpha-2 mapping
@@ -338,95 +316,45 @@ async function fetchAnalytics(propertyId) {
 
         if (!cachedData) {
             fetches.push(
-                // [1] Portfolio overview (exclude /voidresonance)
+                // [1] Portfolio overview
                 runGAReport(accessToken, propertyId, {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: PORTFOLIO_FILTER,
                     metrics: [
                         { name: 'activeUsers' }, { name: 'screenPageViews' },
                         { name: 'sessions' }, { name: 'averageSessionDuration' },
                         { name: 'bounceRate' }
                     ]
                 }),
-                // [2] Portfolio top pages (exclude /voidresonance)
+                // [2] Portfolio top pages
                 runGAReport(accessToken, propertyId, {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: PORTFOLIO_FILTER,
                     dimensions: [{ name: 'pagePath' }],
                     metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
                     orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
                     limit: 10
                 }),
-                // [3] Portfolio referrers (exclude /voidresonance)
+                // [3] Portfolio referrers
                 runGAReport(accessToken, propertyId, {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: PORTFOLIO_FILTER,
                     dimensions: [{ name: 'sessionSource' }],
                     metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
                     orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
                     limit: 10
                 }),
-                // [4] Portfolio countries (exclude /voidresonance)
+                // [4] Portfolio countries
                 runGAReport(accessToken, propertyId, {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: PORTFOLIO_FILTER,
                     dimensions: [{ name: 'country' }],
                     metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
                     orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
                     limit: 10
                 }),
-                // [5] Portfolio daily trend (exclude /voidresonance)
+                // [5] Portfolio daily trend
                 runGAReport(accessToken, propertyId, {
                     dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: PORTFOLIO_FILTER,
                     dimensions: [{ name: 'date' }],
                     metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
                     orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
-                }),
-                // [6] Void Resonance overview
-                runGAReport(accessToken, propertyId, {
-                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: VR_FILTER,
-                    metrics: [
-                        { name: 'activeUsers' }, { name: 'screenPageViews' },
-                        { name: 'sessions' }, { name: 'averageSessionDuration' },
-                        { name: 'bounceRate' }
-                    ]
-                }),
-                // [7] Void Resonance top pages
-                runGAReport(accessToken, propertyId, {
-                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: VR_FILTER,
-                    dimensions: [{ name: 'pagePath' }],
-                    metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
-                    orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-                    limit: 10
-                }),
-                // [8] Void Resonance countries
-                runGAReport(accessToken, propertyId, {
-                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: VR_FILTER,
-                    dimensions: [{ name: 'country' }],
-                    metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
-                    orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
-                    limit: 10
-                }),
-                // [9] Void Resonance daily trend
-                runGAReport(accessToken, propertyId, {
-                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: VR_FILTER,
-                    dimensions: [{ name: 'date' }],
-                    metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
-                    orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }]
-                }),
-                // [10] Void Resonance referrers
-                runGAReport(accessToken, propertyId, {
-                    dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    dimensionFilter: VR_FILTER,
-                    dimensions: [{ name: 'sessionSource' }],
-                    metrics: [{ name: 'sessions' }, { name: 'activeUsers' }],
-                    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
-                    limit: 10
                 })
             );
         }
@@ -436,7 +364,6 @@ async function fetchAnalytics(propertyId) {
 
         // Named indices for clarity — order must match the fetches array above
         const IDX_OVERVIEW = 1, IDX_PAGES = 2, IDX_REFERRERS = 3, IDX_COUNTRIES = 4, IDX_TREND = 5;
-        const IDX_VR_OVERVIEW = 6, IDX_VR_PAGES = 7, IDX_VR_COUNTRIES = 8, IDX_VR_TREND = 9, IDX_VR_REFERRERS = 10;
 
         let data;
         if (cachedData) {
@@ -448,14 +375,7 @@ async function fetchAnalytics(propertyId) {
                 pages: parseTable(results[IDX_PAGES]),
                 referrers: parseTable(results[IDX_REFERRERS]),
                 countries: parseTable(results[IDX_COUNTRIES]),
-                dailyTrend: parseDailyTrend(results[IDX_TREND]),
-                vr: {
-                    overview: parseOverview(results[IDX_VR_OVERVIEW]),
-                    pages: parseTable(results[IDX_VR_PAGES]),
-                    countries: parseTable(results[IDX_VR_COUNTRIES]),
-                    dailyTrend: parseDailyTrend(results[IDX_VR_TREND]),
-                    referrers: parseTable(results[IDX_VR_REFERRERS])
-                }
+                dailyTrend: parseDailyTrend(results[IDX_TREND])
             };
             sessionStorage.setItem(CACHE_KEY, JSON.stringify({
                 propertyId, timestamp: Date.now(), data
@@ -762,143 +682,16 @@ function buildTrendChart(dailyTrend, opts = {}) {
     `;
 }
 
-// ─── Build Void Resonance Section ───
-function buildVoidResonanceSection(vr) {
-    if (!vr) return '';
-
-    const vrOverview = vr.overview;
-    const vrPages = vr.pages;
-    const vrCountries = vr.countries;
-    const vrReferrers = vr.referrers;
-    const vrTrend = vr.dailyTrend;
-
-    const vrDuration = formatDuration(vrOverview.avgDuration);
-    const vrBounce = (vrOverview.bounceRate * 100).toFixed(1);
-
-    const vrTrendHTML = buildTrendChart(vrTrend, {
-        lineColor: '#a855f7',
-        lineColorRgba: 'rgba(168,85,247,0.08)',
-        pvColor: '#f472b6',
-        title: 'Player Trend',
-        visitorsLabel: 'Players',
-        pvLabel: 'Page Views'
-    });
-
-    const vrPagesRows = vrPages.length
-        ? vrPages.map(p =>
-            '<tr><td class="stats-page-path">' + escapeHtml(p.dimension) + '</td>' +
-            '<td>' + formatNumber(parseInt(p.metrics[0])) + '</td>' +
-            '<td>' + formatNumber(parseInt(p.metrics[1])) + '</td></tr>'
-        ).join('')
-        : '<tr><td colspan="3" style="color:var(--text-muted)">No data</td></tr>';
-
-    const vrReferrerRows = vrReferrers.length
-        ? vrReferrers.map(r =>
-            '<tr><td>' + escapeHtml(r.dimension) + '</td>' +
-            '<td>' + formatNumber(parseInt(r.metrics[0])) + '</td>' +
-            '<td>' + formatNumber(parseInt(r.metrics[1])) + '</td></tr>'
-        ).join('')
-        : '<tr><td colspan="3" style="color:var(--text-muted)">No data</td></tr>';
-
-    const vrCountryRows = vrCountries.length
-        ? vrCountries.map(c =>
-            '<tr><td><span style="margin-right:0.4rem">' + countryFlag(c.dimension) + '</span>' + escapeHtml(c.dimension) + '</td>' +
-            '<td>' + formatNumber(parseInt(c.metrics[0])) + '</td>' +
-            '<td>' + formatNumber(parseInt(c.metrics[1])) + '</td></tr>'
-        ).join('')
-        : '<tr><td colspan="3" style="color:var(--text-muted)">No data</td></tr>';
-
-    return `
-        <div class="vr-stats-section">
-            <div class="vr-stats-header" data-reveal>
-                <div class="vr-stats-badge">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                    Void Resonance
-                </div>
-                <span class="vr-stats-sub">jessevanvliet.xyz/voidresonance</span>
-            </div>
-
-            <div class="stats-grid vr-stats-grid">
-                <div class="stat-card vr-stat-card" data-reveal>
-                    <div class="stat-label">Players</div>
-                    <div class="stat-value stat-animate">${formatNumber(vrOverview.users)}</div>
-                    <div class="stat-sub">Last 30 days</div>
-                </div>
-                <div class="stat-card vr-stat-card" data-reveal>
-                    <div class="stat-label">Page Views</div>
-                    <div class="stat-value stat-animate">${formatNumber(vrOverview.pageviews)}</div>
-                    <div class="stat-sub">Last 30 days</div>
-                </div>
-                <div class="stat-card vr-stat-card" data-reveal>
-                    <div class="stat-label">Sessions</div>
-                    <div class="stat-value stat-animate">${formatNumber(vrOverview.sessions)}</div>
-                    <div class="stat-sub">Last 30 days</div>
-                </div>
-                <div class="stat-card vr-stat-card" data-reveal>
-                    <div class="stat-label">Avg. Play Time</div>
-                    <div class="stat-value stat-animate">${vrDuration}</div>
-                    <div class="stat-sub">Per session</div>
-                </div>
-                <div class="stat-card vr-stat-card" data-reveal>
-                    <div class="stat-label">Bounce Rate</div>
-                    <div class="stat-value stat-animate">${vrBounce}%</div>
-                    <div class="stat-sub">Single page visits</div>
-                </div>
-            </div>
-
-            ${vrTrendHTML}
-
-            <div class="stats-tables">
-                <div class="stats-table-section" data-reveal>
-                    <h3>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-                        Game Pages
-                    </h3>
-                    <table class="stats-table">
-                        <thead><tr><th>Page</th><th>Views</th><th>Players</th></tr></thead>
-                        <tbody>${vrPagesRows}</tbody>
-                    </table>
-                </div>
-
-                <div class="stats-table-section" data-reveal>
-                    <h3>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                        Referrers
-                    </h3>
-                    <table class="stats-table">
-                        <thead><tr><th>Source</th><th>Sessions</th><th>Players</th></tr></thead>
-                        <tbody>${vrReferrerRows}</tbody>
-                    </table>
-                </div>
-
-                <div class="stats-table-section" data-reveal>
-                    <h3>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        Player Countries
-                    </h3>
-                    <table class="stats-table">
-                        <thead><tr><th>Country</th><th>Players</th><th>Sessions</th></tr></thead>
-                        <tbody>${vrCountryRows}</tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// ─── Render Stats ───
+// Render Stats
 function renderStats(data) {
     const container = document.getElementById('statsContent');
     if (!container) return;
 
-    const { overview, pages, referrers, countries, dailyTrend, vr } = data;
+    const { overview, pages, referrers, countries, dailyTrend } = data;
     const duration = formatDuration(overview.avgDuration);
     const bounce = (overview.bounceRate * 100).toFixed(1);
 
     const trendChartHTML = buildTrendChart(dailyTrend);
-
-    // Build Void Resonance section
-    const vrHTML = buildVoidResonanceSection(vr);
 
     container.innerHTML = `
         <div class="portfolio-stats-header" data-reveal>
@@ -997,8 +790,6 @@ function renderStats(data) {
                 </table>
             </div>
         </div>
-
-        ${vrHTML}
 
         <div class="stats-footer">
             <span>Data from Google Analytics 4 · Realtime updates every 15s · <button class="btn-link" id="btnRefreshStats">Refresh All</button></span>

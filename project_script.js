@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const hiddenProjectIds = new Set(['andromeda-resonance']);
 
     // ─── Lightbox ───
     const lightbox = document.getElementById('lightbox');
@@ -44,6 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!projectId) {
         document.getElementById('heroContent').innerHTML = '<p>No project specified.</p>';
+        return;
+    }
+
+    if (hiddenProjectIds.has(projectId)) {
+        document.title = 'Project not found | Jesse van Vliet';
+        document.getElementById('heroContent').innerHTML = `
+            <a href="index.html#work" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Back to work
+            </a>
+            <h1>Project not found</h1>
+            <p class="project-long-desc">This project is not part of the public CV.</p>
+        `;
         return;
     }
 
@@ -94,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
             : '';
 
         heroContent.innerHTML = `
-            <a href="index.html#projects" class="back-link">
+            <a href="index.html#work" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                Back to projects
+                Back to work
             </a>
             <h1>${project.title}</h1>
             <p class="project-long-desc">${project.longdescription || project.description}</p>

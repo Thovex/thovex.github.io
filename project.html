@@ -5,38 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <title>Project | Jesse van Vliet</title>
-    <meta name="description" content="Project details by Jesse van Vliet, Game Programmer">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Project details by Jesse van Vliet, Game Programmer.">
+    <link rel="stylesheet" href="styles.css?v=20260622-type-pass-3">
     <script src="analytics.js"></script>
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- Project Hero (populated by JS) -->
-    <section class="project-hero" id="projectHero">
-        <div class="project-hero-bg" id="heroBg"></div>
-        <div class="project-hero-content" id="heroContent"></div>
-    </section>
+    <main id="main">
+        <section class="project-hero" id="projectHero">
+            <div class="project-hero-bg" id="heroBg"></div>
+            <div class="project-hero-content" id="heroContent"></div>
+        </section>
 
-    <!-- Work Section -->
-    <section class="project-work-section" id="workSection" style="display:none;">
-        <div class="project-work-inner">
-            <h2 class="section-title" data-reveal>Contributions</h2>
-            <p class="project-work-note" data-reveal>Only features I am directly involved with are listed.</p>
-            <div class="work-grid" id="workGrid"></div>
-        </div>
-    </section>
+        <section class="project-work-section" id="workSection" style="display:none;">
+            <div class="project-work-inner">
+                <h2 class="section-title">Contributions</h2>
+                <p class="project-work-note">Only features I am directly involved with are listed.</p>
+                <div class="work-grid" id="workGrid"></div>
+            </div>
+        </section>
 
-    <!-- Media Section -->
-    <section class="project-media-section" id="mediaSection" style="display:none;">
-        <div class="project-media-inner">
-            <h2 class="section-title" data-reveal style="margin-bottom: 2rem;">Media</h2>
-            <div class="media-grid" id="mediaGrid"></div>
-        </div>
-    </section>
+        <section class="project-media-section" id="mediaSection" style="display:none;">
+            <div class="project-media-inner">
+                <h2 class="section-title">Media</h2>
+                <div class="media-grid" id="mediaGrid"></div>
+            </div>
+        </section>
+    </main>
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
@@ -47,9 +43,8 @@
 
     <div id="footer-placeholder"></div>
 
-    <script src="components.js"></script>
-    <script src="project_script.js"></script>
-    <script src="features.js"></script>
-    <script src="cms-overlay.js"></script>
+    <script src="components.js?v=20260622-cv-cleanup"></script>
+    <script src="project_script.js?v=20260622-cv-cleanup"></script>
+    <script src="cms-overlay.js?v=20260622-cv-cleanup"></script>
 </body>
 </html>
