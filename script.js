@@ -45,21 +45,71 @@ function renderWorkItem(project) {
         .map((social) => `<a href="${escapeAttr(social.url)}" target="_blank" rel="noopener">${escapeHtml(social.info || 'Link')}</a>`)
         .join('');
     const links = [
-        `<a href="project.html?id=${escapeAttr(project.id)}">Project details</a>`,
+        `<a class="button project-detail-button" href="project.html?id=${escapeAttr(project.id)}">Project details</a>`,
         socials
     ].filter(Boolean).join('');
+    const thumbnail = renderWorkThumbnail(project);
 
     return `
         <article class="work-item">
             <p class="row-date">${escapeHtml(formatPeriod(project.datetime || project.duration || ''))}</p>
-            <div class="work-item-body">
-                <h3>${escapeHtml(project.title)}</h3>
-                ${renderChips([typeLabel(project.type), project.language, project.engine])}
-                <p>${escapeHtml(project.description || '')}</p>
-                <div class="inline-links">${links}</div>
+            <div class="work-item-body${thumbnail ? '' : ' work-item-body-no-thumb'}">
+                <div class="work-item-copy">
+                    <h3>${escapeHtml(project.title)}</h3>
+                    ${renderChips([typeLabel(project.type), project.language, project.engine])}
+                    <p>${escapeHtml(project.description || '')}</p>
+                    <div class="inline-links">${links}</div>
+                </div>
+                ${thumbnail}
             </div>
         </article>
     `;
+}
+
+function renderWorkThumbnail(project) {
+    const media = getProjectPreviewMedia(project);
+    if (!media) return '';
+
+    const label = `View ${project.title || 'project'} details`;
+    const mediaHtml = media.kind === 'video'
+        ? `<video src="${escapeAttr(media.src)}" muted playsinline preload="metadata" aria-hidden="true"></video>`
+        : `<img src="${escapeAttr(media.src)}" alt="${escapeAttr(media.alt)}" loading="lazy">`;
+
+    return `
+        <a class="work-thumb" href="project.html?id=${escapeAttr(project.id)}" aria-label="${escapeAttr(label)}">
+            ${mediaHtml}
+        </a>
+    `;
+}
+
+function getProjectPreviewMedia(project) {
+    const screenshot = (project.screenshots || [])[0];
+    if (screenshot?.src) {
+        return {
+            kind: 'image',
+            src: screenshot.src,
+            alt: screenshot.alt || `${project.title || 'Project'} screenshot`
+        };
+    }
+
+    if (project.minisrc) {
+        return {
+            kind: 'image',
+            src: project.minisrc,
+            alt: `${project.title || 'Project'} thumbnail`
+        };
+    }
+
+    const video = (project.videos || [])[0];
+    if (video?.src && /\.(mp4|webm|ogg|mov)$/i.test(video.src)) {
+        return {
+            kind: 'video',
+            src: video.src,
+            alt: video.alt || `${project.title || 'Project'} video preview`
+        };
+    }
+
+    return null;
 }
 
 function renderOlderProject(project) {

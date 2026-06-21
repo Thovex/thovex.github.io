@@ -1,16 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jesse van Vliet">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1a1b2e"/>
-      <stop offset="100%" stop-color="#13141f"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#7c6aff"/>
-      <stop offset="100%" stop-color="#5ec4d4"/>
+      <stop offset="0" stop-color="#252830"/>
+      <stop offset="1" stop-color="#171a20"/>
     </linearGradient>
   </defs>
-  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
-  <text x="6" y="23.5" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="22" fill="url(#accent)">J</text>
-  <circle cx="25" cy="7" r="2.5" fill="#6ee7b7"/>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <path d="M14 14h36" fill="none" stroke="#b77752" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 19v23c0 9-6 15-16 15-5 0-9-2-12-6" fill="none" stroke="#fffaf2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 19h18" fill="none" stroke="#fffaf2" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="49" cy="48" r="3.5" fill="#c99168"/>
 </svg>
-
