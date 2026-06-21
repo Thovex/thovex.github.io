@@ -55,7 +55,7 @@ window.CV_DATA = {
             meta: ['Full-time', 'Hybrid'],
             bullets: [
                 'Maintaining the stability of Dtail Spaces and refactoring foundational issues that cause crashes.',
-                'Developing client-facing functionality in the Spaces app, including planogram generation work.',
+                'Developing client-facing functionality in the Spaces app and improving production workflows.',
                 'Working on Unreal Engine 5 application architecture, resource loading, dependency injection, and backend platform connection points.'
             ],
             tech: ['Unreal Engine 5', 'C++', 'Tools', 'Application architecture']
